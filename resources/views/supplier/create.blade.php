@@ -3,39 +3,33 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <div class="card card-primary">
+        <div class="col-md-8">
+            <div class="card card-secondary">
     <div class="card-header">
-      <h3 class="card-title">Quick Example</h3>
+      <h3 class="card-title">Add New Supplier</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->
-    <form role="form">
+<form action="{{ route('suppliers.store') }}" method="POST" role="form">
       <div class="card-body">
         <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+           @csrf
+          <label for="name">Name (Company/Shop)</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          <label for="exampleInputPassword1">Address</label>
+          <input type="text" class="form-control" id="address" name="address" placeholder="Address">
         </div>
-        <div class="form-group">
-          <label for="exampleInputFile">File input</label>
-          <div class="input-group">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="exampleInputFile">
-              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label for="phone">Phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
             </div>
-            <div class="input-group-append">
-              <span class="input-group-text" id="">Upload</span>
-            </div>
-          </div>
         </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
+       
+       
       </div>
       <!-- /.card-body -->
 

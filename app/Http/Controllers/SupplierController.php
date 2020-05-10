@@ -14,7 +14,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::paginate(15);
         return view('supplier.index',[
             'suppliers' => $suppliers
         ]);
@@ -41,7 +41,13 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $supplier = new Supplier();
+        $supplier->fill($request->all());
+        $supplier->save();
+        $supplier->fresh();
+        return redirect()->route('suppliers.show',$supplier->id)->with(
+           ['success' => 'Supplier Saved Successfully']
+        );
     }
 
     /**
@@ -52,7 +58,9 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        //
+        return view('supplier.show',[
+            'supplier' => $supplier
+        ]);
     }
 
     /**
@@ -63,7 +71,9 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        //
+        return view('supplier.edit',[
+            'supplier' => $supplier
+        ]);
     }
 
     /**
@@ -75,7 +85,12 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $supplier->fill($request->all());
+        $supplier->save();
+        $supplier->fresh();
+        return redirect()->route('suppliers.show',$supplier->id)->with(
+           ['success' => 'Supplier Updated Successfully']
+        );
     }
 
     /**
