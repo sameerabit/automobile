@@ -36,7 +36,7 @@
                         <th style="width: 10px">#</th>
                         <th>Name</th>
                         <th>Phone</th>
-                        <th style="width: 300px">Action</th>
+                        <th style="width: 200px">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -46,12 +46,12 @@
                             <td>{{ $supplier->name }}</td>
                             <td>{{ $supplier->phone }}</td>
                             <td class="d-flex">
-                                <a class="btn btn-warning btn-sm mx-2" href="{{ route('suppliers.edit',$supplier->id) }}">Edit</a>
+                                <a class="btn btn-warning btn-sm m-auto" href="{{ route('suppliers.edit',$supplier->id) }}"><i class="fas fa-edit"></i>Edit</a>
                                 <form action="{{ route('suppliers.destroy',$supplier->id) }}"
                                     method="POST" class="form form-inline js-confirm">
                                   {{ method_field('delete') }}
                                   @csrf
-                                  <button class="btn btn-danger js-tooltip delete-btn" data-toggle="modal" data-target="#modal-warning"><em class="fa fa-times"></em> Delete</button>
+                                  <button class="btn btn-danger btn-sm js-tooltip delete-btn" data-toggle="modal" data-target="#modal-warning"><i class="fas fa-trash-alt"></i> Delete</button>
                                 </form>
                             </td>
                           </tr>
@@ -66,49 +66,7 @@
               </div>
         </div>
     </div>
-    <div class="modal fade" id="modal-warning">
-        <div class="modal-dialog">
-          <div class="modal-content bg-warning">
-            <div class="modal-header">
-              <h4 class="modal-title">Are you sure you want to delete?</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <p>Please Note: This action cannot be reversed.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
-              <button id="delete" type="button" class="btn btn-danger">Delete</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-</div>
-
-@push('scripts')
-   <script>
-     
-      $(function(){
-
-          var form;
-
-          $(document).on('click','.delete-btn',function(event){
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-            form = $(this).closest('form');
-          });
-
-          $('#delete').click(function(){
-                form.submit();
-          });
-          
-      });
+    @include('partials.delete') 
     
-   </script>
-@endpush
-
+</div>
 @endsection
