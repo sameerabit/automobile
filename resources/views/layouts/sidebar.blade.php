@@ -39,15 +39,15 @@
                                 <li class="nav-item">
                                   <a href="{{ route('suppliers.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Supplier</p>
+                                    <p>Suppliers</p>
                                   </a>
                                 </li>
                                 <li class="nav-item">
-                                  <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Top Navigation + Sidebar</p>
-                                  </a>
-                                </li>
+                                    <a href="{{ route('brands.index') }}" class="nav-link">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Brands</p>
+                                    </a>
+                                  </li>
                                 <li class="nav-item">
                                   <a href="pages/layout/boxed.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
