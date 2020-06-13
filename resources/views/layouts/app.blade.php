@@ -182,7 +182,7 @@
     <section class="content">
       <div class="container-fluid py-4">
         <div class="row">
-          <div class="col">
+          <div class="col d-flex justify-content-center">
               @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -201,10 +201,10 @@
 
 
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
+    <strong>Copyright &copy; 2020 <a href="#">Viraj</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.4
+      <b>Version</b> 1.0
     </div>
   </footer>
 
@@ -249,5 +249,6 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
+@stack('scripts')
 </body>
 </html>

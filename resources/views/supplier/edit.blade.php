@@ -15,20 +15,25 @@
         <div class="form-group">
            @csrf
            @method('put')
-           <input type="hidden"  class="form-control" value="{{ $supplier->id }}" id="id" name="id" placeholder="Enter Name">
+           <input type="hidden"  class="form-control" value="{{ $supplier->id }}" id="id" name="id" >
 
           <label for="name">Name (Company/Shop)</label>
-          <input type="text"  class="form-control" value="{{ $supplier->name }}" id="name" name="name" placeholder="Enter Name">
+          <input type="text"  class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" value="{{ $supplier->name }}" id="name" name="name" placeholder="Enter Name">
+          {!! $errors->first('name', '<p class="error invalid-feedback">:message</p>') !!}
+       
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Address</label>
-          <input type="text"  class="form-control" value="{{ $supplier->address }}" id="address" name="address" placeholder="Address">
+          <input type="text"  class="form-control {{ $errors->has('address') ? 'is-invalid' : ''}}" value="{{ $supplier->address }}" id="address" name="address" placeholder="Address">
+          {!! $errors->first('address', '<p class="error invalid-feedback">:message</p>') !!}
+        
         </div>
 
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="phone">Phone Number</label>
-            <input type="text"  class="form-control" value="{{ $supplier->phone }}" id="phone" name="phone" placeholder="Phone Number">
+                <input type="text"  class="form-control {{ $errors->has('phone') ? 'is-invalid' : ''}}" value="{{ $supplier->phone }}" id="phone" name="phone" placeholder="Phone Number">
+                {!! $errors->first('phone', '<p class="error invalid-feedback">:message</p>') !!}
             </div>
         </div>
       </div>

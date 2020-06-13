@@ -15,18 +15,20 @@
         <div class="form-group">
            @csrf
           <label for="name">Name (Company/Shop)</label>
-          <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+          <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" placeholder="Enter Name">
+          {!! $errors->first('name', '<p class="error invalid-feedback">:message</p>') !!}
         </div>
-        <div class="form-group">
+        <div class="form-group {{ $errors->has('address') ? 'has-error' : ''}}">
           <label for="exampleInputPassword1">Address</label>
           <input type="text" class="form-control" id="address" name="address" placeholder="Address">
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row {{ $errors->has('phone') ? 'has-error' : ''}}">
             <div class="col-md-4">
                 <label for="phone">Phone Number</label>
-                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
-            </div>
+                <input type="text" class="form-control {{ $errors->has('phone') ? 'is-invalid' : ''}}" id="phone" name="phone" placeholder="Phone Number">
+                {!! $errors->first('phone', '<p class="error invalid-feedback">:message</p>') !!}
+              </div>
         </div>
        
        

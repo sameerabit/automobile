@@ -12,9 +12,14 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $suppliers = Supplier::paginate(15);
+        $query = Supplier::query();
+        if($request->has('q') && $request->q){
+            $query->where('name','like',"%$request->q%");
+            $query->orWhere('phone','like',"%$request->q%");
+        }
+        $suppliers = $query->paginate(15);
         return view('supplier.index',[
             'suppliers' => $suppliers
         ]);
@@ -41,6 +46,10 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'name' => 'required',
+            'phone' => 'numeric'
+        ]);
         $supplier = new Supplier();
         $supplier->fill($request->all());
         $supplier->save();
@@ -85,6 +94,10 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
+        $this->validate($request,[
+            'name' => 'required',
+            'phone' => 'numeric'
+        ]);
         $supplier->fill($request->all());
         $supplier->save();
         $supplier->fresh();
@@ -101,6 +114,9 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $supplier->delete();
+        return redirect()->route('suppliers.index',$supplier->id)->with(
+            ['success' => 'Supplier Deleted Successfully']
+         );
     }
 }
