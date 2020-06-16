@@ -20,5 +20,9 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('suppliers', 'SupplierController');
 Route::resource('brands', 'BrandController');
+Route::resource('categories', 'CategoryController');
+Route::resource('products', 'ProductController');
+
+
 
 

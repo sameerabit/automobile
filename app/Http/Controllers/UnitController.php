@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Brand;
+use App\Unit;
 use Illuminate\Http\Request;
 
-class BrandController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,13 +14,13 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Brand::query();
+        $query = Unit::query();
         if($request->has('q') && $request->q){
             $query->where('name','like',"%$request->q%");
         }
-        $brands = $query->paginate(15);
-        return view('brand.index',[
-            'brands' => $brands
+        $units = $query->paginate(15);
+        return view('unit.index',[
+            'units' => $units
         ]);
     }
 
@@ -31,9 +31,9 @@ class BrandController extends Controller
      */
     public function create()
     {
-        $brand = new Brand();
-        return view('brand.create',[
-            'brand' => $brand
+        $unit = new Unit();
+        return view('unit.create',[
+            'unit' => $unit
         ]);
     }
 
@@ -48,38 +48,38 @@ class BrandController extends Controller
         $this->validate($request,[
             'name' => 'required',
         ]);
-        $brand = new Brand();
-        $brand->fill($request->all());
-        $brand->save();
-        $brand->fresh();
-        return redirect()->route('brands.show',$brand->id)->with(
-           ['success' => 'Brand Saved Successfully']
+        $unit = new Unit();
+        $unit->fill($request->all());
+        $unit->save();
+        $unit->fresh();
+        return redirect()->route('units.show',$unit->id)->with(
+           ['success' => 'Unit Saved Successfully']
         );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function show(Brand $brand)
+    public function show(Unit $unit)
     {
-        return view('brand.show',[
-            'brand' => $brand
+        return view('unit.show',[
+            'unit' => $unit
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Brand $brand)
+    public function edit(Unit $unit)
     {
-        return view('brand.edit',[
-            'brand' => $brand
+        return view('unit.edit',[
+            'unit' => $unit
         ]);
     }
 
@@ -87,33 +87,33 @@ class BrandController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Brand  $brand
+     * @param  \App\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update(Request $request, Unit $unit)
     {
         $this->validate($request,[
             'name' => 'required',
         ]);
-        $brand->fill($request->all());
-        $brand->save();
-        $brand->fresh();
-        return redirect()->route('brands.show',$brand->id)->with(
-           ['success' => 'Brand Updated Successfully']
+        $unit->fill($request->all());
+        $unit->save();
+        $unit->fresh();
+        return redirect()->route('units.show',$unit->id)->with(
+           ['success' => 'Unit Updated Successfully']
         );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Brand $brand)
+    public function destroy(Unit $unit)
     {
-        $brand->delete();
-        return redirect()->route('brands.index',$brand->id)->with(
-            ['success' => 'Brand Deleted Successfully']
+        $unit->delete();
+        return redirect()->route('units.index',$unit->id)->with(
+            ['success' => 'Unit Deleted Successfully']
          );
     }
 }

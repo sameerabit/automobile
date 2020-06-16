@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Brand;
+use App\Category;
 use Illuminate\Http\Request;
 
-class BrandController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,13 +14,13 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Brand::query();
+        $query = Category::query();
         if($request->has('q') && $request->q){
             $query->where('name','like',"%$request->q%");
         }
-        $brands = $query->paginate(15);
-        return view('brand.index',[
-            'brands' => $brands
+        $categories = $query->paginate(15);
+        return view('category.index',[
+            'categories' => $categories
         ]);
     }
 
@@ -31,9 +31,9 @@ class BrandController extends Controller
      */
     public function create()
     {
-        $brand = new Brand();
-        return view('brand.create',[
-            'brand' => $brand
+        $category = new Category();
+        return view('category.create',[
+            'category' => $category
         ]);
     }
 
@@ -48,38 +48,38 @@ class BrandController extends Controller
         $this->validate($request,[
             'name' => 'required',
         ]);
-        $brand = new Brand();
-        $brand->fill($request->all());
-        $brand->save();
-        $brand->fresh();
-        return redirect()->route('brands.show',$brand->id)->with(
-           ['success' => 'Brand Saved Successfully']
+        $category = new Category();
+        $category->fill($request->all());
+        $category->save();
+        $category->fresh();
+        return redirect()->route('categories.show',$category->id)->with(
+           ['success' => 'Category Saved Successfully']
         );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Brand $brand)
+    public function show(Category $category)
     {
-        return view('brand.show',[
-            'brand' => $brand
+        return view('category.show',[
+            'category' => $category
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Brand $brand)
+    public function edit(Category $category)
     {
-        return view('brand.edit',[
-            'brand' => $brand
+        return view('category.edit',[
+            'category' => $category
         ]);
     }
 
@@ -87,33 +87,33 @@ class BrandController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Brand  $brand
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update(Request $request, Category $category)
     {
         $this->validate($request,[
             'name' => 'required',
         ]);
-        $brand->fill($request->all());
-        $brand->save();
-        $brand->fresh();
-        return redirect()->route('brands.show',$brand->id)->with(
-           ['success' => 'Brand Updated Successfully']
+        $category->fill($request->all());
+        $category->save();
+        $category->fresh();
+        return redirect()->route('categories.show',$category->id)->with(
+           ['success' => 'Category Updated Successfully']
         );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Brand $brand)
+    public function destroy(Category $category)
     {
-        $brand->delete();
-        return redirect()->route('brands.index',$brand->id)->with(
-            ['success' => 'Brand Deleted Successfully']
+        $category->delete();
+        return redirect()->route('categories.index',$category->id)->with(
+            ['success' => 'Category Deleted Successfully']
          );
     }
 }
