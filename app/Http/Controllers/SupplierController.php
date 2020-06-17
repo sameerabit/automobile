@@ -120,5 +120,18 @@ class SupplierController extends Controller
          );
     }
 
+    public function searchByName(Request $request)
+    {
+        $query = Supplier::query();
+        if($request->has('q') && $request->q){
+            $query->where('name','like',"%$request->q%");
+        }
+        $products = $query->get();
+        return response([
+            "items"=>$products,
+            "total_count"=> $products->count()
+        ]);
+    }
+
     
 }

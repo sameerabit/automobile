@@ -14,21 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Auth::routes();
+    Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/', 'HomeController@index')->name('home');
 
-Route::resource('suppliers', 'SupplierController');
-Route::resource('brands', 'BrandController');
-Route::resource('categories', 'CategoryController');
-
-
-Route::resource('products', 'ProductController');
-Route::get('products-search', 'ProductController@searchByName');
+    Route::resource('suppliers', 'SupplierController');
+    Route::resource('brands', 'BrandController');
+    Route::resource('categories', 'CategoryController');
 
 
-Route::resource('units', 'UnitController');
-Route::get('supplier-bill/create', 'SupplierBillController@create')->name('supplier.bill.create');
+    Route::resource('products', 'ProductController');
+    Route::get('products-search', 'ProductController@searchByName');
+    Route::get('suppliers-search', 'SupplierController@searchByName');
+
+    Route::resource('units', 'UnitController');
+    Route::get('supplier-bill/create', 'SupplierBillController@create')->name('supplier.bill.create');
 
 
 

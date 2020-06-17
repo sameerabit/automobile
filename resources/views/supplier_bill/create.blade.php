@@ -51,7 +51,9 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
+                                <th>Product Id</th>
                                 <th>Unit</th>
+                                <th>Unit Id</th>
                                 <th>Quantity</th>
                                 <th>Buying Price</th>
                                 <th>Selling Price</th>
@@ -60,7 +62,9 @@
                         <tbody>
                             <tr>
                                 <td>Tiger Nixon</td>
+                                <td>1</td>
                                 <td>Litre</td>
+                                <th>100</th>
                                 <td>120</td>
                                 <td>100</td>
                                 <td>200</td>
@@ -69,13 +73,20 @@
                         <tfoot>
                             <tr>
                                 <th>Product</th>
+                                <th>Product Id</th>
                                 <th>Unit</th>
+                                <th>Unit Id</th>
                                 <th>Quantity</th>
                                 <th>Buying Price</th>
                                 <th>Selling Price</th>
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div class="row py-2">
+                    <div class="col float-right">
+                            <button type="button" class="btn btn-primary" id="saveBill">Save</button>
+                    </div>
                 </div>
                
               </div>
@@ -94,7 +105,7 @@
                     <div class="form-group">
                       <label for="product" class="col-form-label">Product</label>
                       <select id="product_id" class="form-control" style="width: 100%"></select>
-                      <input type="hidden" id="product">
+                      <input type="hidden" id="product_name">
                     </div>
                     <div class="form-group">
                       <label for="quantity" class="col-form-label">Quantity</label>
@@ -133,27 +144,95 @@
    <script>
      $(document).ready(function() {
 
-            $('#item').DataTable();
+
+            $('#saveBill').on('click',function(){
+                var tableData = datatable.data().toArray();
+                var formattedTableData = formatData(tableData);
+                $('#refrence')
+            });
+
+            function formatData(saleTableData) {
+                var formattedData = [];
+                saleTableData.forEach(function (data) {
+                    var formattedRow = {};
+                    formattedRow['product_id'] = data[1];
+                    formattedRow['unit_id'] = data[3];
+                    formattedRow['quantity'] = data[4];
+                    formattedRow['buying_price'] = data[5];
+                    formattedRow['selling_price'] = data[6];
+                    formattedData.push(formattedRow);
+                });
+                return formattedData;
+            }
+
+            var datatable = $('#item').DataTable(
+                {
+                    "columnDefs": [
+                        {
+                            "targets": [ 1 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            "targets": [ 3 ],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ]
+                }
+            );
 
 
             $('#addToTable').on('click',function(){
+                productName = $('#product_name').val();
                 buyingPrice = $('#buying_price').val();
                 sellingPrice = $('#selling_price').val();
-                product = $('#product').val();
+                product_id = $('#product_id').val();
                 quantity = $('#quantity').val();
                 unit = $('#unit').val();
+                unit_name = $("#unit option:selected").text();
 
+                datatable.row.add([
+                    productName,
+                    product_id,
+                    unit_name,
+                    unit,
+                    quantity,
+                    buyingPrice,
+                    sellingPrice
+                 ]).draw( false );
             });
 
             $('#supplier_id').select2({
-                placeholder: 'Select an option'
+                placeholder: 'Select an option',
+                theme: "classic",
+                ajax: {
+                    url: "/suppliers-search",
+                    dataType: 'json',
+                    delay: 10,
+                    data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                    },
+                    processResults: function (data, params) {
+                    params.page = params.page || 1;
+                        return {
+                            results: data.items,
+                            pagination: {
+                            more: (params.page * 30) < data.total_count
+                            }
+                        };
+                    },
+                    cache: false
+                },
+                templateResult: formatRepo,
+                templateSelection: formatRepoSelection
             });
 
             $("#product_id").select2({
                 theme: "classic",
-                onSelect: function(e){
-                    alert(e);
-                },
                 ajax: {
                     url: "/products-search",
                     dataType: 'json',
@@ -165,10 +244,6 @@
                     };
                     },
                     processResults: function (data, params) {
-                    // parse the results into the format expected by Select2
-                    // since we are using custom formatting functions we do not need to
-                    // alter the remote JSON data, except to indicate that infinite
-                    // scrolling can be used
                     params.page = params.page || 1;
 
                     return {
@@ -188,15 +263,15 @@
 
                 
                 function formatRepo (repo) {
-                if (repo.loading) {
-                    return repo.name;
-                }
+                    if (repo.loading) {
+                        return repo.name;
+                    }
 
-                var $container = $(
-                    "<p>"+repo.name+"</p>"
-                );
+                    var $container = $(
+                        "<p>"+repo.name+"</p>"
+                    );
 
-                return $container;
+                    return $container;
                 }
 
                 function formatRepoSelection (repo) {
@@ -205,7 +280,7 @@
 
                 $('#product_id').on('select2:select', function (e) {
                     var data = e.params.data;
-                    $('#product').val(data.id);
+                    $('#product_name').val(data.name);
                 });
 
      });
