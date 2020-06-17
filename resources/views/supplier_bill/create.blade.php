@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 @endpush
 @section('content')
 <div class="container">
@@ -28,6 +28,7 @@
                     <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="reference">Reference</label>
+                                @csrf
                                 <input type="text" class="form-control" id="reference" placeholder="Reference">
                             </div>
                     </div>
@@ -45,9 +46,11 @@
                     <div class="row py-2">
                         <div class="col">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemModal" data-whatever="@mdo">Add Row</button>
-                        </div>
+                                <button type="button" class="btn btn-primary" id="deleteRow">Delete Row</button>
+    
+                            </div>
                     </div>
-                    <table id="item" class="table table-striped table-bordered" style="width:100%">
+                    <table id="itemsTable" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -60,15 +63,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>1</td>
-                                <td>Litre</td>
-                                <th>100</th>
-                                <td>120</td>
-                                <td>100</td>
-                                <td>200</td>
-                            </tr>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -148,8 +142,43 @@
             $('#saveBill').on('click',function(){
                 var tableData = datatable.data().toArray();
                 var formattedTableData = formatData(tableData);
-                $('#refrence')
+                reference= $('#reference').val();
+                billDate = $('#billDate').val();
+                supplierId = $('#supplier_id').val();
+
+                var supplierBill = {
+                    'supplier_id': supplierId,
+                    'billing_date': billDate,
+                    'reference' : reference,
+                    'supllierBillDetails': formattedTableData
+                }
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": $('input[name=_token]').val()
+                    },
+                    url: '/supplier-bill',
+                    data: supplierBill,
+                    success: function(response){
+                        console.log(response);
+                    },
+                    dataType: 'json'
+                });
             });
+
+            $('#itemsTable tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    datatable.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+        
+            $('#deleteRow').click( function () {
+                datatable.row('.selected').remove().draw( false );
+            } );
 
             function formatData(saleTableData) {
                 var formattedData = [];
@@ -165,7 +194,7 @@
                 return formattedData;
             }
 
-            var datatable = $('#item').DataTable(
+            var datatable = $('#itemsTable').DataTable(
                 {
                     "columnDefs": [
                         {

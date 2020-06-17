@@ -1,0 +1,44 @@
+<?php
+namespace App\Repositories; 
+
+use App\SupplierBill;
+use App\SupplierBillDetails;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+
+class SupplierBillRepository{
+
+
+    private $model;
+
+    public function __construct(SupplierBill $model)
+    {
+        $this->model = $model;
+    }
+
+    public function save($data)
+    {
+        $supplierBill = new SupplierBill();
+        try{
+            DB::beginTransaction();
+        
+            $supplierBill->fill($data);
+            $supplierBill->save();
+            $supplierBill->fresh();
+            $supplerBillDetails  = new Collection();
+            foreach($data['supllierBillDetails']  as $supplierBillDetail){
+                $supplerBillDetails->add(new SupplierBillDetails($supplierBillDetail));
+            }
+            $supplierBill->supplierBillDetails()->saveMany($supplerBillDetails);
+            return $supplierBill;
+        
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+        }
+        
+    }
+
+
+
+}
