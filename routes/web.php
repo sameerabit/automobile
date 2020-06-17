@@ -21,7 +21,15 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::resource('suppliers', 'SupplierController');
 Route::resource('brands', 'BrandController');
 Route::resource('categories', 'CategoryController');
+
+
 Route::resource('products', 'ProductController');
+Route::get('products-search', 'ProductController@searchByName');
+
+
+Route::resource('units', 'UnitController');
+Route::get('supplier-bill/create', 'SupplierBillController@create')->name('supplier.bill.create');
+
 
 
 

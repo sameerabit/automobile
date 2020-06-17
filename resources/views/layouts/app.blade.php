@@ -26,6 +26,9 @@
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="{{ asset('bower_components/select2/dist/css/select2.min.css')}}" rel="stylesheet" />
+
+  @stack('stylesheets')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -249,6 +252,7 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
+<script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
 @stack('scripts')
 </body>
 </html>

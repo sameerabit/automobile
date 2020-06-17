@@ -116,4 +116,5 @@ class BrandController extends Controller
             ['success' => 'Brand Deleted Successfully']
          );
     }
+
 }

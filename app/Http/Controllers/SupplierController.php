@@ -119,4 +119,6 @@ class SupplierController extends Controller
             ['success' => 'Supplier Deleted Successfully']
          );
     }
+
+    
 }

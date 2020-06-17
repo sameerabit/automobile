@@ -59,31 +59,20 @@
                                       <i class="far fa-circle nav-icon"></i>
                                       <p>Products</p>
                                     </a>
-                                </li>
-                                <li class="nav-item">
-                                  <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fixed Sidebar</p>
-                                  </a>
-                                </li>
-                                <li class="nav-item">
-                                  <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fixed Navbar</p>
-                                  </a>
-                                </li>
-                                <li class="nav-item">
-                                  <a href="pages/layout/fixed-footer.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fixed Footer</p>
-                                  </a>
-                                </li>
-                                <li class="nav-item">
-                                  <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Collapsed Sidebar</p>
-                                  </a>
-                                </li>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a href="{{ route('units.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Units</p>
+                                      </a>
+                                    </li>
+                                  <li class="nav-item">
+                                    <a href="{{ route('supplier.bill.create') }}" class="nav-link">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Supplier Bill</p>
+                                    </a>
+                                  </li>
+                                
                               </ul>
                             </li>
                             <li class="nav-item has-treeview">

@@ -138,4 +138,17 @@ class ProductController extends Controller
             ['success' => 'Product Deleted Successfully']
          );
     }
+
+    public function searchByName(Request $request)
+    {
+        $query = Product::query();
+        if($request->has('q') && $request->q){
+            $query->where('name','like',"%$request->q%");
+        }
+        $products = $query->get();
+        return response([
+            "items"=>$products,
+            "total_count"=> $products->count()
+        ]);
+    }
 }
