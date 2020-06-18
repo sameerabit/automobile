@@ -29,9 +29,8 @@ use Illuminate\Support\Facades\Route;
 
     Route::resource('units', 'UnitController');
 
-    Route::get('supplier-bill/create', 'SupplierBill\SupplierBillController@create')->name('supplier.bill.create');
-    Route::post('supplier-bill', 'SupplierBill\SupplierBillController@store')->name('supplier.bill.store');
-
+    Route::resource('supplier-bill', 'SupplierBill\SupplierBillController'); 
+    Route::get('supplier-bill-details/{bill_id}', 'SupplierBill\SupplierBillController@getSupplierBillDetails'); 
 
 
 

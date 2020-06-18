@@ -67,9 +67,15 @@
                                       </a>
                                     </li>
                                   <li class="nav-item">
-                                    <a href="{{ route('supplier.bill.create') }}" class="nav-link">
+                                    <a href="{{ route('supplier-bill.create') }}" class="nav-link">
                                       <i class="far fa-circle nav-icon"></i>
                                       <p>Supplier Bill</p>
+                                    </a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a href="{{ route('supplier-bill.index') }}" class="nav-link">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Supplier Bills List</p>
                                     </a>
                                   </li>
                                 

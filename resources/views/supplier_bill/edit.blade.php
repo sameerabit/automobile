@@ -16,7 +16,6 @@
                     <div class="row">
                       <div class="col-6">
                           <h3 class="card-title">Supplier Bill</h3>
-
                       </div>
                     </div>
                   <div>
@@ -29,7 +28,7 @@
                             <div class="form-group col-md-6">
                                 <label for="reference">Reference</label>
                                 @csrf
-                                <input type="text" class="form-control" id="reference" placeholder="Reference">
+                                <input type="text" value="{{ $supplierBill->reference }}" class="form-control" id="reference" placeholder="Reference">
                             </div>
                     </div>
                     <div class="form-row">
@@ -40,7 +39,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                     <label for="date">Bill Date</label>
-                                    <input type="date" class="form-control" id="billDate" placeholder="Bill Date" value="{{ date('Y-m-d') }}">
+                                    <input type="date" value="{{ $supplierBill->billing_date }}" class="form-control" id="billDate" placeholder="Bill Date" value="{{ date('Y-m-d') }}">
                             </div>
                     </div>
                     <div class="row py-2">
@@ -213,6 +212,8 @@
             );
 
 
+
+
             $('#addToTable').on('click',function(){
                 productName = $('#product_name').val();
                 buyingPrice = $('#buying_price').val();
@@ -233,6 +234,7 @@
                  ]).draw( false );
             });
 
+            // $('#supplier_id').val({!! $supplierBill->supplier_id !!}).select2();
             $('#supplier_id').select2({
                 placeholder: 'Select an option',
                 theme: "classic",
@@ -259,6 +261,10 @@
                 },
                 templateResult: formatRepo,
                 templateSelection: formatRepoSelection
+            });
+
+            $("#supplier_id").select2("trigger", "select", {
+                data: { id: "{{ $supplierBill->supplier_id }}",title:"{{ $supplierBill->supplier_id }}" }
             });
 
             $("#product_id").select2({
@@ -312,6 +318,33 @@
                     var data = e.params.data;
                     $('#product_name').val(data.name);
                 });
+
+
+                $.ajax({
+                    type: "GET",
+                    headers: {
+                        "X-CSRF-TOKEN": $('input[name=_token]').val()
+                    },
+                    url: '/supplier-bill-details/'+ {!! $supplierBill->id !!},
+                    success: function(response){
+                        fillToItemsTable(response);
+                    }
+                });
+
+
+                function fillToItemsTable(data){
+                    data.forEach(function(row){
+                        datatable.row.add([
+                            row.product.name,
+                            row.product_id,
+                            row.unit.name,
+                            row.unit_id,
+                            row.quantity,
+                            row.buying_price,
+                            row.selling_price
+                        ]).draw( false );
+                    });
+                }
 
      });
         
