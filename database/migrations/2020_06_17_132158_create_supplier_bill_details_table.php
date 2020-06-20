@@ -21,6 +21,7 @@ class CreateSupplierBillDetailsTable extends Migration
             $table->float('quantity');
             $table->float('buying_price');
             $table->float('selling_price');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

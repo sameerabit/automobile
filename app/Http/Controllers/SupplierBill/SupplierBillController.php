@@ -75,17 +75,10 @@ class SupplierBillController extends Controller
      * @param  \App\SupplierBill  $supplier_bill
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SupplierBill $supplier_bill)
+    public function update(Request $request, SupplierBill $supplierBill)
     {
-        $this->validate($request,[
-            'name' => 'required',
-        ]);
-        $supplier_bill->fill($request->all());
-        $supplier_bill->save();
-        $supplier_bill->fresh();
-        return redirect()->route('supplier-bill.show',$supplier_bill->id)->with(
-           ['success' => 'Supplier Bill Updated Successfully']
-        );
+        $supplierBill = $this->repository->update($supplierBill, $request->all());
+        return response()->json(new ResourcesSupplierBill($supplierBill));
     }
 
     /**

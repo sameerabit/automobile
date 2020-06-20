@@ -30,9 +30,33 @@ class SupplierBillRepository{
                 $supplerBillDetails->add(new SupplierBillDetails($supplierBillDetail));
             }
             $supplierBill->supplierBillDetails()->saveMany($supplerBillDetails);
-            return $supplierBill;
-        
             DB::commit();
+            return $supplierBill;
+
+        }catch(\Exception $e){
+            dd('212');
+            DB::rollback();
+        }
+        
+    }
+
+    public function update(SupplierBill $supplierBill, $data)
+    {
+        try{
+            DB::beginTransaction();
+        
+            $supplierBill->fill($data);
+            $supplierBill->save();
+            $supplierBill->fresh();
+            $supplierBill->supplierBillDetails()->delete();
+            $supplerBillDetails  = new Collection();
+            foreach($data['supllierBillDetails']  as $supplierBillDetail){
+                $supplerBillDetails->add(new SupplierBillDetails($supplierBillDetail));
+            }
+            $supplierBill->supplierBillDetails()->saveMany($supplerBillDetails);
+            DB::commit();
+            return $supplierBill;
+
         }catch(\Exception $e){
             DB::rollback();
         }

@@ -15,7 +15,7 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">Supplier Bill</h3>
+                          <h3 class="card-title">Update Supplier Bill</h3>
                       </div>
                     </div>
                   <div>
@@ -29,6 +29,8 @@
                                 <label for="reference">Reference</label>
                                 @csrf
                                 <input type="text" value="{{ $supplierBill->reference }}" class="form-control" id="reference" placeholder="Reference">
+                                <input type="hidden" value="{{ $supplierBill->id }}" class="form-control" id="supplier_bill_id">
+                            
                             </div>
                     </div>
                     <div class="form-row">
@@ -46,7 +48,7 @@
                         <div class="col">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemModal" data-whatever="@mdo">Add Row</button>
                                 <button type="button" class="btn btn-primary" id="deleteRow">Delete Row</button>
-    
+                                <button type="button" class="btn btn-primary" id="editRow">Edit Row</button>
                             </div>
                     </div>
                     <table id="itemsTable" class="table table-striped table-bordered" style="width:100%">
@@ -98,6 +100,8 @@
                     <div class="form-group">
                       <label for="product" class="col-form-label">Product</label>
                       <select id="product_id" class="form-control" style="width: 100%"></select>
+                      <input id="selected_product_id" type="hidden" class="form-control" style="width: 100%"/>
+
                       <input type="hidden" id="product_name">
                     </div>
                     <div class="form-group">
@@ -137,6 +141,15 @@
    <script>
      $(document).ready(function() {
 
+            var selectedRow;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
 
             $('#saveBill').on('click',function(){
                 var tableData = datatable.data().toArray();
@@ -152,11 +165,11 @@
                     'supllierBillDetails': formattedTableData
                 }
                 $.ajax({
-                    type: "POST",
+                    type: "PUT",
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
-                    url: '/supplier-bill',
+                    url: '/supplier-bill/'+$('#supplier_bill_id').val(),
                     data: supplierBill,
                     success: function(response){
                         console.log(response);
@@ -176,8 +189,28 @@
             } );
         
             $('#deleteRow').click( function () {
-                console.log(datatable.row('.selected').data());
                 datatable.row('.selected').remove().draw( false );
+            } );
+
+            $('#editRow').click( function () {
+                selectedRow = datatable.row('.selected');
+                selectedRowData = selectedRow.data();
+                $('#product_name').val(selectedRowData[0]);
+                $('#buying_price').val(selectedRowData[5]);
+                $('#selling_price').val(selectedRowData[6]);
+                $('#selected_product_id').val(selectedRowData[1]);
+                $('#quantity').val(selectedRowData[4]);
+                $('#unit').val(selectedRowData[3]);
+
+                $('#product_id').val('1'); // Select the option with a value of '1'
+                $('#product_id').trigger('change'); // Notify any JS components that the value changed
+
+                var productSelect = $('#product_id');
+                var option = new Option(selectedRowData[1],selectedRowData[0], true, true);
+                productSelect.append(option).trigger('change');
+
+                $('#itemModal').modal('toggle');
+
             } );
 
             function formatData(saleTableData) {
@@ -215,23 +248,40 @@
 
 
             $('#addToTable').on('click',function(){
+
+                var product_ids=[];
+                datatable.data().toArray().forEach(function(row){
+                    product_ids.push(row[1]);
+                });
+
                 productName = $('#product_name').val();
                 buyingPrice = $('#buying_price').val();
                 sellingPrice = $('#selling_price').val();
-                product_id = $('#product_id').val();
+                product_id = $('#selected_product_id').val();
                 quantity = $('#quantity').val();
                 unit = $('#unit').val();
                 unit_name = $("#unit option:selected").text();
 
-                datatable.row.add([
-                    productName,
-                    product_id,
-                    unit_name,
-                    unit,
-                    quantity,
-                    buyingPrice,
-                    sellingPrice
-                 ]).draw( false );
+                if(selectedRow){
+                    selectedRow.remove().draw( false );
+                }
+                if(!product_ids.includes(parseInt(product_id))){
+                    datatable.row.add([
+                        productName,
+                        product_id,
+                        unit_name,
+                        unit,
+                        quantity,
+                        buyingPrice,
+                        sellingPrice
+                    ]).draw( false );
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: productName+ 'is already exists in the table'
+                    })
+                }
+
             });
 
             // $('#supplier_id').val({!! $supplierBill->supplier_id !!}).select2();
@@ -243,10 +293,10 @@
                     dataType: 'json',
                     delay: 10,
                     data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
                     },
                     processResults: function (data, params) {
                     params.page = params.page || 1;
@@ -317,6 +367,8 @@
                 $('#product_id').on('select2:select', function (e) {
                     var data = e.params.data;
                     $('#product_name').val(data.name);
+                    $('#selected_product_id').val(data.id);
+
                 });
 
 
