@@ -8,6 +8,7 @@
 @endpush
 @section('content')
 <div class="container">
+        
     <div class="row py-2">
         <div class="col-md-12">
             <div class="card">
@@ -96,17 +97,18 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                <form class="needs-validation" action="#" id="addItemToTableForm">
                 <div class="modal-body">
                     <div class="form-group">
                       <label for="product" class="col-form-label">Product</label>
-                      <select id="product_id" class="form-control" style="width: 100%"></select>
+                      <select id="product_id" name="product_id" class="form-control" style="width: 100%"></select>
                       <input id="selected_product_id" type="hidden" class="form-control" style="width: 100%"/>
 
                       <input type="hidden" id="product_name">
                     </div>
                     <div class="form-group">
-                      <label for="quantity" class="col-form-label">Quantity</label>
-                      <input type="number" class="form-control" id="quantity">
+                      <label for="quantity"  class="col-form-label">Quantity</label>
+                      <input type="number" class="form-control" id="quantity" name="quantity">
                     </div>
                     <div class="form-group">
                             <label for="unit" class="col-form-label">Unit</label>
@@ -118,17 +120,19 @@
                     </div>
                     <div class="form-group">
                             <label for="buying_price" class="col-form-label">Buying Price</label>
-                            <input type="number" class="form-control" id="buying_price">
+                            <input type="number" class="form-control" id="buying_price" name="buying_price">
                     </div>
                     <div class="form-group">
                             <label for="selling_price" class="col-form-label">Selling Price</label>
-                            <input type="number" class="form-control" id="selling_price">
+                            <input type="number" class="form-control" id="selling_price" name="selling_price">
                     </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" id="addToTable" class="btn btn-primary">ADD</button>
+                  <button type="submit" id="addToTable" class="btn btn-primary">ADD</button>
                 </div>
+            </form>
+
               </div>
             </div>
           </div>
@@ -137,8 +141,10 @@
     
    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
   
    <script>
+
      $(document).ready(function() {
 
             var selectedRow;
@@ -195,6 +201,13 @@
             $('#editRow').click( function () {
                 selectedRow = datatable.row('.selected');
                 selectedRowData = selectedRow.data();
+                if(!selectedRowData){
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Please select a row to proceed'
+                    });
+                    return;
+                }
                 $('#product_name').val(selectedRowData[0]);
                 $('#buying_price').val(selectedRowData[5]);
                 $('#selling_price').val(selectedRowData[6]);
@@ -244,11 +257,25 @@
                 }
             );
 
-
+            $("#addItemToTableForm").validate({
+                rules: {
+                    quantity: "required",
+                    product_id: "required",
+                    buying_price: "required",
+                    selling_price: "required",
+                    selling_price: "required",
+                },
+                submitHandler: function(form) { 
+                    return false;  
+                }
+            });
 
 
             $('#addToTable').on('click',function(){
 
+                if(!$('#addItemToTableForm').valid()){
+                    return;
+                }
                 var product_ids=[];
                 datatable.data().toArray().forEach(function(row){
                     product_ids.push(row[1]);
@@ -278,7 +305,7 @@
                 } else {
                     Toast.fire({
                         icon: 'error',
-                        title: productName+ 'is already exists in the table'
+                        title: productName+ ' is already exists in the table'
                     })
                 }
 
