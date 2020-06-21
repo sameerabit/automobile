@@ -10,8 +10,11 @@
     </div>
     <!-- /.card-header -->
     <!-- form start -->
-<form action="{{ route('products.update',$product->id) }}" method="POST" role="form">
+<form action="{{ route('products.update',$product->id) }}" method="POST" enctype="multipart/form-data" role="form">
       <div class="card-body">
+        <div class="form-group">
+            <img height="200px" width="200px;" src="{{ asset('storage/'.$product->image_url) }}" alt="">
+        </div>
         <div class="form-group">
            @csrf
            @method('put')

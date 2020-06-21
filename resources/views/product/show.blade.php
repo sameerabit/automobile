@@ -12,11 +12,22 @@
     <!-- form start -->
 <form action="{{ route('products.store') }}" method="POST" role="form">
       <div class="card-body">
+          <div class="form-group">
+          <img height="200px" width="200px;" src="{{ asset('storage/'.$product->image_url) }}" alt="">
+           </div>
         <div class="form-group">
            @csrf
           <label for="name">Name</label>
           <input type="text" disabled class="form-control" value="{{ $product->name }}" id="name" name="name" placeholder="Enter Name">
         </div>
+        <div class="form-group">
+         <label for="name">Category</label>
+         <input type="text" disabled class="form-control" value="{{ $product->category->name }}" >
+       </div>
+       <div class="form-group">
+        <label for="name">Brand</label>
+        <input type="text" disabled class="form-control" value="{{ $product->brand->name }}" >
+      </div>
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="description">Description</label>

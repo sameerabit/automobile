@@ -6,6 +6,8 @@ use App\Brand;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -53,16 +55,15 @@ class ProductController extends Controller
     {
         $this->validate($request,[
             'name' => 'required',
-            'image' => 'required|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'mimes:jpg,jpeg,png|max:2048',
 
         ]);
         $product = new Product();
         $product->fill($request->all());
         if($request->file('image')){
-            $path = $request->image->store('products');
-            $product->image_url = $path;
+            Storage::disk('public')->put($request->image->hashName(), File::get($request->image));
+            $product->image_url = $request->image->hashName();
         }
-        
         $product->save();
         $product->fresh();
         return redirect()->route('products.show',$product->id)->with(
@@ -114,9 +115,8 @@ class ProductController extends Controller
         ]);
         $product->fill($request->all());
         if($request->file('image')){
-            $fileName = time().'.'.$request->file->extension();  
-            $request->image->move(public_path('uploads'), $fileName);
-            $product->image_url = $fileName;
+            Storage::disk('public')->put($request->image->hashName(), File::get($request->image));
+            $product->image_url = $request->image->hashName();
         }
         $product->save();
         $product->fresh();
