@@ -285,6 +285,7 @@
                     product_ids.push(parseInt(row[1]));
                 });
 
+                $("#addItemToTableForm").trigger("reset");
 
                 productName = $('#product_name').val();
                 buyingPrice = $('#buying_price').val();

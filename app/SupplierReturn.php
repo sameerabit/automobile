@@ -18,7 +18,7 @@ class SupplierReturn extends Model
     }
 
     public function supplierReturnDetails(){
-        return $this->hasMany(supplierBillDetails::class,'return_id');
+        return $this->hasMany(supplierReturnDetails::class,'return_id');
     }
 
 }

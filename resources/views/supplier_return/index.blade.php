@@ -9,11 +9,11 @@
     <div class="row py-2">
         <div class="col-md-12">
             <div class="card">
-            <form action="{{ route('supplier-bill.index') }}">
+            <form action="{{ route('supplier-returns.index') }}">
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">Supplier Bills</h3>
+                          <h3 class="card-title">Supplier Returns</h3>
 
                       </div>
                       <div class="col-5">
@@ -34,21 +34,21 @@
                       <tr>
                         <th style="width: 10px">#</th>
                         <th>Supplier</th>
-                        <th>Bill Date</th>
+                        <th>Return Date</th>
                         <th>Created At</th>
                         <th style="width: 200px">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($supplierBills as $supplierBill)
+                      @foreach ($supplierReturns as $supplierReturn)
                       <tr>
-                            <td>{{ $supplierBill->id }}</td>
-                            <td>{{ $supplierBill->supplier->name }}</td>
-                            <td>{{ $supplierBill->billing_date }}</td>
-                            <td>{{ $supplierBill->created_at }}</td>
+                            <td>{{ $supplierReturn->id }}</td>
+                            <td>{{ $supplierReturn->supplier->name }}</td>
+                            <td>{{ $supplierReturn->return_date }}</td>
+                            <td>{{ $supplierReturn->created_at }}</td>
                             <td class="d-flex">
-                                <a class="btn btn-warning btn-sm m-auto" href="{{ route('supplier-bill.edit',$supplierBill->id) }}"><i class="fas fa-edit"></i>Edit</a>
-                                <form action="{{ route('supplier-bill.destroy',$supplierBill->id) }}"
+                                <a class="btn btn-warning btn-sm m-auto" href="{{ route('supplier-returns.edit',$supplierReturn->id) }}"><i class="fas fa-edit"></i>Edit</a>
+                                <form action="{{ route('supplier-returns.destroy',$supplierReturn->id) }}"
                                     method="POST" class="form form-inline js-confirm">
                                   {{ method_field('delete') }}
                                   @csrf
@@ -62,7 +62,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $supplierBills->links() }}
+                        {{ $supplierReturns->links() }}
                 </div>
               </div>
         </div>

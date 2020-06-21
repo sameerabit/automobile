@@ -28,8 +28,8 @@ class SupplierReturnController extends Controller
     public function store(Request $request){
         $this->validate($request,[
             'supplier_id' => 'required',
-            'reference' => 'required'
-
+            'reference' => 'required',
+            'return_date' => 'required',
         ],[
             'supplier_id.required' => 'Supplier is required'
         ]);
@@ -80,7 +80,13 @@ class SupplierReturnController extends Controller
      */
     public function update(Request $request, SupplierReturn $supplierReturn)
     {
-       
+        $this->validate($request,[
+            'supplier_id' => 'required',
+            'reference' => 'required',
+            'return_date' => 'required',
+        ],[
+            'supplier_id.required' => 'Supplier is required'
+        ]);
         $supplierReturn = $this->repository->update($supplierReturn, $request->all());
         return response()->json(new ResourcesSupplierReturn($supplierReturn));
     }
@@ -101,8 +107,8 @@ class SupplierReturnController extends Controller
 
     public function getSupplierReturnDetails($supplier_return_id)
     {
-        $supplierReturnDetails = SupplierReturnDetails::where('supplier_return_id',$supplier_return_id)
-        ->with(['product','unit'])->get();
+        $supplierReturnDetails = SupplierReturnDetails::where('return_id',$supplier_return_id)
+        ->with(['product'])->get();
         return response()->json($supplierReturnDetails);
 
     }

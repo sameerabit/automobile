@@ -26,7 +26,7 @@ class SupplierReturnRepository{
             $supplierReturn->save();
             $supplierReturn->fresh();
             $supplierReturnDetails  = new Collection();
-            foreach($data['supllierBillDetails']  as $supplierReturnDetail){
+            foreach($data['supllierReturnDetails']  as $supplierReturnDetail){
                 $supplierReturnDetails->add(new SupplierReturnDetails($supplierReturnDetail));
             }
             $supplierReturn->supplierReturnDetails()->saveMany($supplierReturnDetails);
@@ -50,7 +50,7 @@ class SupplierReturnRepository{
             $supplierReturn->fresh();
             $supplierReturn->supplierReturnDetails()->delete();
             $supplierReturnDetails  = new Collection();
-            foreach($data['supllierBillDetails']  as $supplierReturnDetail){
+            foreach($data['supllierReturnDetails']  as $supplierReturnDetail){
                 $supplierReturnDetails->add(new SupplierReturnDetails($supplierReturnDetail));
             }
             $supplierReturn->supplierReturnDetails()->saveMany($supplierReturnDetails);
@@ -58,6 +58,7 @@ class SupplierReturnRepository{
             return $supplierReturn;
 
         }catch(\Exception $e){
+            dd($e->getMessage());
             DB::rollback();
         }
         

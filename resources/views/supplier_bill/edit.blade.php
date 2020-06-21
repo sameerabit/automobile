@@ -82,8 +82,8 @@
                     </table>
                 </div>
                 <div class="row py-2">
-                    <div class="col float-right">
-                            <button type="button" class="btn btn-primary" id="saveBill">Save</button>
+                    <div class="col text-right">
+                            <button type="button" class="btn btn-lg btn-primary mx-3" id="saveBill">Save</button>
                     </div>
                 </div>
                
@@ -278,6 +278,9 @@
                 if(!$('#addItemToTableForm').valid()){
                     return;
                 }
+                if(selectedRow){
+                    selectedRow.remove().draw( false );
+                }
                 var product_ids=[];
                 datatable.data().toArray().forEach(function(row){
                     product_ids.push(row[1]);
@@ -291,9 +294,7 @@
                 unit = $('#unit').val();
                 unit_name = $("#unit option:selected").text();
 
-                if(selectedRow){
-                    selectedRow.remove().draw( false );
-                }
+                
                 if(!product_ids.includes(parseInt(product_id))){
                     datatable.row.add([
                         productName,

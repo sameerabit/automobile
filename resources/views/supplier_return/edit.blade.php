@@ -16,7 +16,7 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">Update Supplier Bill</h3>
+                          <h3 class="card-title">Update Supplier Return</h3>
                       </div>
                     </div>
                   <div>
@@ -29,8 +29,8 @@
                             <div class="form-group col-md-6">
                                 <label for="reference">Reference</label>
                                 @csrf
-                                <input type="text" value="{{ $supplierBill->reference }}" class="form-control" id="reference" placeholder="Reference">
-                                <input type="hidden" value="{{ $supplierBill->id }}" class="form-control" id="supplier_bill_id">
+                                <input type="text" value="{{ $supplierReturn->reference }}" class="form-control" id="reference" placeholder="Reference">
+                                <input type="hidden" value="{{ $supplierReturn->id }}" class="form-control" id="supplier_return_id">
                             
                             </div>
                     </div>
@@ -39,12 +39,12 @@
                                 <label for="supplier">Supplier</label>
                                 <select id="supplier_id" class="form-control">
                                 </select>
-                                <input type="hidden" value="{{ $supplierBill->supplier_id }}" class="form-control" id="selected_supplier_id">
+                                <input type="hidden" value="{{ $supplierReturn->supplier_id }}" class="form-control" id="selected_supplier_id">
 
                             </div>
                             <div class="form-group col-md-6">
-                                    <label for="date">Bill Date</label>
-                                    <input type="date" value="{{ $supplierBill->billing_date }}" class="form-control" id="billDate" placeholder="Bill Date" value="{{ date('Y-m-d') }}">
+                                    <label for="date">Return Date</label>
+                                    <input type="date" value="{{ $supplierReturn->return_date }}" class="form-control" id="returnDate" placeholder="Return Date" value="{{ date('Y-m-d') }}">
                             </div>
                     </div>
                     <div class="row py-2">
@@ -59,11 +59,8 @@
                             <tr>
                                 <th>Product</th>
                                 <th>Product Id</th>
-                                <th>Unit</th>
-                                <th>Unit Id</th>
                                 <th>Quantity</th>
-                                <th>Buying Price</th>
-                                <th>Selling Price</th>
+                                <th> Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,18 +69,15 @@
                             <tr>
                                 <th>Product</th>
                                 <th>Product Id</th>
-                                <th>Unit</th>
-                                <th>Unit Id</th>
                                 <th>Quantity</th>
-                                <th>Buying Price</th>
-                                <th>Selling Price</th>
+                                <th>Price</th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
                 <div class="row py-2">
-                    <div class="col float-right">
-                            <button type="button" class="btn btn-primary" id="saveBill">Save</button>
+                    <div class="col text-right">
+                            <button type="button" class="btn btn-lg btn-primary mx-3" id="saveReturn">Save</button>
                     </div>
                 </div>
                
@@ -94,7 +88,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="itemModalLabel">Add Item to Bill</h5>
+                  <h5 class="modal-title" id="itemModalLabel">Add Item to Return</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -113,20 +107,8 @@
                       <input type="number" class="form-control" id="quantity" name="quantity">
                     </div>
                     <div class="form-group">
-                            <label for="unit" class="col-form-label">Unit</label>
-                            <select class="form-control" name="unit" id="unit">
-                                @foreach ($units as $unit)
-                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                @endforeach
-                            </select>
-                    </div>
-                    <div class="form-group">
-                            <label for="buying_price" class="col-form-label">Buying Price</label>
-                            <input type="number" class="form-control" id="buying_price" name="buying_price">
-                    </div>
-                    <div class="form-group">
-                            <label for="selling_price" class="col-form-label">Selling Price</label>
-                            <input type="number" class="form-control" id="selling_price" name="selling_price">
+                            <label for="price" class="col-form-label">Price</label>
+                            <input type="number" class="form-control" id="price" name="price">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -150,6 +132,7 @@
      $(document).ready(function() {
 
             var selectedRow;
+            var editMode = false;
 
             const Toast = Swal.mixin({
                 toast: true,
@@ -159,18 +142,18 @@
             });
 
 
-            $('#saveBill').on('click',function(){
+            $('#saveReturn').on('click',function(){
                 var tableData = datatable.data().toArray();
                 var formattedTableData = formatData(tableData);
                 reference= $('#reference').val();
-                billDate = $('#billDate').val();
+                returnDate = $('#returnDate').val();
                 supplierId = $('#selected_supplier_id').val();
 
-                var supplierBill = {
+                var supplierReturn = {
                     'supplier_id': supplierId,
-                    'billing_date': billDate,
+                    'return_date': returnDate,
                     'reference' : reference,
-                    'supllierBillDetails': formattedTableData
+                    'supllierReturnDetails': formattedTableData
                 }
                 $.ajax({
                     type: "PUT",
@@ -178,7 +161,7 @@
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
                     url: '/supplier-returns/'+$('#supplier_return_id').val(),
-                    data: supplierBill,
+                    data: supplierReturn,
                     success: function(response){
                         console.log(response);
                     },
@@ -201,6 +184,7 @@
             } );
 
             $('#editRow').click( function () {
+                editMode = true;
                 selectedRow = datatable.row('.selected');
                 selectedRowData = selectedRow.data();
                 if(!selectedRowData){
@@ -211,14 +195,9 @@
                     return;
                 }
                 $('#product_name').val(selectedRowData[0]);
-                $('#buying_price').val(selectedRowData[5]);
-                $('#selling_price').val(selectedRowData[6]);
+                $('#price').val(selectedRowData[3]);
                 $('#selected_product_id').val(selectedRowData[1]);
-                $('#quantity').val(selectedRowData[4]);
-                $('#unit').val(selectedRowData[3]);
-
-                $('#product_id').val('1'); // Select the option with a value of '1'
-                $('#product_id').trigger('change'); // Notify any JS components that the value changed
+                $('#quantity').val(selectedRowData[2]);
 
                 var productSelect = $('#product_id');
                 var option = new Option(selectedRowData[1],selectedRowData[0], true, true);
@@ -233,10 +212,8 @@
                 saleTableData.forEach(function (data) {
                     var formattedRow = {};
                     formattedRow['product_id'] = data[1];
-                    formattedRow['unit_id'] = data[3];
-                    formattedRow['quantity'] = data[4];
-                    formattedRow['buying_price'] = data[5];
-                    formattedRow['selling_price'] = data[6];
+                    formattedRow['quantity'] = data[2];
+                    formattedRow['price'] = data[3];
                     formattedData.push(formattedRow);
                 });
                 return formattedData;
@@ -249,11 +226,6 @@
                             "targets": [ 1 ],
                             "visible": false,
                             "searchable": false
-                        },
-                        {
-                            "targets": [ 3 ],
-                            "visible": false,
-                            "searchable": false
                         }
                     ]
                 }
@@ -263,9 +235,7 @@
                 rules: {
                     quantity: "required",
                     product_id: "required",
-                    buying_price: "required",
-                    selling_price: "required",
-                    selling_price: "required",
+                    price: "required",
                 },
                 submitHandler: function(form) { 
                     return false;  
@@ -278,31 +248,26 @@
                 if(!$('#addItemToTableForm').valid()){
                     return;
                 }
+                if(selectedRow && editMode){
+                    selectedRow.remove().draw( false );
+                }
                 var product_ids=[];
                 datatable.data().toArray().forEach(function(row){
-                    product_ids.push(row[1]);
+                    product_ids.push(parseInt(row[1]));
                 });
 
                 productName = $('#product_name').val();
-                buyingPrice = $('#buying_price').val();
-                sellingPrice = $('#selling_price').val();
+                price = $('#price').val();
                 product_id = $('#selected_product_id').val();
                 quantity = $('#quantity').val();
-                unit = $('#unit').val();
-                unit_name = $("#unit option:selected").text();
 
-                if(selectedRow){
-                    selectedRow.remove().draw( false );
-                }
+                
                 if(!product_ids.includes(parseInt(product_id))){
                     datatable.row.add([
                         productName,
                         product_id,
-                        unit_name,
-                        unit,
                         quantity,
-                        buyingPrice,
-                        sellingPrice
+                        price,
                     ]).draw( false );
                 } else {
                     Toast.fire({
@@ -314,7 +279,7 @@
 
             });
 
-            // $('#supplier_id').val({!! $supplierBill->supplier_id !!}).select2();
+            // $('#supplier_id').val({!! $supplierReturn->supplier_id !!}).select2();
             $('#supplier_id').select2({
                 placeholder: 'Select an option',
                 theme: "classic",
@@ -344,7 +309,7 @@
             });
 
             $("#supplier_id").select2("trigger", "select", {
-                data: { id: "{{ $supplierBill->supplier->name }}",title:"{{ $supplierBill->supplier->id }}" }
+                data: { id: "{{ $supplierReturn->supplier->name }}",title:"{{ $supplierReturn->supplier->id }}" }
             });
 
             $('#supplier_id').on('select2:select', function (e) {
@@ -413,7 +378,7 @@
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
-                    url: '/supplier-bill-details/'+ {!! $supplierBill->id !!},
+                    url: '/supplier-return-details/'+ {!! $supplierReturn->id !!},
                     success: function(response){
                         fillToItemsTable(response);
                     }
@@ -425,11 +390,8 @@
                         datatable.row.add([
                             row.product.name,
                             row.product_id,
-                            row.unit.name,
-                            row.unit_id,
                             row.quantity,
-                            row.buying_price,
-                            row.selling_price
+                            row.price,
                         ]).draw( false );
                     });
                 }

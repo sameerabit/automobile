@@ -10,7 +10,7 @@ class SupplierReturnDetails extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'supplier_return_id',
+        'return_id',
         'product_id',
         'quantity',
         'price',

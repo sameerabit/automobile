@@ -30,7 +30,8 @@ class SupplierBillController extends Controller
     public function store(Request $request){
         $this->validate($request,[
             'supplier_id' => 'required',
-            'reference' => 'required'
+            'reference' => 'required',
+            'bill_date' => 'required',
 
         ],[
             'supplier_id.required' => 'Supplier is required'
@@ -84,7 +85,13 @@ class SupplierBillController extends Controller
      */
     public function update(Request $request, SupplierBill $supplierBill)
     {
-       
+        $this->validate($request,[
+            'supplier_id' => 'required',
+            'reference' => 'required',
+            'bill_date' => 'required',
+        ],[
+            'supplier_id.required' => 'Supplier is required'
+        ]);
         $supplierBill = $this->repository->update($supplierBill, $request->all());
         return response()->json(new ResourcesSupplierBill($supplierBill));
     }
