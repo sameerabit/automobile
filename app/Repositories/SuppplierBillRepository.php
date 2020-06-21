@@ -34,7 +34,6 @@ class SupplierBillRepository{
             return $supplierBill;
 
         }catch(\Exception $e){
-            dd('212');
             DB::rollback();
         }
         

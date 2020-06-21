@@ -39,6 +39,8 @@
                                 <label for="supplier">Supplier</label>
                                 <select id="supplier_id" class="form-control">
                                 </select>
+                                <input type="hidden" value="{{ $supplierBill->supplier_id }}" class="form-control" id="selected_supplier_id">
+
                             </div>
                             <div class="form-group col-md-6">
                                     <label for="date">Bill Date</label>
@@ -162,7 +164,7 @@
                 var formattedTableData = formatData(tableData);
                 reference= $('#reference').val();
                 billDate = $('#billDate').val();
-                supplierId = $('#supplier_id').val();
+                supplierId = $('#selected_supplier_id').val();
 
                 var supplierBill = {
                     'supplier_id': supplierId,
@@ -308,6 +310,7 @@
                         title: productName+ ' is already exists in the table'
                     })
                 }
+                $('#itemModal').modal('toggle');
 
             });
 
@@ -341,7 +344,13 @@
             });
 
             $("#supplier_id").select2("trigger", "select", {
-                data: { id: "{{ $supplierBill->supplier_id }}",title:"{{ $supplierBill->supplier_id }}" }
+                data: { id: "{{ $supplierBill->supplier->name }}",title:"{{ $supplierBill->supplier->id }}" }
+            });
+
+            $('#supplier_id').on('select2:select', function (e) {
+                    var data = e.params.data;
+                    $('#selected_supplier_id').val(data.id);
+
             });
 
             $("#product_id").select2({

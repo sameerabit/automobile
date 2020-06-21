@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-
 @endpush
 @section('content')
 <div class="container">
+        
     <div class="row py-2">
         <div class="col-md-12">
             <div class="card">
@@ -16,8 +16,7 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">New Supplier Bill</h3>
-
+                          <h3 class="card-title">Update Supplier Bill</h3>
                       </div>
                     </div>
                   <div>
@@ -30,7 +29,9 @@
                             <div class="form-group col-md-6">
                                 <label for="reference">Reference</label>
                                 @csrf
-                                <input type="text" class="form-control" id="reference" placeholder="Reference">
+                                <input type="text" value="{{ $supplierBill->reference }}" class="form-control" id="reference" placeholder="Reference">
+                                <input type="hidden" value="{{ $supplierBill->id }}" class="form-control" id="supplier_bill_id">
+                            
                             </div>
                     </div>
                     <div class="form-row">
@@ -38,10 +39,12 @@
                                 <label for="supplier">Supplier</label>
                                 <select id="supplier_id" class="form-control">
                                 </select>
+                                <input type="hidden" value="{{ $supplierBill->supplier_id }}" class="form-control" id="selected_supplier_id">
+
                             </div>
                             <div class="form-group col-md-6">
                                     <label for="date">Bill Date</label>
-                                    <input type="date" class="form-control" id="billDate" placeholder="Bill Date" value="{{ date('Y-m-d') }}">
+                                    <input type="date" value="{{ $supplierBill->billing_date }}" class="form-control" id="billDate" placeholder="Bill Date" value="{{ date('Y-m-d') }}">
                             </div>
                     </div>
                     <div class="row py-2">
@@ -79,8 +82,8 @@
                     </table>
                 </div>
                 <div class="row py-2">
-                    <div class="col text-right">
-                            <button type="button" class="btn btn-lg btn-primary mx-3" id="saveBill">Save</button>
+                    <div class="col float-right">
+                            <button type="button" class="btn btn-primary" id="saveBill">Save</button>
                     </div>
                 </div>
                
@@ -97,15 +100,16 @@
                   </button>
                 </div>
                 <form class="needs-validation" action="#" id="addItemToTableForm">
-
                 <div class="modal-body">
                     <div class="form-group">
                       <label for="product" class="col-form-label">Product</label>
-                      <select name="product_id" id="product_id" class="form-control" style="width: 100%"></select>
+                      <select id="product_id" name="product_id" class="form-control" style="width: 100%"></select>
+                      <input id="selected_product_id" type="hidden" class="form-control" style="width: 100%"/>
+
                       <input type="hidden" id="product_name">
                     </div>
                     <div class="form-group">
-                      <label for="quantity" class="col-form-label">Quantity</label>
+                      <label for="quantity"  class="col-form-label">Quantity</label>
                       <input type="number" class="form-control" id="quantity" name="quantity">
                     </div>
                     <div class="form-group">
@@ -129,7 +133,8 @@
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" id="addToTable" class="btn btn-primary">ADD</button>
                 </div>
-                </form>
+            </form>
+
               </div>
             </div>
           </div>
@@ -139,12 +144,12 @@
    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-
   
    <script>
+
      $(document).ready(function() {
 
-            var editMode = false;
+            var selectedRow;
 
             const Toast = Swal.mixin({
                 toast: true,
@@ -153,25 +158,13 @@
                 timer: 3000
             });
 
-            $("#addItemToTableForm").validate({
-                rules: {
-                    quantity: "required",
-                    product_id: "required",
-                    buying_price: "required",
-                    selling_price: "required",
-                    selling_price: "required",
-                },
-                submitHandler: function(form) { 
-                    return false;  
-                }
-            });
 
             $('#saveBill').on('click',function(){
                 var tableData = datatable.data().toArray();
                 var formattedTableData = formatData(tableData);
                 reference= $('#reference').val();
                 billDate = $('#billDate').val();
-                supplierId = $('#supplier_id').val();
+                supplierId = $('#selected_supplier_id').val();
 
                 var supplierBill = {
                     'supplier_id': supplierId,
@@ -180,25 +173,32 @@
                     'supllierBillDetails': formattedTableData
                 }
                 $.ajax({
-                    type: "POST",
+                    type: "PUT",
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
-                    url: '/supplier-bill',
+                    url: '/supplier-returns/'+$('#supplier_return_id').val(),
                     data: supplierBill,
                     success: function(response){
                         console.log(response);
                     },
-                    error: function(response){
-                        var messages = $.parseJSON(response.responseText);
-                        $.each(messages.errors, function (key, val) {
-                            toastr.error(val[0])
-
-                        });
-                    },
                     dataType: 'json'
                 });
             });
+
+            $('#itemsTable tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    datatable.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+        
+            $('#deleteRow').click( function () {
+                datatable.row('.selected').remove().draw( false );
+            } );
 
             $('#editRow').click( function () {
                 selectedRow = datatable.row('.selected');
@@ -225,22 +225,7 @@
                 productSelect.append(option).trigger('change');
 
                 $('#itemModal').modal('toggle');
-                editMode = true;
 
-            } );
-
-            $('#itemsTable tbody').on( 'click', 'tr', function () {
-                if ( $(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
-                }
-                else {
-                    datatable.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            } );
-        
-            $('#deleteRow').click( function () {
-                datatable.row('.selected').remove().draw( false );
             } );
 
             function formatData(saleTableData) {
@@ -274,6 +259,19 @@
                 }
             );
 
+            $("#addItemToTableForm").validate({
+                rules: {
+                    quantity: "required",
+                    product_id: "required",
+                    buying_price: "required",
+                    selling_price: "required",
+                    selling_price: "required",
+                },
+                submitHandler: function(form) { 
+                    return false;  
+                }
+            });
+
 
             $('#addToTable').on('click',function(){
 
@@ -282,19 +280,18 @@
                 }
                 var product_ids=[];
                 datatable.data().toArray().forEach(function(row){
-                    product_ids.push(parseInt(row[1]));
+                    product_ids.push(row[1]);
                 });
-
 
                 productName = $('#product_name').val();
                 buyingPrice = $('#buying_price').val();
                 sellingPrice = $('#selling_price').val();
-                product_id = $('#product_id').val();
+                product_id = $('#selected_product_id').val();
                 quantity = $('#quantity').val();
                 unit = $('#unit').val();
                 unit_name = $("#unit option:selected").text();
 
-                if(editMode && selectedRow){
+                if(selectedRow){
                     selectedRow.remove().draw( false );
                 }
                 if(!product_ids.includes(parseInt(product_id))){
@@ -313,10 +310,11 @@
                         title: productName+ ' is already exists in the table'
                     })
                 }
+                $('#itemModal').modal('toggle');
 
-                 $('#itemModal').modal('toggle');
             });
 
+            // $('#supplier_id').val({!! $supplierBill->supplier_id !!}).select2();
             $('#supplier_id').select2({
                 placeholder: 'Select an option',
                 theme: "classic",
@@ -325,10 +323,10 @@
                     dataType: 'json',
                     delay: 10,
                     data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
                     },
                     processResults: function (data, params) {
                     params.page = params.page || 1;
@@ -343,6 +341,16 @@
                 },
                 templateResult: formatRepo,
                 templateSelection: formatRepoSelection
+            });
+
+            $("#supplier_id").select2("trigger", "select", {
+                data: { id: "{{ $supplierBill->supplier->name }}",title:"{{ $supplierBill->supplier->id }}" }
+            });
+
+            $('#supplier_id').on('select2:select', function (e) {
+                    var data = e.params.data;
+                    $('#selected_supplier_id').val(data.id);
+
             });
 
             $("#product_id").select2({
@@ -395,7 +403,36 @@
                 $('#product_id').on('select2:select', function (e) {
                     var data = e.params.data;
                     $('#product_name').val(data.name);
+                    $('#selected_product_id').val(data.id);
+
                 });
+
+
+                $.ajax({
+                    type: "GET",
+                    headers: {
+                        "X-CSRF-TOKEN": $('input[name=_token]').val()
+                    },
+                    url: '/supplier-bill-details/'+ {!! $supplierBill->id !!},
+                    success: function(response){
+                        fillToItemsTable(response);
+                    }
+                });
+
+
+                function fillToItemsTable(data){
+                    data.forEach(function(row){
+                        datatable.row.add([
+                            row.product.name,
+                            row.product_id,
+                            row.unit.name,
+                            row.unit_id,
+                            row.quantity,
+                            row.buying_price,
+                            row.selling_price
+                        ]).draw( false );
+                    });
+                }
 
      });
         

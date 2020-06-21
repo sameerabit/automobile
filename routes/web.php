@@ -30,7 +30,11 @@ use Illuminate\Support\Facades\Route;
     Route::resource('units', 'UnitController');
 
     Route::resource('supplier-bill', 'SupplierBill\SupplierBillController'); 
-    Route::get('supplier-bill-details/{bill_id}', 'SupplierBill\SupplierBillController@getSupplierBillDetails'); 
+    Route::get('supplier-bill-details/{bill_id}', 'SupplierBill\SupplierBillController@getSupplierBillDetails');
+    
+    
+    Route::resource('supplier-returns', 'SupplierReturn\SupplierReturnController'); 
+    Route::get('supplier-return-details/{return_id}', 'SupplierReturn\SupplierReturnController@getSupplierReturnDetails'); 
 
 
 

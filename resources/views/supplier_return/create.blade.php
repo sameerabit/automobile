@@ -16,7 +16,7 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">New Supplier Bill</h3>
+                          <h3 class="card-title">New Supplier Return</h3>
 
                       </div>
                     </div>
@@ -40,8 +40,8 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
-                                    <label for="date">Bill Date</label>
-                                    <input type="date" class="form-control" id="billDate" placeholder="Bill Date" value="{{ date('Y-m-d') }}">
+                                    <label for="date">Return Date</label>
+                                    <input type="date" class="form-control" id="returnDate" placeholder="Bill Date" value="{{ date('Y-m-d') }}">
                             </div>
                     </div>
                     <div class="row py-2">
@@ -56,11 +56,8 @@
                             <tr>
                                 <th>Product</th>
                                 <th>Product Id</th>
-                                <th>Unit</th>
-                                <th>Unit Id</th>
                                 <th>Quantity</th>
-                                <th>Buying Price</th>
-                                <th>Selling Price</th>
+                                <th>Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,11 +66,8 @@
                             <tr>
                                 <th>Product</th>
                                 <th>Product Id</th>
-                                <th>Unit</th>
-                                <th>Unit Id</th>
                                 <th>Quantity</th>
-                                <th>Buying Price</th>
-                                <th>Selling Price</th>
+                                <th>Price</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -109,20 +103,8 @@
                       <input type="number" class="form-control" id="quantity" name="quantity">
                     </div>
                     <div class="form-group">
-                            <label for="unit" class="col-form-label">Unit</label>
-                            <select class="form-control" name="unit" id="unit">
-                                @foreach ($units as $unit)
-                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                @endforeach
-                            </select>
-                    </div>
-                    <div class="form-group">
-                            <label for="buying_price" class="col-form-label">Buying Price</label>
-                            <input type="number" class="form-control" id="buying_price" name="buying_price">
-                    </div>
-                    <div class="form-group">
-                            <label for="selling_price" class="col-form-label">Selling Price</label>
-                            <input type="number" class="form-control" id="selling_price" name="selling_price">
+                            <label for="price" class="col-form-label">Price</label>
+                            <input type="number" class="form-control" id="price" name="price">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -157,9 +139,7 @@
                 rules: {
                     quantity: "required",
                     product_id: "required",
-                    buying_price: "required",
-                    selling_price: "required",
-                    selling_price: "required",
+                    price: "required",
                 },
                 submitHandler: function(form) { 
                     return false;  
@@ -170,12 +150,12 @@
                 var tableData = datatable.data().toArray();
                 var formattedTableData = formatData(tableData);
                 reference= $('#reference').val();
-                billDate = $('#billDate').val();
+                returnDate = $('#returnDate').val();
                 supplierId = $('#supplier_id').val();
 
                 var supplierBill = {
                     'supplier_id': supplierId,
-                    'billing_date': billDate,
+                    'return_date': returnDate,
                     'reference' : reference,
                     'supllierBillDetails': formattedTableData
                 }
@@ -184,7 +164,7 @@
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
-                    url: '/supplier-bill',
+                    url: '/supplier-returns',
                     data: supplierBill,
                     success: function(response){
                         console.log(response);
@@ -211,11 +191,9 @@
                     return;
                 }
                 $('#product_name').val(selectedRowData[0]);
-                $('#buying_price').val(selectedRowData[5]);
-                $('#selling_price').val(selectedRowData[6]);
+                $('#price').val(selectedRowData[5]);
                 $('#selected_product_id').val(selectedRowData[1]);
                 $('#quantity').val(selectedRowData[4]);
-                $('#unit').val(selectedRowData[3]);
 
                 $('#product_id').val('1'); // Select the option with a value of '1'
                 $('#product_id').trigger('change'); // Notify any JS components that the value changed
@@ -248,10 +226,8 @@
                 saleTableData.forEach(function (data) {
                     var formattedRow = {};
                     formattedRow['product_id'] = data[1];
-                    formattedRow['unit_id'] = data[3];
-                    formattedRow['quantity'] = data[4];
-                    formattedRow['buying_price'] = data[5];
-                    formattedRow['selling_price'] = data[6];
+                    formattedRow['quantity'] = data[2];
+                    formattedRow['price'] = data[3];
                     formattedData.push(formattedRow);
                 });
                 return formattedData;
@@ -262,11 +238,6 @@
                     "columnDefs": [
                         {
                             "targets": [ 1 ],
-                            "visible": false,
-                            "searchable": false
-                        },
-                        {
-                            "targets": [ 3 ],
                             "visible": false,
                             "searchable": false
                         }
@@ -285,27 +256,22 @@
                     product_ids.push(parseInt(row[1]));
                 });
 
-
                 productName = $('#product_name').val();
-                buyingPrice = $('#buying_price').val();
-                sellingPrice = $('#selling_price').val();
+                price = $('#price').val();
                 product_id = $('#product_id').val();
                 quantity = $('#quantity').val();
-                unit = $('#unit').val();
-                unit_name = $("#unit option:selected").text();
 
                 if(editMode && selectedRow){
                     selectedRow.remove().draw( false );
                 }
+                console.log(quantity,
+                        price);
                 if(!product_ids.includes(parseInt(product_id))){
                     datatable.row.add([
                         productName,
                         product_id,
-                        unit_name,
-                        unit,
                         quantity,
-                        buyingPrice,
-                        sellingPrice
+                        price,
                     ]).draw( false );
                 } else {
                     Toast.fire({

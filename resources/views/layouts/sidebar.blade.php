@@ -78,7 +78,18 @@
                                       <p>Supplier Bills List</p>
                                     </a>
                                   </li>
-                                
+                                  <li class="nav-item">
+                                    <a href="{{ route('supplier-returns.create') }}" class="nav-link">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Supplier Returns</p>
+                                    </a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a href="{{ route('supplier-returns.index') }}" class="nav-link">
+                                      <i class="far fa-circle nav-icon"></i>
+                                      <p>Supplier Return Details</p>
+                                    </a>
+                                  </li>
                               </ul>
                             </li>
                             <li class="nav-item has-treeview">
