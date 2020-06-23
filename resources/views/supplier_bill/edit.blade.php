@@ -33,6 +33,10 @@
                                 <input type="hidden" value="{{ $supplierBill->id }}" class="form-control" id="supplier_bill_id">
                             
                             </div>
+                            <div class="form-group">
+                                <label for="bill_image">Bill Image</label>
+                                <input type="file" class="form-control-file" id="bill_image">
+                            </div>
                     </div>
                     <div class="form-row">
                             <div class="form-group col-md-6">
@@ -180,7 +184,8 @@
                     url: '/supplier-bill/'+$('#supplier_bill_id').val(),
                     data: supplierBill,
                     success: function(response){
-                        console.log(response);
+                        toastr.success('Supplier Bill Successfully Updated');
+
                     },
                     dataType: 'json'
                 });

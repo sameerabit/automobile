@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierBillsTable extends Migration
+class CreateVehiclesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateSupplierBillsTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_bills', function (Blueprint $table) {
+        Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->integer('supplier_id');
-            $table->date('billing_date');
-            $table->string('reference',500);
-            $table->string('image_url',500)->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateSupplierBillsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_bills');
+        Schema::dropIfExists('vehicles');
     }
 }

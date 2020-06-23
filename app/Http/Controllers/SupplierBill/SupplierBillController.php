@@ -9,6 +9,9 @@ use App\SupplierBill;
 use App\SupplierBillDetails;
 use App\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 class SupplierBillController extends Controller
 {
@@ -31,12 +34,17 @@ class SupplierBillController extends Controller
         $this->validate($request,[
             'supplier_id' => 'required',
             'reference' => 'required',
-            'bill_date' => 'required',
+            'billing_date' => 'required',
 
         ],[
             'supplier_id.required' => 'Supplier is required'
         ]);
-        $supplierBill = $this->repository->save($request->all());
+        $billData = $request->all();
+        if($request->file('file')){
+            Storage::disk('public')->put($request->file->hashName(), File::get($request->file));
+            $billData['image_url'] = $request->file->hashName();
+        }
+        $supplierBill = $this->repository->save($billData);
         return response()->json(new ResourcesSupplierBill($supplierBill));
     }
 
@@ -88,7 +96,7 @@ class SupplierBillController extends Controller
         $this->validate($request,[
             'supplier_id' => 'required',
             'reference' => 'required',
-            'bill_date' => 'required',
+            'billing_date' => 'required',
         ],[
             'supplier_id.required' => 'Supplier is required'
         ]);

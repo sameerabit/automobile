@@ -10,6 +10,7 @@ class SupplierBill extends Model
         'supplier_id',
         'billing_date',
         'reference',
+        'image_url',
     ];
 
     public function supplier()

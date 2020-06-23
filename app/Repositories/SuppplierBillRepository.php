@@ -26,7 +26,7 @@ class SupplierBillRepository{
             $supplierBill->save();
             $supplierBill->fresh();
             $supplerBillDetails  = new Collection();
-            foreach($data['supllierBillDetails']  as $supplierBillDetail){
+            foreach(json_decode($data['supllierBillDetails'],true)  as $supplierBillDetail){
                 $supplerBillDetails->add(new SupplierBillDetails($supplierBillDetail));
             }
             $supplierBill->supplierBillDetails()->saveMany($supplerBillDetails);

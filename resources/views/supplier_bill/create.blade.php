@@ -32,6 +32,10 @@
                                 @csrf
                                 <input type="text" class="form-control" id="reference" placeholder="Reference">
                             </div>
+                            <div class="form-group">
+                                <label for="bill_image">Bill Image</label>
+                                <input type="file" class="form-control-file" id="bill_image">
+                            </div>
                     </div>
                     <div class="form-row">
                             <div class="form-group col-md-6">
@@ -173,21 +177,28 @@
                 billDate = $('#billDate').val();
                 supplierId = $('#supplier_id').val();
 
-                var supplierBill = {
-                    'supplier_id': supplierId,
-                    'billing_date': billDate,
-                    'reference' : reference,
-                    'supllierBillDetails': formattedTableData
+                var file = $('#bill_image').prop('files')[0];
+
+                var formData = new FormData();
+                formData.append('supplier_id', supplierId);
+                formData.append('billing_date', billDate);
+                formData.append('reference', reference);
+                formData.append('supllierBillDetails', JSON.stringify(formattedTableData));
+                if(file != undefined){
+                    formData.append('file',file);
                 }
+               
                 $.ajax({
                     type: "POST",
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
                     url: '/supplier-bill',
-                    data: supplierBill,
+                    data: formData,
+                    contentType: false, //tell jquery to avoid some checks
+                    processData: false,
                     success: function(response){
-                        console.log(response);
+                        toastr.success('Supplier Bill Successfully Saved');
                     },
                     error: function(response){
                         var messages = $.parseJSON(response.responseText);
@@ -284,8 +295,6 @@
                 datatable.data().toArray().forEach(function(row){
                     product_ids.push(parseInt(row[1]));
                 });
-
-                $("#addItemToTableForm").trigger("reset");
 
                 productName = $('#product_name').val();
                 buyingPrice = $('#buying_price').val();
