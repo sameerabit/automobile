@@ -3,6 +3,12 @@
 @section('content')
 <div class="container">
 
+    <div class="row justify-content-center py-5">
+        <div class="col text-center">
+                    <h1>Amith Automobiles</h1>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -15,6 +21,8 @@
                         </ul>
                     </div>
                 @endif
+
+                
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">

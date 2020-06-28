@@ -50,9 +50,15 @@
                     </div>
                     <div class="row py-2">
                         <div class="col">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemModal" data-whatever="@mdo">Add Row</button>
-                                <button type="button" class="btn btn-primary" id="deleteRow">Delete Row</button>
-                                <button type="button" class="btn btn-primary" id="editRow">Edit Row</button>
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#itemModal" data-whatever="@mdo">
+                                        <i class="fas fa-plus-circle"></i>
+                                </button>
+                                <button type="button" class="btn btn-info" id="deleteRow">
+                                        <i class="fas fa-minus-circle"></i>
+                                </button>
+                                <button type="button" class="btn btn-info" id="editRow">
+                                        <i class="fas fa-edit"></i>
+                                </button>
                             </div>
                     </div>
                     <table id="itemsTable" class="table table-striped table-bordered" style="width:100%">
@@ -170,6 +176,10 @@
                 }
             });
 
+            $("#itemModal").on("hidden.bs.modal", function() {
+                $('#addItemToTableForm').trigger("reset");
+            });
+
             $('#saveBill').on('click',function(){
                 var tableData = datatable.data().toArray();
                 var formattedTableData = formatData(tableData);
@@ -199,6 +209,10 @@
                     processData: false,
                     success: function(response){
                         toastr.success('Supplier Bill Successfully Saved');
+                        $('#reference').val('');
+                        $('#billDate').val('');
+                        $('#supplier_id').val('');
+                        datatable.clear().draw();
                     },
                     error: function(response){
                         var messages = $.parseJSON(response.responseText);

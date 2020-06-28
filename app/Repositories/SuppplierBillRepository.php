@@ -21,7 +21,6 @@ class SupplierBillRepository{
         $supplierBill = new SupplierBill();
         try{
             DB::beginTransaction();
-        
             $supplierBill->fill($data);
             $supplierBill->save();
             $supplierBill->fresh();

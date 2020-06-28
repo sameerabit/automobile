@@ -45,11 +45,17 @@
                             </div>
                     </div>
                     <div class="row py-2">
-                        <div class="col">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemModal" data-whatever="@mdo">Add Row</button>
-                                <button type="button" class="btn btn-primary" id="deleteRow">Delete Row</button>
-                                <button type="button" class="btn btn-primary" id="editRow">Edit Row</button>
-                            </div>
+                            <div class="col">
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#itemModal" data-whatever="@mdo">
+                                            <i class="fas fa-plus-circle"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info" id="deleteRow">
+                                            <i class="fas fa-minus-circle"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info" id="editRow">
+                                            <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
                     </div>
                     <table id="itemsTable" class="table table-striped table-bordered" style="width:100%">
                         <thead>
@@ -135,6 +141,11 @@
                 timer: 3000
             });
 
+            $("#itemModal").on("hidden.bs.modal", function() {
+                $('#addItemToTableForm').trigger("reset");
+            });
+
+
             $("#addItemToTableForm").validate({
                 rules: {
                     quantity: "required",
@@ -157,7 +168,7 @@
                     'supplier_id': supplierId,
                     'return_date': returnDate,
                     'reference' : reference,
-                    'supllierBillDetails': formattedTableData
+                    'supllierReturnDetails': formattedTableData
                 }
                 $.ajax({
                     type: "POST",
@@ -167,7 +178,11 @@
                     url: '/supplier-returns',
                     data: supplierBill,
                     success: function(response){
-                        console.log(response);
+                        toastr.success('Supplier Return Successfully Saved');
+                        $('#reference').val('');
+                        $('#returnDate').val('');
+                        $('#supplier_id').val('');
+                        datatable.clear().draw();
                     },
                     error: function(response){
                         var messages = $.parseJSON(response.responseText);
