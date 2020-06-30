@@ -38,6 +38,5 @@ use Illuminate\Support\Facades\Route;
     Route::get('supplier-return-details/{return_id}', 'SupplierReturn\SupplierReturnController@getSupplierReturnDetails'); 
 
 
-
-
+    Route::get('job-cards/create','JobCard\JobCardController@create')->name('job-cards.create');
 

@@ -107,6 +107,13 @@
                                     <p>Vehicles</p>
                                   </a>
                                 </li>
+
+                                <li class="nav-item">
+                                  <a href="{{ route('job-cards.create') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>New Job Card</p>
+                                  </a>
+                                </li>
                               </ul>
                             </li>
                           </ul>
