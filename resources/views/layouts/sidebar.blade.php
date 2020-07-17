@@ -116,6 +116,26 @@
                                 </li>
                               </ul>
                             </li>
+
+                            <li class="nav-item has-treeview">
+                              <a href="#" class="nav-link">
+                                  <i class="fas fa-car-side"></i>
+                                <p>
+                                    Employee Management
+                                  <i class="fas fa-angle-left right"></i>
+                                  <span class="badge badge-info right"></span>
+                                </p>
+                              </a>
+                              <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                  <a href="{{ route('employees.index') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>Employees</p>
+                                  </a>
+                                </li>
+
+                              </ul>
+                            </li>
                           </ul>
                         </nav>
                         <!-- /.sidebar-menu -->

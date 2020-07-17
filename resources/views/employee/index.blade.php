@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 offset-md-9">
-            <a class="btn btn-block btn-primary btn-lg" href="{{ route('employees.create') }}">Add Vehicle</a>
+            <a class="btn btn-block btn-primary btn-lg" href="{{ route('employees.create') }}">Add Employee</a>
         </div>
     </div>
     <div class="row py-2">
@@ -35,9 +35,9 @@
                       <tr>
                         <th style="width: 10px">#</th>
                         <th>Name</th>
-                        <th>Reg No</th>
-                        <th>Owner Name</th>
-                        <th>Owner Phone</th>
+                        <th>NIC</th>
+                        <th>Phone Number 1</th>
+                        <th>Phone Number 2</th>
                         <th style="width: 200px">Action</th>
                       </tr>
                     </thead>
@@ -46,9 +46,9 @@
                       <tr>
                             <td>{{ $employee->id }}</td>
                             <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->reg_no }}</td>
-                            <td>{{ $employee->owner_name }}</td>
-                            <td>{{ $employee->owner_phone }}</td>
+                            <td>{{ $employee->nic }}</td>
+                            <td>{{ $employee->phone_1 }}</td>
+                            <td>{{ $employee->phone_2 }}</td>
 
                             <td class="d-flex">
                                 <a class="btn btn-warning btn-sm m-auto" href="{{ route('employees.edit',$employee->id) }}"><i class="fas fa-edit"></i>Edit</a>

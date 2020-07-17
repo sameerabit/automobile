@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
     Route::resource('brands', 'BrandController');
     Route::resource('categories', 'CategoryController');
     Route::resource('vehicles', 'VehicleController');
+    Route::resource('employees', 'EmployeeController');
 
 
     Route::resource('products', 'ProductController');

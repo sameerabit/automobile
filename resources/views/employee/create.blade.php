@@ -10,7 +10,7 @@
     </div>
     <!-- /.card-header -->
     <!-- form start -->
-<form action="{{ route('vehicles.store') }}" method="POST" role="form" enctype="multipart/form-data">
+<form action="{{ route('employees.store') }}" method="POST" role="form" enctype="multipart/form-data">
       <div class="card-body">
         <div class="form-group">
            @csrf
@@ -21,7 +21,7 @@
        <div class="form-group">
         <label for="name">Address</label>
         <input type="text" class="form-control {{ $errors->has('address') ? 'is-invalid' : ''}}" id="address" name="address" placeholder="Enter Address">
-        {!! $errors->first('chassis', '<p class="error invalid-feedback">:message</p>') !!}
+        {!! $errors->first('address', '<p class="error invalid-feedback">:message</p>') !!}
       </div>
         
         <div class="form-group row {{ $errors->has('image') ? 'has-error' : ''}}">
@@ -32,20 +32,20 @@
 
         <div class="form-group">
             <label for="name">NIC</label>
-            <input type="text" class="form-control {{ $errors->has('owner_phone') ? 'is-invalid' : ''}}" id="owner_phone" name="owner_phone" placeholder="Enter Owner Address">
-            {!! $errors->first('owner_phone', '<p class="error invalid-feedback">:message</p>') !!}
+            <input type="text" class="form-control {{ $errors->has('nic') ? 'is-invalid' : ''}}" id="nic" name="nic" placeholder="Enter NIC">
+            {!! $errors->first('nic', '<p class="error invalid-feedback">:message</p>') !!}
           </div>
 
         <div class="form-group">
           <label for="name">Phone 1</label>
-          <input type="text" class="form-control {{ $errors->has('owner_name') ? 'is-invalid' : ''}}" id="owner_name" name="owner_name" placeholder="Enter Owner Name">
-          {!! $errors->first('owner_name', '<p class="error invalid-feedback">:message</p>') !!}
+          <input type="text" class="form-control {{ $errors->has('phone_1') ? 'is-invalid' : ''}}" id="phone_1" name="phone_1" placeholder="Enter Phone 1">
+          {!! $errors->first('phone_1', '<p class="error invalid-feedback">:message</p>') !!}
         </div>
 
         <div class="form-group">
           <label for="name">Phone 2</label>
-          <input type="text" class="form-control {{ $errors->has('owner_address') ? 'is-invalid' : ''}}" id="owner_address" name="owner_address" placeholder="Enter Owner Address">
-          {!! $errors->first('owner_address', '<p class="error invalid-feedback">:message</p>') !!}
+          <input type="text" class="form-control {{ $errors->has('phone_2') ? 'is-invalid' : ''}}" id="phone_2" name="phone_2" placeholder="Enter Phone 2">
+          {!! $errors->first('phone_2', '<p class="error invalid-feedback">:message</p>') !!}
         </div>
 
       </div>
