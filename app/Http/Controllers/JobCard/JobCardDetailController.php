@@ -20,6 +20,12 @@ class JobCardDetailController extends Controller
         return response()->json($jobCard);
     }
 
+    public function getJobDetailsFromJobCardId($job_card_id)
+    {
+        $jobCardDetails = JobCardDetail::where('job_card_id',$job_card_id)->get();
+        return response()->json($jobCardDetails);
+    }
+
 
 
 

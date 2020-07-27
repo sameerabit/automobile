@@ -44,3 +44,5 @@ use Illuminate\Support\Facades\Route;
     Route::post('job-cards','JobCard\JobCardController@store')->name('job-cards.store');
     Route::post('job-card-details','JobCard\JobCardDetailController@store')->name('job-cards-details.store');
 
+    Route::get('job-cards/{job_card_id}/details','JobCard\JobCardDetailController@getJobDetailsFromJobCardId')->name('job_cards.job_card_details');
+

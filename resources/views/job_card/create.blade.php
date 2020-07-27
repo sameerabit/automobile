@@ -159,28 +159,30 @@
                         sorting: true,
                         paging: true,
                         filtering: true,
-
+                        autoload:   true,
 
                         data: clients,
 
                         fields: [{
-                                name: "Employee",
+                                name: "employee_id",
                                 type: "select",
                                 items: employees,
                                 valueField: "id",
                                 textField: "name",
-                                displayName: "sas"
+                                title: "Employee Name"
                             },
                             {
-                                name: "Job Desc",
+                                name: "job_desc",
                                 type: "textarea",
                                 width: 150,
-                                validate: "required"
+                                validate: "required",
+                                title: "Job Description"
                             },
                             {
-                                name: "Estimation Time",
+                                name: "estimation_time",
                                 type: "number",
-                                sorting: false
+                                sorting: false,
+                                title: "Estimation Time"
                             },
                             {
                                 type: "control"
@@ -188,24 +190,27 @@
                         ],
                         controller: {
                             loadData: function(filter) {
-                                // return $.ajax({
-                                //     type: "GET",
-                                //     url: "",
-                                //     data: filter
-                                // });
+                                var deferred = $.Deferred();
+                              $.ajax({
+                                    type: "GET",
+                                    url: "/job-cards/15/details",
+                                    data: filter,
+                                    success: function(response) {
+                                        deferred.resolve(response);
+                                    }
+                                });
+                                return deferred.promise();
                             },
                             insertItem: function(item) {
                                 $jobCardId = $('#job_card_id').val();
 
                                 var data = {
                                         employee_id : item.Employee,
-                                        job_desc : item["Job Desc"],
-                                        estimation_time :  item["Estimation Time"],
+                                        job_desc : item.job_desc,
+                                        estimation_time :  item.estimation_time,
                                         job_card_id : $('#job_card_id').val()
                                     };
-                                    debugger;
-                                    console.log(data);
-                                $.ajax({
+                                return $.ajax({
                                     type: "POST",
                                     headers: {
                                         "X-CSRF-TOKEN": $('input[name=_token]').val()
