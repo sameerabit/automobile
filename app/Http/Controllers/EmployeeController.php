@@ -147,4 +147,14 @@ class EmployeeController extends Controller
             "total_count"=> $employees->count()
         ]);
     }
+
+    public function allJson(Request $request)
+    {
+        $query = Employee::query();
+        $employees = $query->get();
+        return response([
+            "items"=>$employees,
+            "total_count"=> $employees->count()
+        ]);
+    }
 }
