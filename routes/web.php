@@ -45,4 +45,6 @@ use Illuminate\Support\Facades\Route;
     Route::post('job-card-details','JobCard\JobCardDetailController@store')->name('job-cards-details.store');
 
     Route::get('job-cards/{job_card_id}/details','JobCard\JobCardDetailController@getJobDetailsFromJobCardId')->name('job_cards.job_card_details');
+    Route::delete('job-card-detail/{job_card_detail}','JobCard\JobCardDetailController@destroy')->name('job_card_detail.delete');
+    Route::put('job-card-detail/{job_card_detail}','JobCard\JobCardDetailController@update')->name('job_card_detail.update');
 

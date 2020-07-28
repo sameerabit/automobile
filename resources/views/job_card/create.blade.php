@@ -7,7 +7,11 @@
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     {{-- <link rel="stylesheet" href="/resources/demos/style.css"> --}}
-
+    <style>
+        .hide{
+            display:none;
+        }
+    </style>
 @endpush
 @section('content')
     <div class="container">
@@ -163,13 +167,16 @@
 
                         data: clients,
 
-                        fields: [{
+                        fields: [
+                            { name: "id", css: "hide", width: 0},
+                            {
                                 name: "employee_id",
                                 type: "select",
                                 items: employees,
                                 valueField: "id",
                                 textField: "name",
-                                title: "Employee Name"
+                                title: "Employee Name",
+                                autosearch: true,
                             },
                             {
                                 name: "job_desc",
@@ -191,7 +198,7 @@
                         controller: {
                             loadData: function(filter) {
                                 var deferred = $.Deferred();
-                              $.ajax({
+                                $.ajax({
                                     type: "GET",
                                     url: "/job-cards/15/details",
                                     data: filter,
@@ -205,7 +212,7 @@
                                 $jobCardId = $('#job_card_id').val();
 
                                 var data = {
-                                        employee_id : item.Employee,
+                                        employee_id : item.employee_id,
                                         job_desc : item.job_desc,
                                         estimation_time :  item.estimation_time,
                                         job_card_id : $('#job_card_id').val()
@@ -220,18 +227,27 @@
                                 });
                             },
                             updateItem: function(item) {
-                                // return $.ajax({
-                                //     type: "PUT",
-                                //     url: "",
-                                //     data: item
-                                // });
+                                 res = $.ajax({
+                                    type: "PUT",
+                                    headers: {
+                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
+                                    },
+                                    url: "/job-card-detail/"+item.id,
+                                    data: item
+                                });
+                                $("#jsGrid").jsGrid("loadData");
+                                return res;
+
                             },
                             deleteItem: function(item) {
-                                // return $.ajax({
-                                //     type: "DELETE",
-                                //     url: "",
-                                //     data: item
-                                // });
+                                return $.ajax({
+                                    type: "DELETE",
+                                    headers: {
+                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
+                                    },
+                                    url: "/job-card-detail/"+item.id,
+                                    data: item
+                                });
                             }
                         },
                     });

@@ -26,6 +26,18 @@ class JobCardDetailController extends Controller
         return response()->json($jobCardDetails);
     }
 
+    public function destroy(JobCardDetail $jobCardDetail){
+        $jobCardDetail->delete();
+        return response()->json(["data" => 1]);
+    }
+
+    public function update(JobCardDetail $jobCardDetail,Request $request){
+        $jobCardDetail->fill($request->all());
+        $jobCardDetail->save();
+        return response()->json($jobCardDetail);
+    }
+
+
 
 
 
