@@ -93,16 +93,10 @@
     @push('scripts')
 
         <script src="{{ asset('bower_components/jsgrid/dist/jsgrid.min.js') }}"></script>
-        {{-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> --}}
-        {{-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> --}}
-
         <script>
             $(function() {
 
                 $('#vehicle_id').select2();
-
-
-
 
                 var employees;
 
@@ -197,16 +191,20 @@
                         ],
                         controller: {
                             loadData: function(filter) {
-                                var deferred = $.Deferred();
-                                $.ajax({
-                                    type: "GET",
-                                    url: "/job-cards/15/details",
-                                    data: filter,
-                                    success: function(response) {
-                                        deferred.resolve(response);
-                                    }
-                                });
-                                return deferred.promise();
+                                if($('#job_card_id').val()){
+                                    var deferred = $.Deferred();
+                                    filter["type"] = 1;
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "/job-cards/"+$('#job_card_id').val()+"/details",
+                                        data: filter,
+                                        success: function(response) {
+                                            deferred.resolve(response);
+                                        }
+                                    });
+                                    return deferred.promise();
+                                }
+
                             },
                             insertItem: function(item) {
                                 $jobCardId = $('#job_card_id').val();
@@ -215,9 +213,10 @@
                                         employee_id : item.employee_id,
                                         job_desc : item.job_desc,
                                         estimation_time :  item.estimation_time,
-                                        job_card_id : $('#job_card_id').val()
+                                        job_card_id : $('#job_card_id').val(),
+                                        type : 1
                                     };
-                                return $.ajax({
+                                res =  $.ajax({
                                     type: "POST",
                                     headers: {
                                         "X-CSRF-TOKEN": $('input[name=_token]').val()
@@ -225,6 +224,8 @@
                                     url: "/job-card-details",
                                     data: data
                                 });
+                                $("#jsGrid").jsGrid("loadData");
+                                return res;
                             },
                             updateItem: function(item) {
                                  res = $.ajax({

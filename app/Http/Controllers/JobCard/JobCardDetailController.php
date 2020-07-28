@@ -17,12 +17,16 @@ class JobCardDetailController extends Controller
         $jobCardDetails->fill($request->all());
         $jobCard = JobCard::find($request->job_card_id);
         $jobCard->details()->save($jobCardDetails);
-        return response()->json($jobCard);
+        return response()->json($jobCardDetails);
     }
 
-    public function getJobDetailsFromJobCardId($job_card_id)
+    public function getJobDetailsFromJobCardId($job_card_id,Request $request)
     {
-        $jobCardDetails = JobCardDetail::where('job_card_id',$job_card_id)->get();
+        $jobCardDetailsQuery = JobCardDetail::where('job_card_id',$job_card_id);
+        if($request->has('type') && $request->type){
+            $jobCardDetailsQuery->where('type',$request->type);
+        }
+        $jobCardDetails = $jobCardDetailsQuery->get();
         return response()->json($jobCardDetails);
     }
 

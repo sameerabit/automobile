@@ -11,7 +11,8 @@ class JobCardDetail extends Model
         'job_card_id',
         'estimation_time',
         'job_desc',
-        'employee_id'
+        'employee_id',
+        'type'
     ];
 
 

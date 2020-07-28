@@ -19,6 +19,7 @@ class CreateJobCardDetailsTable extends Migration
             $table->integer('employee_id');
             $table->string('job_desc');
             $table->double('estimation_time');
+            $table->integer('type');
             $table->timestamps();
         });
     }
