@@ -26,6 +26,33 @@ class JobCardController extends Controller
         return response()->json($jobCard);
     }
 
+    public function edit(JobCard $jobCard){
+        $vehicles = Vehicle::all();
+        return view('job_card.edit',[
+            'vehicles' => $vehicles,
+            'jobCard' => $jobCard
+        ]);
+    }
+
+    public function index(Request $request)
+    {
+        $jobCardQuery = JobCard::with('vehicle');
+        if($request->has('vehicle_no') && $request->vehicle_no){
+            $jobCardQuery->where('vehicle_no',$request->vehicle_no);
+        }
+        $jobCards = $jobCardQuery->orderBy('id','DESC')->paginate();
+        return view('job_card.index',[
+            'jobCards' => $jobCards
+        ]);
+    }
+
+    public function destroy(JobCard $jobCard){
+        $jobCard->delete();
+        return redirect()->route('job_cards.index')->with(
+            ['success' => 'Job Card Deleted Successfully']
+         );
+    }
+
 
 
 

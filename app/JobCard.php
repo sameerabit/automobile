@@ -16,4 +16,8 @@ class JobCard extends Model
         return $this->hasMany(JobCardDetail::class);
     }
 
+    public function vehicle(){
+        return $this->belongsTo(Vehicle::class);
+    }
+
 }

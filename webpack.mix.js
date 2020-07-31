@@ -12,4 +12,6 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .js('resources/js/job_card.js', 'public/js/job_card.js')
+    .js('resources/js/job_sales.js', 'public/js/job_sales.js')
    .sass('resources/sass/app.scss', 'public/css');

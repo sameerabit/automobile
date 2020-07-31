@@ -6,7 +6,7 @@
                              style="opacity: .8">
                         <span class="brand-text font-weight-light">Amith Automobile</span>
                       </a>
-                  
+
                       <!-- Sidebar -->
                       <div class="sidebar">
                         <!-- Sidebar user panel (optional) -->
@@ -18,13 +18,13 @@
                             <a href="#" class="d-block">{{ auth()->user()->name }}</a>
                           </div>
                         </div>
-                  
+
                         <!-- Sidebar Menu -->
                         <nav class="mt-2">
                           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
-                            
+
                             <li class="nav-item has-treeview">
                               <a href="#" class="nav-link">
                                 <i class="fas fa-warehouse"></i>
@@ -114,6 +114,12 @@
                                     <p>New Job Card</p>
                                   </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('job_cards.index') }}" class="nav-link">
+                                      <i class="fas fa-truck-pickup nav-icon"></i>
+                                      <p>Job Cards</p>
+                                    </a>
+                                  </li>
                               </ul>
                             </li>
 
@@ -141,4 +147,4 @@
                         <!-- /.sidebar-menu -->
                       </div>
                       <!-- /.sidebar -->
-                    </aside>    
+                    </aside>
