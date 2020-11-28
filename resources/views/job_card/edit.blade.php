@@ -130,6 +130,7 @@
     @push('scripts')
 
         <script src="{{ asset('bower_components/jsgrid/dist/jsgrid.min.js') }}"></script>
+        <script src="{{ mix('/js/easytimer.min.js') }}"></script>
         <script src="{{ mix('/js/job_card.js') }}"></script>
         <script src="{{ mix('/js/job_sales.js') }}"></script>
 

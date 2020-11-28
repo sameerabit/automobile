@@ -262,6 +262,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
 <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
+
 <style>
 
   .error {

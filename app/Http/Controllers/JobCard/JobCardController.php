@@ -37,9 +37,10 @@ class JobCardController extends Controller
     public function index(Request $request)
     {
         $jobCardQuery = JobCard::with('vehicle');
-        if($request->has('vehicle_no') && $request->vehicle_no){
-            $jobCardQuery->where('vehicle_no',$request->vehicle_no);
-        }
+        // if($request->has('q') && $request->q){
+        //     $jobCardQuery->where('vehicle_no','like',"%$request->q%");
+        //     $jobCardQuery->orWhere('vehicle_no','like',"%$request->q%");
+        // }
         $jobCards = $jobCardQuery->orderBy('id','DESC')->paginate();
         return view('job_card.index',[
             'jobCards' => $jobCards

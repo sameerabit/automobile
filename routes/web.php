@@ -57,3 +57,5 @@ use Illuminate\Support\Facades\Route;
     Route::post('job-sales','JobSale\JobSaleController@store')->name('job_sales.store');
     Route::put('job-sales/{job_sale}','JobSale\JobSaleController@update')->name('job_sales.update');
     Route::delete('job-sales/{job_sale}','JobSale\JobSaleController@delete')->name('job_sales.delete');
+
+    Route::get('bookings','Booking\BookingController@index')->name('booking.index');

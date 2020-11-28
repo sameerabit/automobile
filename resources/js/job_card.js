@@ -1,7 +1,20 @@
 
             $(function() {
-
+                $('#timesheet').hide();
                 $('#vehicle_id').select2();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  });
+                
 
                 var employees;
 
@@ -20,7 +33,10 @@
                         },
                         success: function(response) {
                             $('#job_card_id').val(response.id);
-                            console.log(response);
+                            if(response.id){
+                                $('#timesheet').show();
+                                $('#saveRecord').hide();
+                            }
                         },
                         error: function(response) {
 
@@ -50,6 +66,13 @@
 
                 clients = [];
 
+                jsGrid.validators.time = {
+                    message: "Please enter a valid time estimation",
+                    validator: function(value, item) {
+                        return /^[1-9]+[0-9]*$/.test(value);
+                    }
+                }
+
 
                 function loadGrid() {
                     $("#mechanicJsGrid").jsGrid({
@@ -59,7 +82,7 @@
                         editing: true,
                         sorting: true,
                         paging: true,
-                        filtering: true,
+                        filtering: false,
                         autoload:   true,
                         fields: [
                             { name: "id", css: "hide", width: 0},
@@ -84,58 +107,58 @@
                                 name: "estimation_time",
                                 type: "number",
                                 sorting: false,
-                                title: "Estimation Time",
-                                width: 50,
+                                title: "Est. Time",
+                                width: 75,
+                                validate: {
+                                    validator: "time"
+                                }
                             },
                             {
-                                width: 40,
+                                name: "action",
+                                width: 130,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-
+                                    var timer = new easytimer.Timer();
                                     var $startButton = $("<button>")
                                         .text('Start')
                                         .addClass('btn btn-sm btn-primary')
                                         .click(function(e) {
                                             console.log(jsGrid.fields.control);
-                                            alert("Age: ");
+                                            
+                                            timer.start();
+                                            timer.addEventListener('secondsUpdated', function (e) {
+                                                $('#time_'+item.id).html(timer.getTimeValues().toString());
+                                            });
                                             e.stopPropagation();
                                     });
-                                    return  $result.add($startButton);
-
-                                }
-                            },
-                            {
-                                width: 40,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-
                                     var $pauseButton = $("<button>")
-                                        .attr('disabled',"true")
+                                        // .attr('disabled',"true")
                                         .text('Pause')
                                         .addClass('btn btn-sm btn-warning')
                                         .click(function(e) {
-                                            alert("Age: ");
+                                            timer.pause();
                                             e.stopPropagation();
                                     });
-
-                                    return  $result.add($pauseButton);
-
-                                }
-                            },
-                            {
-                                width: 40,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-
                                     var $finishButton = $("<button>")
                                         .text('Finish')
                                         .addClass('btn btn-sm btn-danger')
                                         .click(function(e) {
-                                            alert("Age: ");
+                                            timer.stop();
                                             e.stopPropagation();
                                     });
+                                    return  $result.add($startButton)
+                                            .add($finishButton)
+                                            .add($pauseButton);
 
-                                    return  $result.add($finishButton);
+                                }
+                            },
+                            {
+                                name: 'time',
+                                width: 60,
+                                itemTemplate: function(value, item) {
+                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>");
+                                    return  $result.add($time);
 
                                 }
                             },
@@ -143,30 +166,19 @@
                                 type: "control",
                                 width: 100,
 
-                            },
-                            // {
-                            //     width: 80,
-                            //     align:'center',
-                            //     headerTemplate: function() {
-                            //     return "<th class='jsgrid-header-cell'>Sum</th>";
-                            //     },
-                            //     itemTemplate: function(value, item) {
-                            //     return item.estimation_time;
-                            //     }
-                            // }
+                            }
                         ],
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
+                            console.log(items,212);
                             var total = {
-                             "job_desc": "Total",
-                             estimation_time: 0,
-                             control: ''
+                                estimation_time: 0
                             };
 
                             items.forEach(function(item) {
                             total.estimation_time += item.estimation_time;
                             });
-                            var $totalRow = $("<tr>").addClass("total-row");
+                            var $totalRow = $("<tr colspan='4'>").addClass("total-row");
 
                             args.grid._renderCells($totalRow, total);
 
@@ -206,7 +218,13 @@
                                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                                     },
                                     url: "/job-card-details",
-                                    data: data
+                                    data: data,
+                                    success: function(){
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: 'Task added successfully!'
+                                        })
+                                    }
                                 });
                                 $("#mechanicJsGrid").jsGrid("loadData");
                                 return res;
@@ -236,6 +254,7 @@
                             }
                         },
                     });
+                    
 
                     //tinkering
                     $("#tinkeringJsGrid").jsGrid({

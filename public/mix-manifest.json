@@ -2,5 +2,6 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/job_card.js": "/js/job_card.js",
-    "/js/job_sales.js": "/js/job_sales.js"
+    "/js/job_sales.js": "/js/job_sales.js",
+    "/js/easytimer.min.js": "/js/easytimer.min.js"
 }

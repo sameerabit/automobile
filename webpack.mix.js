@@ -11,6 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
+mix.copy('node_modules/easytimer.js/dist/easytimer.js', 'public/js/easytimer.min.js')
+
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/job_card.js', 'public/js/job_card.js')
     .js('resources/js/job_sales.js', 'public/js/job_sales.js')

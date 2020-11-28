@@ -25,6 +25,17 @@
             right: 7px;
         }
 
+        .total-row button {
+            display:  none
+        }
+
+        tr th:nth-child(5),tr td:nth-child(5){
+            display:none;
+        }
+
+        tr th:nth-child(6),tr td:nth-child(6){
+            display:none;
+        }
 
 
     </style>
@@ -66,10 +77,11 @@
                             </div>
                         </div>
                         <div class="row py-2">
-                            <div class="col text-left">
+                            <div class="col text-right">
                                 <button type="button" class="btn btn-md btn-primary" id="saveRecord">Save</button>
                             </div>
                         </div>
+                        <div id="timesheet">
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <a class="nav-item nav-link active" id="nav-mechanic-tab" data-toggle="tab" href="#nav-mechanic"
@@ -93,13 +105,10 @@
                                 <div class="my-2" id="tinkeringJsGrid"></div>
                             </div>
                         </div>
-
+                        <div class="row py-2">
                     </div>
-                    <div class="row py-2">
-                        <div class="col text-right">
-                            <button type="button" class="btn btn-lg btn-primary mx-3" id="saveBill">Save</button>
-                        </div>
                     </div>
+                    
 
                 </div>
             </div>
@@ -111,8 +120,8 @@
     @push('scripts')
 
         <script src="{{ asset('bower_components/jsgrid/dist/jsgrid.min.js') }}"></script>
+        <script src="{{ mix('/js/easytimer.min.js') }}"></script>
         <script src="{{ mix('/js/job_card.js') }}"></script>
-
     @endpush
 
 @endsection
