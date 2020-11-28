@@ -99,11 +99,11 @@ $(function () {
     headers: {
       "X-CSRF-TOKEN": $('input[name=_token]').val()
     },
-    url: '/employees-json',
+    url: '/products-json',
     success: function success(response) {
-      employees = response.items;
+      products = response.items;
 
-      if (employees.length > 0) {
+      if (products.length > 0) {
         loadGrid();
       }
     },
@@ -187,18 +187,18 @@ $(function () {
       editing: true,
       sorting: true,
       paging: true,
-      filtering: true,
+      filtering: false,
       autoload: true,
       fields: [{
         name: "id",
         css: "hide",
         width: 0
       }, {
-        name: "employee",
+        name: "product",
         type: "select2",
         width: 300,
         align: "center",
-        items: employees,
+        items: products,
         textField: "name"
       }, {
         name: "quantity",
@@ -255,10 +255,9 @@ $(function () {
           }
         },
         insertItem: function insertItem(item) {
-          console.log(item.employee[0]);
           jobCardId = $('#job_card_id').val();
           var data = {
-            product_id: item.product_id,
+            product_id: item.product[0],
             quantity: item.quantity,
             return_qty: item.return_qty,
             price: item.price,

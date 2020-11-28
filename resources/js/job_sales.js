@@ -6,10 +6,10 @@
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
-                    url: '/employees-json',
+                    url: '/products-json',
                     success: function(response) {
-                        employees = response.items;
-                        if (employees.length > 0) {
+                        products = response.items;
+                        if (products.length > 0) {
                             loadGrid();
                         }
                     },
@@ -106,11 +106,11 @@
                             editing: true,
                             sorting: true,
                             paging: true,
-                            filtering: true,
+                            filtering: false,
                             autoload:   true,
                             fields: [
                                 { name: "id", css: "hide", width: 0},
-                                { name: "employee", type: "select2", width: 300, align: "center", items: employees, textField: "name" },
+                                { name: "product", type: "select2", width: 300, align: "center", items: products, textField: "name" },
                                 {
                                     name: "quantity",
                                     type: "number",
@@ -173,11 +173,10 @@
 
                                 },
                                 insertItem: function(item) {
-                                    console.log(item.employee[0]);
                                     jobCardId = $('#job_card_id').val();
 
                                     var data = {
-                                            product_id : item.product_id,
+                                            product_id : item.product[0],
                                             quantity : item.quantity,
                                             return_qty :  item.return_qty,
                                             price :  item.price,

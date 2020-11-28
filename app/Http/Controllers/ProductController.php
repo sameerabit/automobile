@@ -151,4 +151,14 @@ class ProductController extends Controller
             "total_count"=> $products->count()
         ]);
     }
+
+    public function allJson(Request $request)
+    {
+        $query = Product::query();
+        $products = $query->get();
+        return response([
+            "items"=>$products,
+            "total_count"=> $products->count()
+        ]);
+    }
 }

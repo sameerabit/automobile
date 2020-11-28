@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 
     Route::resource('products', 'ProductController');
+    Route::get('products-json', 'ProductController@allJson');
     Route::get('products-search', 'ProductController@searchByName');
     Route::get('suppliers-search', 'SupplierController@searchByName');
 
@@ -53,6 +54,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::delete('job-cards/{job_card}','JobCard\JobCardController@destroy')->name('job_cards.destroy');
 
+    Route::get('job-sales/{job_sale}','JobSale\JobSaleController@getJobSale')->name('job_sales.items');
     Route::get('job-sales','JobSale\JobSaleController@index')->name('job_sales.index');
     Route::post('job-sales','JobSale\JobSaleController@store')->name('job_sales.store');
     Route::put('job-sales/{job_sale}','JobSale\JobSaleController@update')->name('job_sales.update');
