@@ -26,7 +26,7 @@
     "dependencies": {
         "@fullcalendar/core": "^5.5.0",
         "@fullcalendar/daygrid": "^5.5.0",
-        "datatables.net": "^1.10.21",
+        "datatables.net": "^1.10.22",
         "easytimer.js": "^4.3.0",
         "fullcalendar": "^5.4.0"
     }
