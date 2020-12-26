@@ -22,6 +22,8 @@ class JobSaleController extends Controller
         if(!$product){
             $product = new Product();
             $product->name = $request->product_id; //product id is the name here.
+            $product->category_id = 1; //product id is the name here.
+            $product->brand_id = 1; //product id is the name here.
             $product->save();
             $product->fresh();
         }

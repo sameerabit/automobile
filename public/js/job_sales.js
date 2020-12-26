@@ -125,10 +125,6 @@ $(function () {
     sorter: function sorter(date1, date2) {// return new Date(date1) - new Date(date2);
     },
     itemTemplate: function itemTemplate(value) {
-      if (value) {
-        return value[0];
-      }
-
       return value;
     },
     _createSelect: function _createSelect(selected) {

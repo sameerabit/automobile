@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@fullcalendar/core": "^5.5.0",
+        "@fullcalendar/daygrid": "^5.5.0",
         "datatables.net": "^1.10.21",
         "easytimer.js": "^4.3.0",
         "fullcalendar": "^5.4.0"
