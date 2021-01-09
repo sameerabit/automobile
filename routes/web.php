@@ -53,6 +53,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('job-cards','JobCard\JobCardController@index')->name('job_cards.index');
 
     Route::delete('job-cards/{job_card}','JobCard\JobCardController@destroy')->name('job_cards.destroy');
+    Route::put('job-card-detail/{job_card_detail}/update-time','JobCard\JobCardDetailController@updateTime')->name('job_card_detail.update');
+    Route::get('job-card-detail/{job_card_detail}/json','JobCard\JobCardDetailController@findJson')->name('job_card_detail.get-json');
 
     Route::get('job-sales/{job_sale}','JobSale\JobSaleController@getJobSale')->name('job_sales.items');
     Route::get('job-sales','JobSale\JobSaleController@index')->name('job_sales.index');

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\JobCard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\JobCardDetail as ResourcesJobCardDetail;
+use App\Http\Resources\JobCardDetailCollection;
 use App\JobCard;
 use App\JobCardDetail;
 use App\Vehicle;
@@ -27,7 +29,7 @@ class JobCardDetailController extends Controller
             $jobCardDetailsQuery->where('type',$request->type);
         }
         $jobCardDetails = $jobCardDetailsQuery->get();
-        return response()->json($jobCardDetails);
+        return response()->json(new JobCardDetailCollection($jobCardDetails));
     }
 
     public function destroy(JobCardDetail $jobCardDetail){
@@ -38,6 +40,16 @@ class JobCardDetailController extends Controller
     public function update(JobCardDetail $jobCardDetail,Request $request){
         $jobCardDetail->fill($request->all());
         $jobCardDetail->save();
+        return response()->json($jobCardDetail);
+    }
+
+    public function updateTime(JobCardDetail $jobCardDetail,Request $request){
+        $jobCardDetail->fill($request->all());
+        $jobCardDetail->save();
+        return response()->json($jobCardDetail);
+    }
+
+    public function findJson(JobCardDetail $jobCardDetail){
         return response()->json($jobCardDetail);
     }
 

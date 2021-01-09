@@ -12,7 +12,10 @@ class JobCardDetail extends Model
         'estimation_time',
         'job_desc',
         'employee_id',
-        'type'
+        'type',
+        'days',
+        'time',
+        'state' // start, pause, stop
     ];
 
 

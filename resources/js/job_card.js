@@ -53,7 +53,6 @@
                     url: '/employees-json',
                     success: function(response) {
                         employees = response.items;
-                        console.log(employees);
                         if (employees.length > 0) {
                             loadGrid();
                         }
@@ -71,6 +70,45 @@
                     validator: function(value, item) {
                         return /^[1-9]+[0-9]*$/.test(value);
                     }
+                }
+
+                function updateTimeEvents(taskId,days,time,state) {
+                    return $.ajax({
+                        type: "PUT",
+                        headers: {
+                            "X-CSRF-TOKEN": $('input[name=_token]').val()
+                        },
+                        data: {
+                            days: days,
+                            time: time,
+                            state:state
+                        },
+                        url: '/job-card-detail/'+taskId+'/update-time',
+                        success: function(response) {
+                            return response;
+                        },
+                        error: function(response) {
+    
+                        },
+                        dataType: 'json'
+                    });
+                }
+
+                function getJobDetail(job_detail_id) {
+                    return $.ajax({
+                        type: "GET",
+                        headers: {
+                            "X-CSRF-TOKEN": $('input[name=_token]').val()
+                        },
+                        url: '/job-card-detail/'+job_detail_id+'/json',
+                        success: function(response) {
+                          return response;
+                        },
+                        error: function(response) {
+    
+                        },
+                        dataType: 'json'
+                    });
                 }
 
 
@@ -123,11 +161,14 @@
                                         .text('Start')
                                         .addClass('btn btn-sm btn-primary')
                                         .click(function(e) {
-                                            console.log(jsGrid.fields.control);
-                                            
-                                            timer.start();
+                                            console.log(timer);
+                                            $.when(getJobDetail(item.id)).done(function(res){
+                                                timeArr = res.time.split(":");
+                                                timer.start({startValues: {seconds: timeArr[3],minutes:timeArr[2],hours:timeArr[0],days:res.days}});
+                                            });
+                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'start' );
                                             timer.addEventListener('secondsUpdated', function (e) {
-                                                $('#time_'+item.id).html(timer.getTimeValues().toString());
+                                                $('#time_'+item.id).html(timer.getTimeValues().days + ' ' + timer.getTimeValues().toString());
                                             });
                                             e.stopPropagation();
                                     });
@@ -137,12 +178,15 @@
                                         .addClass('btn btn-sm btn-warning')
                                         .click(function(e) {
                                             timer.pause();
+                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'pause' );
                                             e.stopPropagation();
                                     });
                                     var $finishButton = $("<button>")
                                         .text('Finish')
                                         .addClass('btn btn-sm btn-danger')
                                         .click(function(e) {
+                                            console.log(timer);
+                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'stop' );
                                             timer.stop();
                                             e.stopPropagation();
                                     });
@@ -157,7 +201,8 @@
                                 width: 60,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>");
+                                    time = value ? value : '';
+                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
                                     return  $result.add($time);
 
                                 }
@@ -170,7 +215,6 @@
                         ],
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
-                            console.log(items,212);
                             var total = {
                                 estimation_time: 0
                             };
@@ -183,7 +227,6 @@
                             args.grid._renderCells($totalRow, total);
 
                             args.grid._content.append($totalRow);
-                            console.log(total);
                         },
                         controller: {
                             loadData: function(filter) {
@@ -264,7 +307,7 @@
                         editing: true,
                         sorting: true,
                         paging: true,
-                        filtering: true,
+                        filtering: false,
                         autoload:   true,
                         fields: [
                             { name: "id", css: "hide", width: 0},
@@ -289,21 +332,64 @@
                                 name: "estimation_time",
                                 type: "number",
                                 sorting: false,
-                                title: "Estimation Time"
+                                title: "Est. Time",
+                                width: 75,
+                                validate: {
+                                    validator: "time"
+                                }
                             },
                             {
-                                type: "control"
+                                name: "action",
+                                width: 130,
+                                itemTemplate: function(value, item) {
+                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+                                    var timer = new easytimer.Timer();
+                                    var $startButton = $("<button>")
+                                        .text('Start')
+                                        .addClass('btn btn-sm btn-primary')
+                                        .click(function(e) {
+                                            timer.start();
+                                            timer.addEventListener('secondsUpdated', function (e) {
+                                                $('#time_'+item.id).html(timer.getTimeValues().toString());
+                                            });
+                                            e.stopPropagation();
+                                    });
+                                    var $pauseButton = $("<button>")
+                                        // .attr('disabled',"true")
+                                        .text('Pause')
+                                        .addClass('btn btn-sm btn-warning')
+                                        .click(function(e) {
+                                            timer.pause();
+                                            e.stopPropagation();
+                                    });
+                                    var $finishButton = $("<button>")
+                                        .text('Finish')
+                                        .addClass('btn btn-sm btn-danger')
+                                        .click(function(e) {
+                                            timer.stop();
+                                            e.stopPropagation();
+                                    });
+                                    return  $result.add($startButton)
+                                            .add($finishButton)
+                                            .add($pauseButton);
+
+                                }
                             },
-                            // {
-                            //     width: 80,
-                            //     align:'center',
-                            //     headerTemplate: function() {
-                            //     return "<th class='jsgrid-header-cell'>Sum</th>";
-                            //     },
-                            //     itemTemplate: function(value, item) {
-                            //     return item.estimation_time;
-                            //     }
-                            // }
+                            {
+                                name: 'time',
+                                width: 60,
+                                itemTemplate: function(value, item) {
+                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>");
+                                    return  $result.add($time);
+
+                                }
+                            },
+                            {
+                                type: "control",
+                                width: 100,
+
+                            }
                         ],
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
@@ -321,7 +407,6 @@
                             args.grid._renderCells($totalRow, total);
 
                             args.grid._content.append($totalRow);
-                            console.log(total);
                         },
                         controller: {
                             loadData: function(filter) {
@@ -396,7 +481,7 @@
                         editing: true,
                         sorting: true,
                         paging: true,
-                        filtering: true,
+                        filtering: false,
                         autoload:   true,
                         fields: [
                             { name: "id", css: "hide", width: 0},
@@ -421,21 +506,64 @@
                                 name: "estimation_time",
                                 type: "number",
                                 sorting: false,
-                                title: "Estimation Time"
+                                title: "Est. Time",
+                                width: 75,
+                                validate: {
+                                    validator: "time"
+                                }
                             },
                             {
-                                type: "control"
+                                name: "action",
+                                width: 130,
+                                itemTemplate: function(value, item) {
+                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+                                    var timer = new easytimer.Timer();
+                                    var $startButton = $("<button>")
+                                        .text('Start')
+                                        .addClass('btn btn-sm btn-primary')
+                                        .click(function(e) {
+                                            timer.start();
+                                            timer.addEventListener('secondsUpdated', function (e) {
+                                                $('#time_'+item.id).html(timer.getTimeValues().toString());
+                                            });
+                                            e.stopPropagation();
+                                    });
+                                    var $pauseButton = $("<button>")
+                                        // .attr('disabled',"true")
+                                        .text('Pause')
+                                        .addClass('btn btn-sm btn-warning')
+                                        .click(function(e) {
+                                            timer.pause();
+                                            e.stopPropagation();
+                                    });
+                                    var $finishButton = $("<button>")
+                                        .text('Finish')
+                                        .addClass('btn btn-sm btn-danger')
+                                        .click(function(e) {
+                                            timer.stop();
+                                            e.stopPropagation();
+                                    });
+                                    return  $result.add($startButton)
+                                            .add($finishButton)
+                                            .add($pauseButton);
+
+                                }
                             },
-                            // {
-                            //     width: 80,
-                            //     align:'center',
-                            //     headerTemplate: function() {
-                            //     return "<th class='jsgrid-header-cell'>Sum</th>";
-                            //     },
-                            //     itemTemplate: function(value, item) {
-                            //     return item.estimation_time;
-                            //     }
-                            // }
+                            {
+                                name: 'time',
+                                width: 60,
+                                itemTemplate: function(value, item) {
+                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>");
+                                    return  $result.add($time);
+
+                                }
+                            },
+                            {
+                                type: "control",
+                                width: 100,
+
+                            }
                         ],
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
@@ -453,7 +581,6 @@
                             args.grid._renderCells($totalRow, total);
 
                             args.grid._content.append($totalRow);
-                            console.log(total);
                         },
                         controller: {
                             loadData: function(filter) {
