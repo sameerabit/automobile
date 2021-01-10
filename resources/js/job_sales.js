@@ -114,6 +114,7 @@
                                     sorting: false,
                                     title: "Qty",
                                     width: 100,
+                                    validate: "required"
                                 },
                                 {
                                     name: "price",
@@ -121,6 +122,7 @@
                                     sorting: false,
                                     title: "Price",
                                     width: 100,
+                                    validate: "required"
                                 },
                                 {
                                     name: "return_qty",

@@ -201,13 +201,15 @@ $(function () {
         type: "number",
         sorting: false,
         title: "Qty",
-        width: 100
+        width: 100,
+        validate: "required"
       }, {
         name: "price",
         type: "number",
         sorting: false,
         title: "Price",
-        width: 100
+        width: 100,
+        validate: "required"
       }, {
         name: "return_qty",
         type: "number",
