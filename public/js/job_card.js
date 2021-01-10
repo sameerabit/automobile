@@ -242,16 +242,17 @@ $(function () {
               timeArr = res.time.split(":");
               timer.start({
                 startValues: {
-                  seconds: timeArr[3],
-                  minutes: timeArr[2],
-                  hours: timeArr[0],
-                  days: res.days
+                  days: parseInt(res.days),
+                  hours: parseInt(timeArr[0]),
+                  minutes: parseInt(timeArr[1]),
+                  seconds: parseInt(timeArr[2])
                 }
               });
             });
             updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'start');
             timer.addEventListener('secondsUpdated', function (e) {
-              $('#time_' + item.id).html(timer.getTimeValues().days + ' ' + timer.getTimeValues().toString());
+              $('#time_' + item.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
+              updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'start');
             });
             e.stopPropagation();
           });
@@ -261,10 +262,10 @@ $(function () {
             updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'pause');
             e.stopPropagation();
           });
-          var $finishButton = $("<button>").text('Finish').addClass('btn btn-sm btn-danger').click(function (e) {
+          var $finishButton = $("<button>").text('Reset').addClass('btn btn-sm btn-danger').click(function (e) {
             console.log(timer);
-            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'stop');
             timer.stop();
+            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'stop');
             e.stopPropagation();
           });
           return $result.add($startButton).add($finishButton).add($pauseButton);
