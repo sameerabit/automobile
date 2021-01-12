@@ -59,7 +59,8 @@
                                       <p>Products</p>
                                     </a>
                                   </li>
-                                  <li class="nav-item">
+                                  
+                                    <li class="nav-item">
                                       <a href="{{ route('units.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Units</p>
@@ -142,6 +143,37 @@
 
                               </ul>
                             </li>
+
+                            <li class="nav-item has-treeview">
+                              <a href="#" class="nav-link">
+                                  <i class="fas fa-car-side"></i>
+                                <p>
+                                    Insurance Claim
+                                  <i class="fas fa-angle-left right"></i>
+                                  <span class="badge badge-info right"></span>
+                                </p>
+                              </a>
+                              <ul class="nav nav-treeview">
+                                
+                                <li class="nav-item">
+                                      <a href="{{ route('insurance_companies.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Companies</p>
+                                      </a>
+                                  <a href="{{ route('insurance_claim.index') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>List</p>
+                                  </a>
+                                  <a href="{{ route('insurance_claim.create') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>Create New</p>
+                                  </a>
+                                </li>
+
+                              </ul>
+                            </li>
+
+
                           </ul>
                         </nav>
                         <!-- /.sidebar-menu -->

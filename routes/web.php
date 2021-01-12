@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Route;
     Route::resource('categories', 'CategoryController');
     Route::resource('vehicles', 'VehicleController');
     Route::resource('employees', 'EmployeeController');
+    Route::resource('insurance_companies', 'InsuranceCompanyController');
+
     Route::get('employees-json', 'EmployeeController@allJson');
 
 
@@ -41,9 +43,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('supplier-return-details/{return_id}', 'SupplierReturn\SupplierReturnController@getSupplierReturnDetails');
 
 
-    Route::get('job-cards/create','JobCard\JobCardController@create')->name('job-cards.create');
-    Route::post('job-cards','JobCard\JobCardController@store')->name('job-cards.store');
-    Route::post('job-card-details','JobCard\JobCardDetailController@store')->name('job-cards-details.store');
+    Route::get('job-cards/create', 'JobCard\JobCardController@create')->name('job-cards.create');
+    Route::post('job-cards', 'JobCard\JobCardController@store')->name('job-cards.store');
+    Route::post('job-card-details', 'JobCard\JobCardDetailController@store')->name('job-cards-details.store');
 
     Route::get('job-cards/{job_card_id}/details','JobCard\JobCardDetailController@getJobDetailsFromJobCardId')->name('job_cards.job_card_details');
     Route::delete('job-card-detail/{job_card_detail}','JobCard\JobCardDetailController@destroy')->name('job_card_detail.delete');
@@ -63,3 +65,6 @@ use Illuminate\Support\Facades\Route;
     Route::delete('job-sales/{job_sale}','JobSale\JobSaleController@delete')->name('job_sales.delete');
 
     Route::get('bookings','Booking\BookingController@index')->name('booking.index');
+
+    Route::get('insurance-claims','InsuranceClaim\InsuranceClaimController@index')->name('insurance_claim.index');
+    Route::get('insurance-claims/create', 'InsuranceClaim\InsuranceClaimController@create')->name('insurance_claim.create');
