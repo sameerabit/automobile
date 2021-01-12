@@ -16,7 +16,7 @@ class CreateInsuranceClaimsTable extends Migration
         Schema::create('insurance_claims', function (Blueprint $table) {
             $table->id();
             $table->integer('vehicle_id');
-            $table->string('company_name');
+            $table->integer('company_id');
             $table->string('agent_name');
             $table->date('date');
             $table->string('phone_1');

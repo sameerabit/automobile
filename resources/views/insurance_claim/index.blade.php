@@ -45,8 +45,8 @@
                             <td>{{ $insuranceClaim->agent_name }}</td>
                             <td>{{ $insuranceClaim->date }}</td>
                             <td class="d-flex">
-                                <a class="btn btn-warning btn-sm m-auto" href="{{ route('job_cards.edit',$insuranceClaim->id) }}"><i class="fas fa-edit"></i>Edit</a>
-                                <form action="{{ route('job_cards.destroy',$jobCard->id) }}"
+                                <a class="btn btn-warning btn-sm m-auto" href="{{ route('insurance_claim.edit',$insuranceClaim->id) }}"><i class="fas fa-edit"></i>Edit</a>
+                                <form action="{{ route('insurance_claim.destroy',$insuranceClaim->id) }}"
                                     method="POST" class="form form-inline js-confirm">
                                   {{ method_field('delete') }}
                                   @csrf

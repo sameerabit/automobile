@@ -29,14 +29,6 @@
             display:  none
         }
 
-        tr th:nth-child(5),tr td:nth-child(5){
-            display:none;
-        }
-
-        tr th:nth-child(6),tr td:nth-child(6){
-            display:none;
-        }
-
 
     </style>
 @endpush
@@ -71,41 +63,34 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="date">Date</label>
-                                <input type="date" class="form-control" id="jobDate" placeholder="Job Date"
+                                <input type="date" class="form-control" id="date" placeholder="Job Date"
                                     value="{{ date('Y-m-d') }}">
                                 <input type="hidden" id="insurance_claim_id">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="vehicle">Company</label>
-                                <select id="vehicle_id" class="form-control">
-                                    @foreach($vehicles as $vehicle)
-                                        <option value="{{ $vehicle->id }}">{{ $vehicle->reg_no }}</option>
+                                <label for="company">Company</label>
+                                <select id="company_id" class="form-control">
+                                    @foreach($insurance_companies as $company)
+                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="date">Date</label>
-                                <input type="date" class="form-control" id="jobDate" placeholder="Job Date"
-                                    value="{{ date('Y-m-d') }}">
+                                <label for="date">Agent</label>
+                                <input type="text" id="agent_name" name="agent_name" class="form-control">
                                 <input type="hidden" id="insurance_claim_id">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="vehicle">Vehicle</label>
-                                <select id="vehicle_id" class="form-control">
-                                    @foreach($vehicles as $vehicle)
-                                        <option value="{{ $vehicle->id }}">{{ $vehicle->reg_no }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="vehicle">Phone 1</label>
+                                <input type="text" id="phone_1" name="phone_1" class="form-control">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="date">Date</label>
-                                <input type="date" class="form-control" id="jobDate" placeholder="Job Date"
-                                    value="{{ date('Y-m-d') }}">
-                                <input type="hidden" id="insurance_claim_id">
+                                <label for="date">Phone 2</label>
+                                <input type="text" id="phone_1" name="phone_1" class="form-control">
                             </div>
                         </div>
                         <div class="row py-2">
@@ -113,8 +98,8 @@
                                 <button type="button" class="btn btn-md btn-primary" id="saveRecord">Save</button>
                             </div>
                         </div>
-                        <div id="timesheet">
-                        <div class="my-2" id="mechanicJsGrid"></div>
+                        <div id="details">
+                        <div class="my-2" id="claimsJsGrid"></div>
                         <div class="row py-2">
                     </div>
                     </div>

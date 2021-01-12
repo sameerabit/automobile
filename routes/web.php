@@ -68,3 +68,12 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('insurance-claims','InsuranceClaim\InsuranceClaimController@index')->name('insurance_claim.index');
     Route::get('insurance-claims/create', 'InsuranceClaim\InsuranceClaimController@create')->name('insurance_claim.create');
+    Route::post('insurance-claims', 'InsuranceClaim\InsuranceClaimController@store')->name('insurance_claim.store');
+    Route::get('insurance-claims/{insurance-claim}/edit','InsuranceClaim\InsuranceClaimController@edit')->name('insurance_claim.edit');
+    Route::delete('insurance-claims/{insurance-claim}','InsuranceClaim\InsuranceClaimController@destroy')->name('insurance_claim.destroy');
+
+
+    Route::get('insurance-claim-details/{insurance_claim_id}/details', 'InsuranceClaim\InsuranceClaimDetailsController@getInsuranceClaimDetailsFromInsuranceClaimId')->name('insurance_claim.insurance_claim_details');
+    Route::delete('insurance-claim-details/{insurance_claims_detail}', 'InsuranceClaim\InsuranceClaimDetailsController@destroy')->name('insurance_claim_detail.delete');
+    Route::put('insurance-claim-details/{insurance_claims_detail}', 'InsuranceClaim\InsuranceClaimDetailsController@update')->name('insurance_claim_detail.update');
+    Route::post('insurance-claim-details', 'InsuranceClaim\InsuranceClaimDetailsController@store')->name('jinsurance_claim_detail.store');

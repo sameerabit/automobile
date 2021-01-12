@@ -15,6 +15,7 @@ class CreateInsuranceClaimDetailsTable extends Migration
     {
         Schema::create('insurance_claim_details', function (Blueprint $table) {
             $table->id();
+            $table->integer('insurance_claim_id');
             $table->text('item');
             $table->double('est_cost');
             $table->double('actual_cost');

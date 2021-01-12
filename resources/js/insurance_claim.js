@@ -1,7 +1,8 @@
 
             $(function() {
-                $('#timesheet').hide();
+                // $('#details').hide();
                 $('#vehicle_id').select2();
+                loadGrid();
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -19,22 +20,31 @@
                 var employees;
 
                 $('#saveRecord').on('click',function(){
-                    var jobDate = $('#jobDate').val();
+                    var date = $('#date').val();
                     var vehicle_id = $('#vehicle_id').val();
+                    var company_id = $('#company_id').val();
+                    var agent_name = $('#agent_name').val();
+                    var phone_1 = $('#phone_1').val();
+                    var phone_2 = $('#phone_2').val();
+
                     $.ajax({
                         type: "POST",
                         headers: {
                             "X-CSRF-TOKEN": $('input[name=_token]').val()
                         },
-                        url: '/job-cards',
+                        url: '/insurance-claims',
                         data: {
                             vehicle_id : vehicle_id,
-                            date : jobDate
+                            date : date,
+                            company_id: company_id,
+                            agent_name: agent_name,
+                            phone_1: phone_1,
+                            phone_2: phone_2
                         },
                         success: function(response) {
-                            $('#job_card_id').val(response.id);
+                            $('#insurance_claim_id').val(response.id);
                             if(response.id){
-                                $('#timesheet').show();
+                                $('#details').show();
                                 $('#saveRecord').hide();
                             }
                         },
@@ -45,75 +55,9 @@
                     });
                 });
 
-                $.ajax({
-                    type: "GET",
-                    headers: {
-                        "X-CSRF-TOKEN": $('input[name=_token]').val()
-                    },
-                    url: '/employees-json',
-                    success: function(response) {
-                        employees = response.items;
-                        if (employees.length > 0) {
-                            loadGrid();
-                        }
-                    },
-                    error: function(response) {
-
-                    },
-                    dataType: 'json'
-                });
-
-                clients = [];
-
-                jsGrid.validators.time = {
-                    message: "Please enter a valid time estimation",
-                    validator: function(value, item) {
-                        return /^[1-9]+[0-9]*$/.test(value);
-                    }
-                }
-
-                function updateTimeEvents(taskId,days,time,state) {
-                    return $.ajax({
-                        type: "PUT",
-                        headers: {
-                            "X-CSRF-TOKEN": $('input[name=_token]').val()
-                        },
-                        data: {
-                            days: days,
-                            time: time,
-                            state:state
-                        },
-                        url: '/job-card-detail/'+taskId+'/update-time',
-                        success: function(response) {
-                            return response;
-                        },
-                        error: function(response) {
-    
-                        },
-                        dataType: 'json'
-                    });
-                }
-
-                function getJobDetail(job_detail_id) {
-                    return $.ajax({
-                        type: "GET",
-                        headers: {
-                            "X-CSRF-TOKEN": $('input[name=_token]').val()
-                        },
-                        url: '/job-card-detail/'+job_detail_id+'/json',
-                        success: function(response) {
-                          return response;
-                        },
-                        error: function(response) {
-    
-                        },
-                        dataType: 'json'
-                    });
-                }
-
 
                 function loadGrid() {
-                    $("#mechanicJsGrid").jsGrid({
+                    $("#claimsJsGrid").jsGrid({
                         width: "100%",
                         height: "400px",
                         inserting: true,
@@ -125,100 +69,42 @@
                         fields: [
                             { name: "id", css: "hide", width: 0},
                             {
-                                name: "employee_id",
-                                type: "select",
-                                items: employees,
-                                valueField: "id",
-                                textField: "name",
-                                title: "Employee Name",
+                                name: "item",
+                                type: "text",
+                                title: "Item",
                                 autosearch: true,
                                 width: 100,
                             },
                             {
-                                name: "job_desc",
-                                type: "textarea",
-                                width: 250,
-                                validate: "required",
-                                title: "Job Description"
-                            },
-                            {
-                                name: "estimation_time",
+                                name: "est_cost",
                                 type: "number",
                                 sorting: false,
-                                title: "Est. Time",
+                                title: "Est. Cost",
                                 width: 75,
-                                validate: {
-                                    validator: "time"
-                                }
+                                // validate: {
+                                //     validator: "time"
+                                // }
                             },
                             {
-                                name: "action",
-                                width: 130,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var timer = new easytimer.Timer();
-                                    var $startButton = $("<button>")
-                                        .text('Start')
-                                        .addClass('btn btn-sm btn-primary')
-                                        .click(function(e) {
-                                            console.log(timer);
-                                            $.when(getJobDetail(item.id)).done(function(res){
-                                                timeArr = res.time.split(":");
-                                                timer.start(
-                                                    {startValues: 
-                                                        {
-                                                            days:parseInt(res.days),
-                                                            hours:parseInt(timeArr[0]),
-                                                            minutes:parseInt(timeArr[1]),
-                                                            seconds: parseInt(timeArr[2])
-                                                        }});
-                                            });
-                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'start' );
-                                            timer.addEventListener('secondsUpdated', function (e) {
-                                                $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                                updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'start' );
-                                            });
-                                            e.stopPropagation();
-                                    });
-                                    var $pauseButton = $("<button>")
-                                        // .attr('disabled',"true")
-                                        .text('Pause')
-                                        .addClass('btn btn-sm btn-warning')
-                                        .click(function(e) {
-                                            timer.pause();
-                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'pause' );
-                                            e.stopPropagation();
-                                    });
-                                    var $finishButton = $("<button>")
-                                        .text('Reset')
-                                        .addClass('btn btn-sm btn-danger')
-                                        .click(function(e) {
-                                            console.log(timer);
-                                            timer.stop();
-                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'stop' );
-                                            e.stopPropagation();
-                                    });
-                                    return  $result.add($startButton)
-                                            .add($finishButton)
-                                            .add($pauseButton);
-
-                                }
+                                name: "actual_cost",
+                                type: "number",
+                                sorting: false,
+                                title: "Act. Cost",
+                                width: 75,
+                                // validate: {
+                                //     validator: "time"
+                                // }
                             },
                             {
-                                name: 'time',
-                                width: 60,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    time = value ? value : '';
-                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
-                                    return  $result.add($time);
-
-                                }
+                                name: "reason",
+                                type: "textarea",
+                                width: 300,
+                                validate: "required",
+                                title: "Reason"
                             },
                             {
                                 type: "control",
                                 width: 100,
-
                             }
                         ],
                         onRefreshed: function(args) {
@@ -228,7 +114,7 @@
                             };
 
                             items.forEach(function(item) {
-                            total.estimation_time += item.estimation_time;
+                                total.estimation_time += item.estimation_time;
                             });
                             var $totalRow = $("<tr colspan='4'>").addClass("total-row");
 
@@ -238,12 +124,12 @@
                         },
                         controller: {
                             loadData: function(filter) {
-                                if($('#job_card_id').val()){
+                                if($('#insurance_claim_id').val()){
                                     var deferred = $.Deferred();
                                     filter["type"] = 1;
                                     $.ajax({
                                         type: "GET",
-                                        url: "/job-cards/"+$('#job_card_id').val()+"/details",
+                                        url: "/insurance_cliam/"+$('#insurance_claim_id').val()+"/details",
                                         data: filter,
                                         success: function(response) {
                                             deferred.resolve(response);
@@ -254,21 +140,20 @@
 
                             },
                             insertItem: function(item) {
-                                $jobCardId = $('#job_card_id').val();
-
+                                insurance_claim_id = $('#insurance_claim_id').val();
                                 var data = {
-                                        employee_id : item.employee_id,
-                                        job_desc : item.job_desc,
-                                        estimation_time :  item.estimation_time,
-                                        job_card_id : $('#job_card_id').val(),
-                                        type : 1
+                                        item : item.item,
+                                        reason : item.reason,
+                                        est_cost  :  item.est_cost,
+                                        actual_cost  :  item.actual_cost,
+                                        insurance_claim_id : insurance_claim_id,
                                     };
                                 res =  $.ajax({
                                     type: "POST",
                                     headers: {
                                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                                     },
-                                    url: "/job-card-details",
+                                    url: "/insurance-claim-details",
                                     data: data,
                                     success: function(){
                                         Toast.fire({
@@ -277,7 +162,7 @@
                                         })
                                     }
                                 });
-                                $("#mechanicJsGrid").jsGrid("loadData");
+                                $("#claimJsGrid").jsGrid("loadData");
                                 return res;
                             },
                             updateItem: function(item) {
@@ -286,10 +171,10 @@
                                     headers: {
                                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                                     },
-                                    url: "/job-card-detail/"+item.id,
+                                    url: "/insurance-claim-details/"+item.id,
                                     data: item
                                 });
-                                $("#mechanicJsGrid").jsGrid("loadData");
+                                $("#claimJsGrid").jsGrid("loadData");
                                 return res;
 
                             },
@@ -299,361 +184,13 @@
                                     headers: {
                                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                                     },
-                                    url: "/job-card-detail/"+item.id,
+                                    url: "/insurance-claim-details/"+item.id,
                                     data: item
                                 });
                             }
                         },
                     });
                     
-
-                    //tinkering
-                    $("#tinkeringJsGrid").jsGrid({
-                        width: "100%",
-                        height: "400px",
-                        inserting: true,
-                        editing: true,
-                        sorting: true,
-                        paging: true,
-                        filtering: false,
-                        autoload:   true,
-                        fields: [
-                            { name: "id", css: "hide", width: 0},
-                            {
-                                name: "employee_id",
-                                type: "select",
-                                items: employees,
-                                valueField: "id",
-                                textField: "name",
-                                title: "Employee Name",
-                                autosearch: true,
-                                width: 200,
-                            },
-                            {
-                                name: "job_desc",
-                                type: "textarea",
-                                width: 150,
-                                validate: "required",
-                                title: "Job Description"
-                            },
-                            {
-                                name: "estimation_time",
-                                type: "number",
-                                sorting: false,
-                                title: "Est. Time",
-                                width: 75,
-                                validate: {
-                                    validator: "time"
-                                }
-                            },
-                            {
-                                name: "action",
-                                width: 130,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var timer = new easytimer.Timer();
-                                    var $startButton = $("<button>")
-                                        .text('Start')
-                                        .addClass('btn btn-sm btn-primary')
-                                        .click(function(e) {
-                                            timer.start();
-                                            timer.addEventListener('secondsUpdated', function (e) {
-                                                $('#time_'+item.id).html(timer.getTimeValues().toString());
-                                            });
-                                            e.stopPropagation();
-                                    });
-                                    var $pauseButton = $("<button>")
-                                        // .attr('disabled',"true")
-                                        .text('Pause')
-                                        .addClass('btn btn-sm btn-warning')
-                                        .click(function(e) {
-                                            timer.pause();
-                                            e.stopPropagation();
-                                    });
-                                    var $finishButton = $("<button>")
-                                        .text('Finish')
-                                        .addClass('btn btn-sm btn-danger')
-                                        .click(function(e) {
-                                            timer.stop();
-                                            e.stopPropagation();
-                                    });
-                                    return  $result.add($startButton)
-                                            .add($finishButton)
-                                            .add($pauseButton);
-
-                                }
-                            },
-                            {
-                                name: 'time',
-                                width: 60,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>");
-                                    return  $result.add($time);
-
-                                }
-                            },
-                            {
-                                type: "control",
-                                width: 100,
-
-                            }
-                        ],
-                        onRefreshed: function(args) {
-                            var items = args.grid.option("data");
-                            var total = {
-                             employee_id: "Total",
-                             "job_desc": "Total",
-                             estimation_time: 0
-                            };
-
-                            items.forEach(function(item) {
-                            total.estimation_time += item.estimation_time;
-                            });
-                            var $totalRow = $("<tr>").addClass("total-row");
-
-                            args.grid._renderCells($totalRow, total);
-
-                            args.grid._content.append($totalRow);
-                        },
-                        controller: {
-                            loadData: function(filter) {
-                                if($('#job_card_id').val()){
-                                    var deferred = $.Deferred();
-                                    filter["type"] = 2;
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/job-cards/"+$('#job_card_id').val()+"/details",
-                                        data: filter,
-                                        success: function(response) {
-                                            deferred.resolve(response);
-                                        }
-                                    });
-                                    return deferred.promise();
-                                }
-
-                            },
-                            insertItem: function(item) {
-                                $jobCardId = $('#job_card_id').val();
-
-                                var data = {
-                                        employee_id : item.employee_id,
-                                        job_desc : item.job_desc,
-                                        estimation_time :  item.estimation_time,
-                                        job_card_id : $('#job_card_id').val(),
-                                        type : 2
-                                    };
-                                res =  $.ajax({
-                                    type: "POST",
-                                    headers: {
-                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
-                                    },
-                                    url: "/job-card-details",
-                                    data: data
-                                });
-                                $("#tinkeringJsGrid").jsGrid("loadData");
-                                return res;
-                            },
-                            updateItem: function(item) {
-                                 res = $.ajax({
-                                    type: "PUT",
-                                    headers: {
-                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
-                                    },
-                                    url: "/job-card-detail/"+item.id,
-                                    data: item
-                                });
-                                $("#tinkeringJsGrid").jsGrid("loadData");
-                                return res;
-
-                            },
-                            deleteItem: function(item) {
-                                return $.ajax({
-                                    type: "DELETE",
-                                    headers: {
-                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
-                                    },
-                                    url: "/job-card-detail/"+item.id,
-                                    data: item
-                                });
-                            }
-                        },
-                    });
-
-                    //service
-
-                    $("#serviceJsGrid").jsGrid({
-                        width: "100%",
-                        height: "400px",
-                        inserting: true,
-                        editing: true,
-                        sorting: true,
-                        paging: true,
-                        filtering: false,
-                        autoload:   true,
-                        fields: [
-                            { name: "id", css: "hide", width: 0},
-                            {
-                                name: "employee_id",
-                                type: "select",
-                                items: employees,
-                                valueField: "id",
-                                textField: "name",
-                                title: "Employee Name",
-                                autosearch: true,
-                                width: 200,
-                            },
-                            {
-                                name: "job_desc",
-                                type: "textarea",
-                                width: 150,
-                                validate: "required",
-                                title: "Job Description"
-                            },
-                            {
-                                name: "estimation_time",
-                                type: "number",
-                                sorting: false,
-                                title: "Est. Time",
-                                width: 75,
-                                validate: {
-                                    validator: "time"
-                                }
-                            },
-                            {
-                                name: "action",
-                                width: 130,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var timer = new easytimer.Timer();
-                                    var $startButton = $("<button>")
-                                        .text('Start')
-                                        .addClass('btn btn-sm btn-primary')
-                                        .click(function(e) {
-                                            timer.start();
-                                            timer.addEventListener('secondsUpdated', function (e) {
-                                                $('#time_'+item.id).html(timer.getTimeValues().toString());
-                                            });
-                                            e.stopPropagation();
-                                    });
-                                    var $pauseButton = $("<button>")
-                                        // .attr('disabled',"true")
-                                        .text('Pause')
-                                        .addClass('btn btn-sm btn-warning')
-                                        .click(function(e) {
-                                            timer.pause();
-                                            e.stopPropagation();
-                                    });
-                                    var $finishButton = $("<button>")
-                                        .text('Finish')
-                                        .addClass('btn btn-sm btn-danger')
-                                        .click(function(e) {
-                                            timer.stop();
-                                            e.stopPropagation();
-                                    });
-                                    return  $result.add($startButton)
-                                            .add($finishButton)
-                                            .add($pauseButton);
-
-                                }
-                            },
-                            {
-                                name: 'time',
-                                width: 60,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>");
-                                    return  $result.add($time);
-
-                                }
-                            },
-                            {
-                                type: "control",
-                                width: 100,
-
-                            }
-                        ],
-                        onRefreshed: function(args) {
-                            var items = args.grid.option("data");
-                            var total = {
-                             employee_id: "Total",
-                             "job_desc": "Total",
-                             estimation_time: 0
-                            };
-
-                            items.forEach(function(item) {
-                            total.estimation_time += item.estimation_time;
-                            });
-                            var $totalRow = $("<tr>").addClass("total-row");
-
-                            args.grid._renderCells($totalRow, total);
-
-                            args.grid._content.append($totalRow);
-                        },
-                        controller: {
-                            loadData: function(filter) {
-                                if($('#job_card_id').val()){
-                                    var deferred = $.Deferred();
-                                    filter["type"] = 3;
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/job-cards/"+$('#job_card_id').val()+"/details",
-                                        data: filter,
-                                        success: function(response) {
-                                            deferred.resolve(response);
-                                        }
-                                    });
-                                    return deferred.promise();
-                                }
-
-                            },
-                            insertItem: function(item) {
-                                $jobCardId = $('#job_card_id').val();
-
-                                var data = {
-                                        employee_id : item.employee_id,
-                                        job_desc : item.job_desc,
-                                        estimation_time :  item.estimation_time,
-                                        job_card_id : $('#job_card_id').val(),
-                                        type : 3
-                                    };
-                                res =  $.ajax({
-                                    type: "POST",
-                                    headers: {
-                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
-                                    },
-                                    url: "/job-card-details",
-                                    data: data
-                                });
-                                $("#serviceJsGrid").jsGrid("loadData");
-                                return res;
-                            },
-                            updateItem: function(item) {
-                                 res = $.ajax({
-                                    type: "PUT",
-                                    headers: {
-                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
-                                    },
-                                    url: "/job-card-detail/"+item.id,
-                                    data: item
-                                });
-                                $("#serviceJsGrid").jsGrid("loadData");
-                                return res;
-
-                            },
-                            deleteItem: function(item) {
-                                return $.ajax({
-                                    type: "DELETE",
-                                    headers: {
-                                        "X-CSRF-TOKEN": $('input[name=_token]').val()
-                                    },
-                                    url: "/job-card-detail/"+item.id,
-                                    data: item
-                                });
-                            }
-                        },
-                    });
-
                 }
 
 

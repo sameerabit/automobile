@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\InsuranceClaim;
 
-use App\Http\Controllers\Controller;
-use App\InsuranceClaim;
 use App\Vehicle;
+use App\InsuranceClaim;
+use App\InsuranceCompany;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class InsuranceClaimController extends Controller
 {
 
     public function create()
     {
+        $insuranceCompanies = InsuranceCompany::all();
         $vehicles = Vehicle::all();
         return view('insurance_claim.create',[
-            'vehicles' => $vehicles
+            'vehicles' => $vehicles,
+            'insurance_companies' => $insuranceCompanies
         ]);
     }
 

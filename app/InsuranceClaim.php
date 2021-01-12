@@ -9,7 +9,7 @@ class InsuranceClaim extends Model
 
     protected $fillable = [
        'vehicle_id',
-       'company_name',
+       'company_id',
        'agent_name',
        'date',
        'phone_1',
@@ -18,5 +18,13 @@ class InsuranceClaim extends Model
 
     public function details(){
         return $this->hasMany(InsuranceClaimDetail::class);
+    }
+
+    public function vehicle(){
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    public function company(){
+        return $this->belongsTo(Company::class);
     }
 }

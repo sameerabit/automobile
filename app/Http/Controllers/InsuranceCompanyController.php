@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\InsuranceCompany;
+use App\Vehicle;
 use Illuminate\Http\Request;
 
 class InsuranceCompanyController extends Controller
@@ -32,6 +33,7 @@ class InsuranceCompanyController extends Controller
      */
     public function create()
     {
+       
         $insurance_company = new InsuranceCompany();
         return view('insurance_company.create',[
             'insurance_company' => $insurance_company
