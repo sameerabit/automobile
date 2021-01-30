@@ -270,6 +270,10 @@
     border-color: red !important;
   }
 
+  body {
+    background-image: url('uploads/background.jpg');
+  }
+
 </style>
 @stack('scripts')
 </body>

@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card card-secondary">
     <div class="card-header">
-      <h3 class="card-title">Show Supplier</h3>
+      <h3 class="card-title">Show/Edit Supplier</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->
