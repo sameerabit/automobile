@@ -17,7 +17,7 @@
 
                       </div>
                       <div class="col-5">
-                          <input type="text" class="form-control" name="q" placeholder=" Search by Name & Phone">
+                          <input type="text" class="form-control" name="q" placeholder=" Search by Name">
                       </div>
                       <div class="col-1">
                         <input type="submit" class="btn btn-primary" value="Search">

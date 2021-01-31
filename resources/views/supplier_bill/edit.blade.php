@@ -36,6 +36,7 @@
                             <div class="form-group">
                                 <label for="bill_image">Bill Image</label>
                                 <input type="file" class="form-control-file" id="bill_image">
+                                <a href="{{ asset('public/$supplierBill->image_url') }}" >Download</a>
                             </div>
                     </div>
                     <div class="form-row">

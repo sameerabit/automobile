@@ -25,13 +25,10 @@
             right: 7px;
         }
 
-        .total-row .jsgrid-cell .btn {
-            display: none;
+        .total-row button {
+            display:  none
         }
 
-        .select2 {
-            width: 100% !important;
-        }
 
     </style>
 @endpush
@@ -41,11 +38,11 @@
         <div class="row py-2">
             <div class="col-md-12">
                 <div class="card">
-                    <form action="{{ route('units.index') }}">
+                    <form action="{{ route('insurance_claim.index') }}">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6">
-                                    <h3 class="card-title">Edit Job Card</h3>
+                                    <h3 class="card-title">Insurance Claim</h3>
 
                                 </div>
                             </div>
@@ -60,69 +57,52 @@
                                 <label for="vehicle">Vehicle</label>
                                 <select id="vehicle_id" class="form-control">
                                     @foreach($vehicles as $vehicle)
-                                        <option @if($jobCard->vehicle_id == $vehicle->id) selected @endif value="{{ $vehicle->id }}">{{ $vehicle->reg_no }}</option>
+                                        <option @if($vehicle->id == $insuranceClaim->vehicle_id) selected @endif value="{{ $vehicle->id }}">{{ $vehicle->reg_no }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="date">Date</label>
-                                <input type="date" class="form-control" id="jobDate" placeholder="Job Date"
-                                    value="{{ $jobCard->date }}">
-                                     <input type="hidden" id="job_card_id" value="{{ $jobCard->id }}">
+                                <input type="date" class="form-control" id="date" placeholder="Job Date"
+                                    value="{{ $insuranceClaim->date }}">
+                                <input type="hidden" id="insurance_claim_id" value="{{ $insuranceClaim->id }}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="company">Company</label>
+                                <select id="company_id" class="form-control">
+                                    @foreach($insurance_companies as $company)
+                                        <option @if($company->id == $insuranceClaim->company_id) selected @endif value="{{ $company->id }}">{{ $company->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="date">Agent</label>
+                                <input type="text" id="agent_name" name="agent_name" class="form-control" value="{{ $insuranceClaim->agent_name }}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="vehicle">Phone 1</label>
+                                <input type="text" id="phone_1" name="phone_1" class="form-control" value="{{ $insuranceClaim->phone_1 }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="date">Phone 2</label>
+                                <input type="text" id="phone_1" name="phone_1" class="form-control" value="{{ $insuranceClaim->phone_2 }}">
                             </div>
                         </div>
                         <div class="row py-2">
-                            <div class="col text-left">
-                                <button type="button" class="btn btn-sm btn-primary mx-3" id="saveRecord">Save</button>
+                            <div class="col text-right">
+                                <button type="button" class="btn btn-md btn-primary" id="saveRecord">Save</button>
                             </div>
                         </div>
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-mechanic-tab" data-toggle="tab" href="#nav-mechanic"
-                                    role="tab" aria-controls="nav-mechanic" aria-selected="true">Mechanical Repair &
-                                    Electrical</a>
-                                <a class="nav-item nav-link" id="nav-service-tab" data-toggle="tab" href="#nav-service"
-                                    role="tab" aria-controls="nav-service" aria-selected="false">Service</a>
-                                <a class="nav-item nav-link" id="nav-tinkering-tab" data-toggle="tab" href="#nav-tinkering"
-                                    role="tab" aria-controls="nav-tinkering" aria-selected="false">Tinkering & Painting</a>
-                            </div>
-                        </nav>
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-mechanic" role="tabpanel"
-                                aria-labelledby="nav-mechanic-tab">
-                                <button type="button" class="btn btn-primary mx-2 my-2 float-right" data-toggle="modal" data-target=".bd-example-modal-lg">Sales Items</button>
-                                <div class="my-2" id="mechanicJsGrid"></div>
-                            </div>
-                            <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab">
-                                <div class="my-2" id="serviceJsGrid"></div>
-                            </div>
-                            <div class="tab-pane fade" id="nav-tinkering" role="tabpanel" aria-labelledby="nav-tinkering-tab">
-                                <div class="my-2" id="tinkeringJsGrid"></div>
-                            </div>
-                        </div>
-
+                        <div id="details">
+                        <div class="my-2" id="claimsJsGrid"></div>
+                        <div class="row py-2">
                     </div>
-                    <div class="row py-2">
-                        <div class="col text-right">
-                            <button type="button" class="btn btn-lg btn-primary mx-3" id="saveBill">Save</button>
-                        </div>
                     </div>
-                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Sales</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="my-2" id="itemsSalesJsGrid"></div>
-                              </div>
-
-                          </div>
-                        </div>
-                      </div>
+                    
 
                 </div>
             </div>
@@ -132,13 +112,8 @@
     </div>
 
     @push('scripts')
-
         <script src="{{ asset('bower_components/jsgrid/dist/jsgrid.min.js') }}"></script>
-        <script src="{{ mix('/js/easytimer.min.js') }}"></script>
-        <script src="{{ mix('/js/job_card.js') }}"></script>
-        <script src="{{ mix('/js/job_sales.js') }}"></script>
-
-
+        <script src="{{ mix('/js/insurance_claim.js') }}"></script>
     @endpush
 
 @endsection

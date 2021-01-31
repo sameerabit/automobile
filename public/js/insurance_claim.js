@@ -212,7 +212,7 @@ $(function () {
             filter["type"] = 1;
             $.ajax({
               type: "GET",
-              url: "/insurance_cliam/" + $('#insurance_claim_id').val() + "/details",
+              url: "/insurance-claim-details/" + $('#insurance_claim_id').val() + "/details",
               data: filter,
               success: function success(response) {
                 deferred.resolve(response);

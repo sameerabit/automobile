@@ -126,7 +126,7 @@
 
                             <li class="nav-item has-treeview">
                               <a href="#" class="nav-link">
-                                  <i class="fas fa-car-side"></i>
+                                  <i class="fas fa-briefcase"></i>
                                 <p>
                                     Employee Management
                                   <i class="fas fa-angle-left right"></i>
@@ -146,7 +146,28 @@
 
                             <li class="nav-item has-treeview">
                               <a href="#" class="nav-link">
-                                  <i class="fas fa-car-side"></i>
+                                <i class="fas fa-calendar-check"></i>
+                                <p>
+                                    Booking Management
+                                  <i class="fas fa-angle-left right"></i>
+                                  <span class="badge badge-info right"></span>
+                                </p>
+                              </a>
+                              <ul class="nav nav-treeview">
+                                
+                                <li class="nav-item">
+                                  <a href="{{ route('booking.index') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>Create New Booking</p>
+                                  </a>
+                                </li>
+
+                              </ul>
+                            </li>
+
+                            <li class="nav-item has-treeview">
+                              <a href="#" class="nav-link">
+                                  <i class="fas fa-car-crash"></i>
                                 <p>
                                     Insurance Claim
                                   <i class="fas fa-angle-left right"></i>
@@ -160,6 +181,60 @@
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Companies</p>
                                       </a>
+                                  <a href="{{ route('insurance_claim.index') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>List</p>
+                                  </a>
+                                  <a href="{{ route('insurance_claim.create') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>Create New</p>
+                                  </a>
+                                </li>
+
+                              </ul>
+                            </li>
+
+                            <li class="nav-item has-treeview">
+                              <a href="#" class="nav-link">
+                                  <i class="fas fa-user"></i>
+                                <p>
+                                    User Management
+                                  <i class="fas fa-angle-left right"></i>
+                                  <span class="badge badge-info right"></span>
+                                </p>
+                              </a>
+                              <ul class="nav nav-treeview">
+                                
+                                <li class="nav-item">
+                                      <a href="{{ route('insurance_companies.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Companies</p>
+                                      </a>
+                                  <a href="{{ route('insurance_claim.index') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>List</p>
+                                  </a>
+                                  <a href="{{ route('insurance_claim.create') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>Create New</p>
+                                  </a>
+                                </li>
+
+                              </ul>
+                            </li>
+
+                            <li class="nav-item has-treeview">
+                              <a href="#" class="nav-link">
+                                  <i class="fas fa-chart-bar"></i>
+                                <p>
+                                    Reports
+                                  <i class="fas fa-angle-left right"></i>
+                                  <span class="badge badge-info right"></span>
+                                </p>
+                              </a>
+                              <ul class="nav nav-treeview">
+                                
+                                <li class="nav-item">
                                   <a href="{{ route('insurance_claim.index') }}" class="nav-link">
                                     <i class="fas fa-truck-pickup nav-icon"></i>
                                     <p>List</p>

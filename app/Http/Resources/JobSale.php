@@ -22,6 +22,6 @@ class JobSale extends JsonResource
             'quantity' => $this->quantity,
             'price' => $this->price,
         ];
-        return parent::toArray($request);
+       // return parent::toArray($request);
     }
 }

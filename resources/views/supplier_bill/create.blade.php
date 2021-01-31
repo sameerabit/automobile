@@ -30,7 +30,7 @@
                             <div class="form-group col-md-6">
                                 <label for="reference">Reference</label>
                                 @csrf
-                                <input type="text" class="form-control" id="reference" placeholder="Reference">
+                                <input type="text" class="form-control" value="{{ $reference }}" id="reference" placeholder="Reference">
                             </div>
                             <div class="form-group">
                                 <label for="bill_image">Bill Image</label>

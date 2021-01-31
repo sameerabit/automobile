@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\JobSale;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\JobSaleCollection;
 use App\JobSale;
 use App\Product;
 use Illuminate\Http\Request;
-use App\Http\Resources\JobSale as JobSaleResource;
+
 
 class JobSaleController extends Controller
 {
@@ -14,7 +15,7 @@ class JobSaleController extends Controller
     public function getJobSale($id)
     {
         $jobSales = JobSale::where('job_card_id',$id)->get();
-        return response()->json(JobSaleResource::collection($jobSales));
+        return response()->json(new JobSaleCollection($jobSales));
     }
 
     public function store(Request $request){

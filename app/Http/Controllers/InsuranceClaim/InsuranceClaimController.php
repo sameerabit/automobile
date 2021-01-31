@@ -31,9 +31,11 @@ class InsuranceClaimController extends Controller
 
     public function edit(InsuranceClaim $insuranceClaim){
         $vehicles = Vehicle::all();
+        $insuranceCompanies = InsuranceCompany::all();
         return view('insurance_claim.edit',[
             'vehicles' => $vehicles,
-            'insuranceClaim' => $insuranceClaim
+            'insuranceClaim' => $insuranceClaim,
+            'insurance_companies' => $insuranceCompanies
         ]);
     }
 

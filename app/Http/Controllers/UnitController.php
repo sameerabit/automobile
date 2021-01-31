@@ -47,6 +47,7 @@ class UnitController extends Controller
     {
         $this->validate($request,[
             'name' => 'required',
+            'abbreviation' => 'required'
         ]);
         $unit = new Unit();
         $unit->fill($request->all());
@@ -94,6 +95,7 @@ class UnitController extends Controller
     {
         $this->validate($request,[
             'name' => 'required',
+            'abbreviation' => 'required'
         ]);
         $unit->fill($request->all());
         $unit->save();

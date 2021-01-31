@@ -25,8 +25,10 @@ class SupplierBillController extends Controller
 
     public function create(){
         $units = Unit::all();
+        $random = time() . rand(10*45, 100*98);
         return view('supplier_bill.create',[
-            'units' => $units
+            'units' => $units,
+            'reference' => $random
         ]);
     }
 

@@ -21,7 +21,7 @@ class InsuranceClaimDetailsController extends Controller
         return response()->json($insuranceClaimDetails);
     }
 
-    public function getJobDetailsFromInsuranceClaimId($insurance_claim_id,Request $request)
+    public function getInsuranceClaimDetailsFromInsuranceClaimId($insurance_claim_id,Request $request)
     {
         $insuranceClaimDetailsQuery = InsuranceClaimDetail::where('insurance_claim_id',$insurance_claim_id);
         $insuranceClaimDetails = $insuranceClaimDetailsQuery->get();

@@ -3,6 +3,7 @@
                 $('#timesheet').hide();
                 $('#vehicle_id').select2();
 
+
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -144,12 +145,16 @@
                             {
                                 name: "estimation_time",
                                 type: "number",
-                                sorting: false,
-                                title: "Est. Time",
-                                width: 75,
                                 validate: {
-                                    validator: "time"
-                                }
+                                    validator: "range",
+                                    message: function(value, item) {
+                                        return "Value should be greater than or equal to 0";
+                                    },
+                                    param: [0, 1000]
+                                },
+                                sorting: false,
+                                title: "Est. Time (h)",
+                                width: 75
                             },
                             {
                                 name: "action",
@@ -653,6 +658,9 @@
                             }
                         },
                     });
+
+                   
+                    
 
                 }
 
