@@ -35,7 +35,10 @@ use Illuminate\Support\Facades\Route;
 
     Route::resource('units', 'UnitController');
 
-    Route::resource('supplier-bill', 'SupplierBill\SupplierBillController');
+    Route::resource('supplier-bill', 'SupplierBill\SupplierBillController')->except([
+        'update'
+    ]);
+    Route::post('supplier-bill/{supplier_bill}', 'SupplierBill\SupplierBillController@update')->name('supplier-bill.update');
     Route::get('supplier-bill-details/{bill_id}', 'SupplierBill\SupplierBillController@getSupplierBillDetails');
 
 

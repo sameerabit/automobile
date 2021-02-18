@@ -19,7 +19,7 @@ class SupplierBill extends Model
     }
 
     public function supplierBillDetails(){
-        return $this->hasMany(supplierBillDetails::class,'supplier_bill_id');
+        return $this->hasMany(SupplierBillDetails::class, 'supplier_bill_id');
     }
 
 }

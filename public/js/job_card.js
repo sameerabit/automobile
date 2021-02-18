@@ -679,7 +679,7 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/viraj/automobile/resources/js/job_card.js */"./resources/js/job_card.js");
+module.exports = __webpack_require__(/*! /home/viraj/BIT/automobile/resources/js/job_card.js */"./resources/js/job_card.js");
 
 
 /***/ })

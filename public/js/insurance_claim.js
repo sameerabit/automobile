@@ -283,7 +283,7 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/viraj/automobile/resources/js/insurance_claim.js */"./resources/js/insurance_claim.js");
+module.exports = __webpack_require__(/*! /home/viraj/BIT/automobile/resources/js/insurance_claim.js */"./resources/js/insurance_claim.js");
 
 
 /***/ })

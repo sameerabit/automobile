@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label for="bill_image">Bill Image</label>
                                 <input type="file" class="form-control-file" id="bill_image">
-                                <a href="{{ asset('public/$supplierBill->image_url') }}" >Download</a>
+                                <a target="_blank" href='{{ asset("storage/$supplierBill->image_url") }}' >Download</a>
                             </div>
                     </div>
                     <div class="form-row">
@@ -181,19 +181,26 @@
                 billDate = $('#billDate').val();
                 supplierId = $('#selected_supplier_id').val();
 
-                var supplierBill = {
-                    'supplier_id': supplierId,
-                    'billing_date': billDate,
-                    'reference' : reference,
-                    'supllierBillDetails': formattedTableData
+                var file = $('#bill_image').prop('files')[0];
+
+                var formData = new FormData();
+                formData.append('supplier_id', supplierId);
+                formData.append('billing_date', billDate);
+                formData.append('reference', reference);
+                formData.append('supllierBillDetails', JSON.stringify(formattedTableData));
+                if(file != undefined){
+                    formData.append('file',file);
                 }
+
                 $.ajax({
-                    type: "PUT",
+                    type: "POST",
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
                     url: '/supplier-bill/'+$('#supplier_bill_id').val(),
-                    data: supplierBill,
+                    data: formData,
+                    contentType: false, //tell jquery to avoid some checks
+                    processData: false,
                     success: function(response){
                         toastr.success('Supplier Bill Successfully Updated');
 

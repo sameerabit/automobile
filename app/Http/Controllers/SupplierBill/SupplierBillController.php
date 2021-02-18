@@ -102,7 +102,12 @@ class SupplierBillController extends Controller
         ],[
             'supplier_id.required' => 'Supplier is required'
         ]);
-        $supplierBill = $this->repository->update($supplierBill, $request->all());
+        $billData = $request->all();
+        if($request->file('file')){
+            Storage::disk('public')->put($request->file->hashName(), File::get($request->file));
+            $billData['image_url'] = $request->file->hashName();
+        }
+        $supplierBill = $this->repository->update($supplierBill, $billData);
         return response()->json(new ResourcesSupplierBill($supplierBill));
     }
 
