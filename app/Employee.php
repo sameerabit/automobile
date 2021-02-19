@@ -15,5 +15,9 @@ class Employee extends Model
         'image_url'
     ];
 
+    public function getImageUrlAttribute($value){
+        return $value == null ? "default.png" : $value;
+    }
+
 }
 

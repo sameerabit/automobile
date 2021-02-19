@@ -96,6 +96,10 @@
 $(function () {
   $('#timesheet').hide();
   $('#vehicle_id').select2();
+  $('#yes').click(function () {
+    startJobCard();
+    $('#modal-confirm').modal('hide');
+  });
   var Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -108,7 +112,8 @@ $(function () {
     }
   });
   var employees;
-  $('#saveRecord').on('click', function () {
+
+  function startJobCard() {
     var jobDate = $('#jobDate').val();
     var vehicle_id = $('#vehicle_id').val();
     $.ajax({
@@ -132,7 +137,8 @@ $(function () {
       error: function error(response) {},
       dataType: 'json'
     });
-  });
+  }
+
   $.ajax({
     type: "GET",
     headers: {
@@ -144,6 +150,8 @@ $(function () {
 
       if (employees.length > 0) {
         loadGrid();
+      } else {
+        alert('Please add at least one employee to the system.');
       }
     },
     error: function error(response) {},

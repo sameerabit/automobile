@@ -78,7 +78,7 @@
                         </div>
                         <div class="row py-2">
                             <div class="col text-right">
-                                <button type="button" class="btn btn-md btn-primary" id="saveRecord">Save</button>
+                                <button type="button" class="btn btn-md btn-primary confirm-btn" data-toggle="modal" data-target="#modal-confirm">Save</button>
                             </div>
                         </div>
                         <div id="timesheet">
@@ -113,8 +113,7 @@
                 </div>
             </div>
         </div>
-
-
+        @include('partials.confirm')
     </div>
 
     @push('scripts')
