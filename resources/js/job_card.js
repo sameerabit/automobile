@@ -1,3 +1,4 @@
+const { constrainPoint } = require("@fullcalendar/core");
 
             $(function() {
                 $('#timesheet').hide();
@@ -80,14 +81,13 @@
                     }
                 }
 
-                function updateTimeEvents(taskId,days,time,state) {
+                function updateTimeEvents(taskId,time,state) {
                     return $.ajax({
                         type: "PUT",
                         headers: {
                             "X-CSRF-TOKEN": $('input[name=_token]').val()
                         },
                         data: {
-                            days: days,
                             time: time,
                             state:state
                         },
@@ -145,7 +145,7 @@
                             {
                                 name: "job_desc",
                                 type: "textarea",
-                                width: 250,
+                                width: 200,
                                 validate: "required",
                                 title: "Job Description"
                             },
@@ -185,10 +185,9 @@
                                                             seconds: parseInt(timeArr[2])
                                                         }});
                                             });
-                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'start' );
+                                            updateTimeEvents(item.id, Date.now(), 'start' );
                                             timer.addEventListener('secondsUpdated', function (e) {
                                                 $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                                updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'start' );
                                             });
                                             e.stopPropagation();
                                     });
@@ -198,7 +197,7 @@
                                         .addClass('btn btn-sm btn-warning')
                                         .click(function(e) {
                                             timer.pause();
-                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'pause' );
+                                            updateTimeEvents(item.id, Date.now(), 'pause' );
                                             e.stopPropagation();
                                     });
                                     var $finishButton = $("<button>")
@@ -207,7 +206,7 @@
                                         .click(function(e) {
                                             console.log(timer);
                                             timer.stop();
-                                            updateTimeEvents(item.id, timer.getTimeValues().days, timer.getTimeValues().toString(), 'stop' );
+                                            updateTimeEvents(item.id, Date.now(), 'stop' );
                                             e.stopPropagation();
                                     });
                                     return  $result.add($startButton)
@@ -218,10 +217,16 @@
                             },
                             {
                                 name: 'time',
-                                width: 60,
+                                width: 80,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     time = value ? value : '';
+                                    dateDiffInt =  Date.now() - time;
+                                    seconds = Math.floor(dateDiffInt/1000);
+                                    minutes = Math.floor(seconds/60);
+                                    hours = Math.floor(minutes/60);
+                                    days = Math.floor(hours/24);
+                                    time = days+" "+ hours + ":" + minutes + ":" + seconds%minutes;
                                     var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
                                     return  $result.add($time);
 
@@ -259,6 +264,31 @@
                                         data: filter,
                                         success: function(response) {
                                             deferred.resolve(response);
+                                            var timer = new easytimer.Timer();
+                                            response.forEach(function(row){
+                                                timeArr = row.time.split(":");
+                                                dateDiffInt =  Date.now() - row.time;
+                                                console.log(dateDiffInt);
+                                                seconds = Math.floor(dateDiffInt/1000);
+                                                minutes = Math.floor(seconds/60);
+                                                hours = Math.floor(minutes/60);
+                                                days = Math.floor(hours/24);
+                                                if(row.state == "start") {
+                                                    timer.start(
+                                                        {
+                                                            startValues:{
+                                                                days:parseInt(days),
+                                                                hours:parseInt(hours),
+                                                                minutes:parseInt(minutes),
+                                                                seconds: parseInt(seconds%minutes)
+                                                            }
+                                                        }
+                                                    );
+                                                }
+                                                timer.addEventListener('secondsUpdated', function (e) {
+                                                    $('#time_'+row.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
+                                                });
+                                            });
                                         }
                                     });
                                     return deferred.promise();

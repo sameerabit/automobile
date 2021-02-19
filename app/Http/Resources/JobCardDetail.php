@@ -15,7 +15,7 @@ class JobCardDetail extends JsonResource
     public function toArray($request)
     {
         $data = parent::toArray($request);
-        $data['time'] = $data['days']." ".$data['time'];
+        $data['time'] = $data['time'];
         return $data;
     }
 }
