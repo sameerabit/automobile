@@ -119,9 +119,6 @@ const { constrainPoint } = require("@fullcalendar/core");
                     });
                 }
 
-                
-
-
                 function loadGrid() {
                     $("#mechanicJsGrid").jsGrid({
                         width: "100%",
@@ -171,6 +168,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     var timer = new easytimer.Timer();
+                                    
                                     var $startButton = $("<button>")
                                         .text('Start')
                                         .addClass('btn btn-sm btn-primary')
@@ -227,16 +225,18 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 width: 80,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    time = value ? value : '';
-                                    dateDiffInt =  Date.now() - time;
-                                    seconds = Math.floor(dateDiffInt/1000);
-                                    minutes = Math.floor(seconds/60);
-                                    hours = Math.floor(minutes/60);
-                                    days = Math.floor(hours/24);
-                                    time = days+" "+ hours + ":" + minutes + ":" + seconds%minutes;
-                                    var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
-                                    return  $result.add($time);
-
+                                    if(value) {
+                                        seconds = Math.floor(value/1000);
+                                        minutes = Math.floor(seconds/60);
+                                        hours = Math.floor(minutes/60);
+                                        days = Math.floor(hours/24);
+                                        time = days+" "+ hours + ":" + minutes + ":" + seconds%minutes;
+                                        var timer = new easytimer.Timer();
+                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
+                                        timer.pause();
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ days + " - "+timer.getTimeValues().toString() +"</p>");
+                                        return  $result.add($time);
+                                    }
                                 }
                             },
                             {
@@ -271,7 +271,6 @@ const { constrainPoint } = require("@fullcalendar/core");
                                         data: filter,
                                         success: function(response) {
                                             deferred.resolve(response);
-                                            debugger;
                                             var timer = new easytimer.Timer();
                                             response.forEach(function(row){
                                                 // timeArr = row.time.split(":");

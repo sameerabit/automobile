@@ -22,6 +22,14 @@ class JobCardDetail extends Model
         return $this->hasMany(Timesheet::class);
     }
 
+    public function getTimeAttribute(){
+        $time = 0;
+        foreach($this->timesheets()->get() as $timesheet){
+            $time += ($timesheet->ended_at - $timesheet->started_at);
+        }
+        return $time;
+    }
+
 
 
 }
