@@ -18,6 +18,10 @@ class JobCardDetail extends Model
         'state' // start, pause, stop
     ];
 
+    public function timesheets(){
+        return $this->hasMany(Timesheet::class);
+    }
+
 
 
 }

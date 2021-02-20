@@ -7,6 +7,7 @@ use App\Http\Resources\JobCardDetail as ResourcesJobCardDetail;
 use App\Http\Resources\JobCardDetailCollection;
 use App\JobCard;
 use App\JobCardDetail;
+use App\Timesheet;
 use App\Vehicle;
 use Illuminate\Http\Request;
 
@@ -44,7 +45,19 @@ class JobCardDetailController extends Controller
     }
 
     public function updateTime(JobCardDetail $jobCardDetail,Request $request){
-        $jobCardDetail->fill($request->all());
+        $timesheet = Timesheet::where("job_card_detail_id", $jobCardDetail->id)
+                    ->whereNull('ended_at')
+                    ->latest('id')->first();  
+        if(!$timesheet){
+            $timesheet = new Timesheet();
+            $timesheet->job_card_detail_id = $jobCardDetail->id;
+            $timesheet->started_at = $request->time;
+            $timesheet->save();
+        } else if($jobCardDetail->state == "start" && $timesheet->ended_at == null) {
+            $timesheet->ended_at = $request->time;
+            $timesheet->save();
+        }
+        $jobCardDetail->state = $request->state;
         $jobCardDetail->save();
         return response()->json($jobCardDetail);
     }

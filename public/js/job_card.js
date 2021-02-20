@@ -11269,7 +11269,8 @@ $(function () {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
           var timer = new easytimer.Timer();
           var $startButton = $("<button>").text('Start').addClass('btn btn-sm btn-primary').click(function (e) {
-            console.log(timer);
+            item.state = "start";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
             $.when(getJobDetail(item.id)).done(function (res) {
               timeArr = res.time.split(":");
               timer.start({
@@ -11289,16 +11290,20 @@ $(function () {
           });
           var $pauseButton = $("<button>") // .attr('disabled',"true")
           .text('Pause').addClass('btn btn-sm btn-warning').click(function (e) {
+            item.state = "pause";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
             timer.pause();
             updateTimeEvents(item.id, Date.now(), 'pause');
             e.stopPropagation();
           });
           var $finishButton = $("<button>").text('Reset').addClass('btn btn-sm btn-danger').click(function (e) {
-            console.log(timer);
+            item.state = "stop";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
             timer.stop();
             updateTimeEvents(item.id, Date.now(), 'stop');
             e.stopPropagation();
           });
+          updateButtonState(item, $startButton, $pauseButton, $finishButton);
           return $result.add($startButton).add($finishButton).add($pauseButton);
         }
       }, {
@@ -11345,30 +11350,30 @@ $(function () {
               data: filter,
               success: function success(response) {
                 deferred.resolve(response);
+                debugger;
                 var timer = new easytimer.Timer();
-                response.forEach(function (row) {
-                  timeArr = row.time.split(":");
-                  dateDiffInt = Date.now() - row.time;
-                  console.log(dateDiffInt);
-                  seconds = Math.floor(dateDiffInt / 1000);
-                  minutes = Math.floor(seconds / 60);
-                  hours = Math.floor(minutes / 60);
-                  days = Math.floor(hours / 24);
-
-                  if (row.state == "start") {
-                    timer.start({
-                      startValues: {
-                        days: parseInt(days),
-                        hours: parseInt(hours),
-                        minutes: parseInt(minutes),
-                        seconds: parseInt(seconds % minutes)
-                      }
-                    });
-                  }
-
-                  timer.addEventListener('secondsUpdated', function (e) {
-                    $('#time_' + row.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
-                  });
+                response.forEach(function (row) {// timeArr = row.time.split(":");
+                  // dateDiffInt =  Date.now() - row.time;
+                  // console.log(dateDiffInt);
+                  // seconds = Math.floor(dateDiffInt/1000);
+                  // minutes = Math.floor(seconds/60);
+                  // hours = Math.floor(minutes/60);
+                  // days = Math.floor(hours/24);
+                  // if(row.state == "start") {
+                  //     timer.start(
+                  //         {
+                  //             startValues:{
+                  //                 days:parseInt(days),
+                  //                 hours:parseInt(hours),
+                  //                 minutes:parseInt(minutes),
+                  //                 seconds: parseInt(seconds%minutes)
+                  //             }
+                  //         }
+                  //     );
+                  //     timer.addEventListener('secondsUpdated', function (e) {
+                  //         $('#time_'+row.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
+                  //     });
+                  // }
                 });
               }
             });
@@ -11725,6 +11730,26 @@ $(function () {
         }
       }
     });
+
+    function updateButtonState(item, $startButton, $pauseButton, $finishButton) {
+      if (item.state == "start") {
+        $startButton.addClass('ui-state-disabled');
+        $pauseButton.removeClass('ui-state-disabled');
+        $finishButton.removeClass('ui-state-disabled');
+      }
+
+      if (item.state == "pause") {
+        $pauseButton.addClass('ui-state-disabled');
+        $startButton.removeClass('ui-state-disabled');
+        $finishButton.removeClass('ui-state-disabled');
+      }
+
+      if (item.state == "stop") {
+        $finishButton.addClass('ui-state-disabled');
+        $pauseButton.removeClass('ui-state-disabled');
+        $startButton.removeClass('ui-state-disabled');
+      }
+    }
   }
 });
 
