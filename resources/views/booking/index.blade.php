@@ -54,22 +54,22 @@
                                     @endforeach
                                 </select>
                             </div>
-                    <div class="form-group">
-                      <label for="quantity" class="col-form-label">Start Time</label>
-                      <input type="datetime-local" class="form-control" id="start" name="start">
-                    </div>
-                    <div class="form-group">
-                    <label for="quantity" class="col-form-label">End Time</label>
-                      <input type="datetime-local" class="form-control" id="end" name="end">
-                    </div>
-                    <div class="form-group">
-                    <label for="quantity" class="col-form-label">End Time</label>
-                      <input type="datetime-local" class="form-control" id="end" name="end">
-                    </div>
+                          <div class="form-group">
+                            <label for="quantity" class="col-form-label">Start Time</label>
+                            <input type="datetime-local" class="form-control" id="start" name="start">
+                          </div>
+                          <div class="form-group">
+                          <label for="quantity" class="col-form-label">End Time</label>
+                            <input type="datetime-local" class="form-control" id="end" name="end">
+                          </div>
+                          <div class="form-group">
+                          <label for="quantity" class="col-form-label">Note</label>
+                            <input type="text" class="form-control" id="title" name="title">
+                          </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" id="addToTable" class="btn btn-primary">ADD</button>
+                  <button type="submit" id="bookButton" class="btn btn-primary">ADD</button>
                 </div>
                 </form>
               </div>
@@ -80,7 +80,36 @@
     <script type="text/javascript" src="{{ asset('fullcalendar/main.js') }}"></script>
     <script src="{{ asset('scheduler/main.js')}}"></script>
 
-    <script>  
+    <script>
+
+        $('#bookButton').on('click',function(e){
+          e.preventDefault();
+          var event = {
+            'start' : $('#start').val(),
+            'end' : $('#end').val(),
+            'title' : $('#title').val()
+          };
+          $.ajax({
+            type: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('input[name=_token]').val()
+            },
+            data: {
+                vehicle_id : $('#vehicle_id').val(),
+                event : JSON.stringify(event)
+            },
+            url: '/bookings',
+            success: function(response) {
+                return response;
+            },
+            error: function(response) {
+
+            },
+            dataType: 'json'
+          });
+        });
+
+
         $('#vehicle_id').select2();
         document.addEventListener('DOMContentLoaded', function() {
           var calendarEl = document.getElementById('calendar');

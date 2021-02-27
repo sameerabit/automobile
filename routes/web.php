@@ -68,6 +68,8 @@ use Illuminate\Support\Facades\Route;
     Route::delete('job-sales/{job_sale}','JobSale\JobSaleController@delete')->name('job_sales.delete');
 
     Route::get('bookings','Booking\BookingController@index')->name('booking.index');
+    Route::post('bookings','Booking\BookingController@store')->name('booking.store');
+
 
     Route::get('insurance-claims','InsuranceClaim\InsuranceClaimController@index')->name('insurance_claim.index');
     Route::get('insurance-claims/create', 'InsuranceClaim\InsuranceClaimController@create')->name('insurance_claim.create');
@@ -80,3 +82,5 @@ use Illuminate\Support\Facades\Route;
     Route::delete('insurance-claim-details/{insurance_claim_detail}', 'InsuranceClaim\InsuranceClaimDetailsController@destroy')->name('insurance_claim_detail.delete');
     Route::put('insurance-claim-details/{insurance_claim_detail}', 'InsuranceClaim\InsuranceClaimDetailsController@update')->name('insurance_claim_detail.update');
     Route::post('insurance-claim-details', 'InsuranceClaim\InsuranceClaimDetailsController@store')->name('jinsurance_claim_detail.store');
+
+
