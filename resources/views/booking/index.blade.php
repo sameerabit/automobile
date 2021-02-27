@@ -82,6 +82,27 @@
 
     <script>
 
+        $(function(){
+          $.ajax({
+            type: "GET",
+            headers: {
+                "X-CSRF-TOKEN": $('input[name=_token]').val()
+            },
+            url: '/bookings-json',
+            success: function(response) {
+                var bookings = [];
+                response.forEach(function(booking){
+                    bookings.push(JSON.parse(booking.event));
+                });
+                
+            },
+            error: function(response) {
+
+            },
+            dataType: 'json'
+          });
+        });
+
         $('#bookButton').on('click',function(e){
           e.preventDefault();
           var event = {
@@ -144,7 +165,17 @@
               listWeek: { buttonText: 'list week' },
               listMonth: { buttonText: 'list month' }
             },
-            events: 'http://localhost:8000/storage/event.json',
+            events: {
+              url: '/bookings-json',
+              data: function(response) { // a function that returns an object
+                var bookings = [];
+                response.forEach(function(booking){
+                    bookings.push(JSON.parse(booking.event));
+                });
+                console.log(response);
+                return bookings;
+              }
+            },
             eventClick: function(info) {
               var eventObj = info.event;
               console.log(eventObj);                

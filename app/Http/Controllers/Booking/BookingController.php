@@ -12,8 +12,10 @@ class BookingController extends Controller
     public function index()
     {
         $vehicles = Vehicle::all();
+        $bookings = Booking::all();
         return view('booking.index',[
-            'vehicles' => $vehicles
+            'vehicles' => $vehicles,
+            'bookings' => $bookings
         ]);
     }
 
@@ -23,6 +25,12 @@ class BookingController extends Controller
         $booking->fill($request->all());
         $booking->save();
         return response()->json($booking);
+    }
+
+    public function getBookingJson()
+    {
+        $bookings = Booking::all();
+        return response()->json($bookings);
     }
 
 
