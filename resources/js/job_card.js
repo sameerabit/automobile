@@ -176,15 +176,18 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             item.state = "start";
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             $.when(getJobDetail(item.id)).done(function(res){
-                                                timeArr = res.time.split(":");
-                                                timer.start(
-                                                    {startValues: 
-                                                        {
-                                                            days:parseInt(res.days),
-                                                            hours:parseInt(timeArr[0]),
-                                                            minutes:parseInt(timeArr[1]),
-                                                            seconds: parseInt(timeArr[2])
-                                                        }});
+                                                console.log(res);
+                                                if(res.time != 0){
+                                                    timeArr = res.time.split(":")
+                                                    timer.start(
+                                                        {startValues: 
+                                                            {
+                                                                days:parseInt(res.days),
+                                                                hours:parseInt(timeArr[0]),
+                                                                minutes:parseInt(timeArr[1]),
+                                                                seconds: parseInt(timeArr[2])
+                                                            }});
+                                                }
                                             });
                                             updateTimeEvents(item.id, Date.now(), 'start' );
                                             timer.addEventListener('secondsUpdated', function (e) {
