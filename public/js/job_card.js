@@ -11272,21 +11272,32 @@ $(function () {
             item.state = "start";
             updateButtonState(item, $startButton, $pauseButton, $finishButton);
             $.when(getJobDetail(item.id)).done(function (res) {
-              console.log(res);
-
               if (res.time != 0) {
-                timeArr = res.time.split(":");
+                seconds = Math.floor(res.time / 1000);
+                minutes = Math.floor(seconds / 60);
+                hours = Math.floor(minutes / 60);
+                days = Math.floor(hours / 24);
+                time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
                 timer.start({
+                  precision: 'seconds',
                   startValues: {
-                    days: parseInt(res.days),
-                    hours: parseInt(timeArr[0]),
-                    minutes: parseInt(timeArr[1]),
-                    seconds: parseInt(timeArr[2])
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: minutes
                   }
                 });
               }
+
+              if (res.time == 0) {
+                timer.start();
+              }
+
+              res = updateTimeEvents(item.id, Date.now(), 'start');
+
+              if (res.readyState == 1) {
+                $("#mechanicJsGrid").jsGrid("loadData");
+              }
             });
-            updateTimeEvents(item.id, Date.now(), 'start');
             timer.addEventListener('secondsUpdated', function (e) {
               $('#time_' + item.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
             });
@@ -11307,6 +11318,26 @@ $(function () {
             updateTimeEvents(item.id, Date.now(), 'stop');
             e.stopPropagation();
           });
+
+          if (item.time && item.state == "start") {
+            seconds = Math.floor(item.time / 1000);
+            minutes = Math.floor(seconds / 60);
+            hours = Math.floor(minutes / 60);
+            days = Math.floor(hours / 24);
+            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+            timer.start({
+              precision: 'seconds',
+              startValues: {
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timer.addEventListener('secondsUpdated', function (e) {
+              $('#time_' + item.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
+            });
+          }
+
           updateButtonState(item, $startButton, $pauseButton, $finishButton);
           return $result.add($startButton).add($finishButton).add($pauseButton);
         }
@@ -11466,22 +11497,26 @@ $(function () {
         textField: "name",
         title: "Employee Name",
         autosearch: true,
-        width: 200
+        width: 100
       }, {
         name: "job_desc",
         type: "textarea",
-        width: 150,
+        width: 200,
         validate: "required",
         title: "Job Description"
       }, {
         name: "estimation_time",
         type: "number",
-        sorting: false,
-        title: "Est. Time",
-        width: 75,
         validate: {
-          validator: "time"
-        }
+          validator: "range",
+          message: function message(value, item) {
+            return "Value should be greater than or equal to 0";
+          },
+          param: [0, 1000]
+        },
+        sorting: false,
+        title: "Est. Time (h)",
+        width: 75
       }, {
         name: "action",
         width: 130,
@@ -11489,30 +11524,103 @@ $(function () {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
           var timer = new easytimer.Timer();
           var $startButton = $("<button>").text('Start').addClass('btn btn-sm btn-primary').click(function (e) {
-            timer.start();
+            item.state = "start";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
+            $.when(getJobDetail(item.id)).done(function (res) {
+              if (res.time != 0) {
+                seconds = Math.floor(res.time / 1000);
+                minutes = Math.floor(seconds / 60);
+                hours = Math.floor(minutes / 60);
+                days = Math.floor(hours / 24);
+                time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+                timer.start({
+                  precision: 'seconds',
+                  startValues: {
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: minutes
+                  }
+                });
+              }
+
+              if (res.time == 0) {
+                timer.start();
+              }
+
+              res = updateTimeEvents(item.id, Date.now(), 'start');
+
+              if (res.readyState == 1) {
+                $("#tinkeringJsGrid").jsGrid("loadData");
+              }
+            });
             timer.addEventListener('secondsUpdated', function (e) {
-              $('#time_' + item.id).html(timer.getTimeValues().toString());
+              $('#time_' + item.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
             });
             e.stopPropagation();
           });
           var $pauseButton = $("<button>") // .attr('disabled',"true")
           .text('Pause').addClass('btn btn-sm btn-warning').click(function (e) {
+            item.state = "pause";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
             timer.pause();
+            updateTimeEvents(item.id, Date.now(), 'pause');
             e.stopPropagation();
           });
-          var $finishButton = $("<button>").text('Finish').addClass('btn btn-sm btn-danger').click(function (e) {
+          var $finishButton = $("<button>").text('Reset').addClass('btn btn-sm btn-danger').click(function (e) {
+            item.state = "stop";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
             timer.stop();
+            updateTimeEvents(item.id, Date.now(), 'stop');
             e.stopPropagation();
           });
+
+          if (item.time && item.state == "start") {
+            seconds = Math.floor(item.time / 1000);
+            minutes = Math.floor(seconds / 60);
+            hours = Math.floor(minutes / 60);
+            days = Math.floor(hours / 24);
+            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+            timer.start({
+              precision: 'seconds',
+              startValues: {
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timer.addEventListener('secondsUpdated', function (e) {
+              $('#time_' + item.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
+            });
+          }
+
+          updateButtonState(item, $startButton, $pauseButton, $finishButton);
           return $result.add($startButton).add($finishButton).add($pauseButton);
         }
       }, {
         name: 'time',
-        width: 60,
+        width: 80,
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-          var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>");
-          return $result.add($time);
+
+          if (value) {
+            seconds = Math.floor(value / 1000);
+            minutes = Math.floor(seconds / 60);
+            hours = Math.floor(minutes / 60);
+            days = Math.floor(hours / 24);
+            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes;
+            var timer = new easytimer.Timer();
+            timer.start({
+              precision: 'seconds',
+              startValues: {
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timer.pause();
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + days + " - " + timer.getTimeValues().toString() + "</p>");
+            return $result.add($time);
+          }
         }
       }, {
         type: "control",
@@ -11521,14 +11629,12 @@ $(function () {
       onRefreshed: function onRefreshed(args) {
         var items = args.grid.option("data");
         var total = {
-          employee_id: "Total",
-          "job_desc": "Total",
           estimation_time: 0
         };
         items.forEach(function (item) {
           total.estimation_time += item.estimation_time;
         });
-        var $totalRow = $("<tr>").addClass("total-row");
+        var $totalRow = $("<tr colspan='4'>").addClass("total-row");
 
         args.grid._renderCells($totalRow, total);
 
@@ -11545,6 +11651,30 @@ $(function () {
               data: filter,
               success: function success(response) {
                 deferred.resolve(response);
+                var timer = new easytimer.Timer();
+                response.forEach(function (row) {// timeArr = row.time.split(":");
+                  // dateDiffInt =  Date.now() - row.time;
+                  // console.log(dateDiffInt);
+                  // seconds = Math.floor(dateDiffInt/1000);
+                  // minutes = Math.floor(seconds/60);
+                  // hours = Math.floor(minutes/60);
+                  // days = Math.floor(hours/24);
+                  // if(row.state == "start") {
+                  //     timer.start(
+                  //         {
+                  //             startValues:{
+                  //                 days:parseInt(days),
+                  //                 hours:parseInt(hours),
+                  //                 minutes:parseInt(minutes),
+                  //                 seconds: parseInt(seconds%minutes)
+                  //             }
+                  //         }
+                  //     );
+                  //     timer.addEventListener('secondsUpdated', function (e) {
+                  //         $('#time_'+row.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
+                  //     });
+                  // }
+                });
               }
             });
             return deferred.promise();
@@ -11565,9 +11695,15 @@ $(function () {
               "X-CSRF-TOKEN": $('input[name=_token]').val()
             },
             url: "/job-card-details",
-            data: data
+            data: data,
+            success: function success() {
+              Toast.fire({
+                icon: 'success',
+                title: 'Task added successfully!'
+              });
+            }
           });
-          $("#tinkeringJsGrid").jsGrid("loadData");
+          $("#mechanicJsGrid").jsGrid("loadData");
           return res;
         },
         updateItem: function updateItem(item) {
@@ -11579,7 +11715,7 @@ $(function () {
             url: "/job-card-detail/" + item.id,
             data: item
           });
-          $("#tinkeringJsGrid").jsGrid("loadData");
+          $("#mechanicJsGrid").jsGrid("loadData");
           return res;
         },
         deleteItem: function deleteItem(item) {
@@ -11616,22 +11752,26 @@ $(function () {
         textField: "name",
         title: "Employee Name",
         autosearch: true,
-        width: 200
+        width: 100
       }, {
         name: "job_desc",
         type: "textarea",
-        width: 150,
+        width: 200,
         validate: "required",
         title: "Job Description"
       }, {
         name: "estimation_time",
         type: "number",
-        sorting: false,
-        title: "Est. Time",
-        width: 75,
         validate: {
-          validator: "time"
-        }
+          validator: "range",
+          message: function message(value, item) {
+            return "Value should be greater than or equal to 0";
+          },
+          param: [0, 1000]
+        },
+        sorting: false,
+        title: "Est. Time (h)",
+        width: 75
       }, {
         name: "action",
         width: 130,
@@ -11639,30 +11779,103 @@ $(function () {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
           var timer = new easytimer.Timer();
           var $startButton = $("<button>").text('Start').addClass('btn btn-sm btn-primary').click(function (e) {
-            timer.start();
+            item.state = "start";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
+            $.when(getJobDetail(item.id)).done(function (res) {
+              if (res.time != 0) {
+                seconds = Math.floor(res.time / 1000);
+                minutes = Math.floor(seconds / 60);
+                hours = Math.floor(minutes / 60);
+                days = Math.floor(hours / 24);
+                time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+                timer.start({
+                  precision: 'seconds',
+                  startValues: {
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: minutes
+                  }
+                });
+              }
+
+              if (res.time == 0) {
+                timer.start();
+              }
+
+              res = updateTimeEvents(item.id, Date.now(), 'start');
+
+              if (res.readyState == 1) {
+                $("#serviceJsGrid").jsGrid("loadData");
+              }
+            });
             timer.addEventListener('secondsUpdated', function (e) {
-              $('#time_' + item.id).html(timer.getTimeValues().toString());
+              $('#time_' + item.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
             });
             e.stopPropagation();
           });
           var $pauseButton = $("<button>") // .attr('disabled',"true")
           .text('Pause').addClass('btn btn-sm btn-warning').click(function (e) {
+            item.state = "pause";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
             timer.pause();
+            updateTimeEvents(item.id, Date.now(), 'pause');
             e.stopPropagation();
           });
-          var $finishButton = $("<button>").text('Finish').addClass('btn btn-sm btn-danger').click(function (e) {
+          var $finishButton = $("<button>").text('Reset').addClass('btn btn-sm btn-danger').click(function (e) {
+            item.state = "stop";
+            updateButtonState(item, $startButton, $pauseButton, $finishButton);
             timer.stop();
+            updateTimeEvents(item.id, Date.now(), 'stop');
             e.stopPropagation();
           });
+
+          if (item.time && item.state == "start") {
+            seconds = Math.floor(item.time / 1000);
+            minutes = Math.floor(seconds / 60);
+            hours = Math.floor(minutes / 60);
+            days = Math.floor(hours / 24);
+            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+            timer.start({
+              precision: 'seconds',
+              startValues: {
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timer.addEventListener('secondsUpdated', function (e) {
+              $('#time_' + item.id).html(timer.getTimeValues().days + " " + timer.getTimeValues().toString());
+            });
+          }
+
+          updateButtonState(item, $startButton, $pauseButton, $finishButton);
           return $result.add($startButton).add($finishButton).add($pauseButton);
         }
       }, {
         name: 'time',
-        width: 60,
+        width: 80,
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-          var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>");
-          return $result.add($time);
+
+          if (value) {
+            seconds = Math.floor(value / 1000);
+            minutes = Math.floor(seconds / 60);
+            hours = Math.floor(minutes / 60);
+            days = Math.floor(hours / 24);
+            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes;
+            var timer = new easytimer.Timer();
+            timer.start({
+              precision: 'seconds',
+              startValues: {
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timer.pause();
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + days + " - " + timer.getTimeValues().toString() + "</p>");
+            return $result.add($time);
+          }
         }
       }, {
         type: "control",
@@ -11671,14 +11884,12 @@ $(function () {
       onRefreshed: function onRefreshed(args) {
         var items = args.grid.option("data");
         var total = {
-          employee_id: "Total",
-          "job_desc": "Total",
           estimation_time: 0
         };
         items.forEach(function (item) {
           total.estimation_time += item.estimation_time;
         });
-        var $totalRow = $("<tr>").addClass("total-row");
+        var $totalRow = $("<tr colspan='4'>").addClass("total-row");
 
         args.grid._renderCells($totalRow, total);
 
@@ -11695,6 +11906,30 @@ $(function () {
               data: filter,
               success: function success(response) {
                 deferred.resolve(response);
+                var timer = new easytimer.Timer();
+                response.forEach(function (row) {// timeArr = row.time.split(":");
+                  // dateDiffInt =  Date.now() - row.time;
+                  // console.log(dateDiffInt);
+                  // seconds = Math.floor(dateDiffInt/1000);
+                  // minutes = Math.floor(seconds/60);
+                  // hours = Math.floor(minutes/60);
+                  // days = Math.floor(hours/24);
+                  // if(row.state == "start") {
+                  //     timer.start(
+                  //         {
+                  //             startValues:{
+                  //                 days:parseInt(days),
+                  //                 hours:parseInt(hours),
+                  //                 minutes:parseInt(minutes),
+                  //                 seconds: parseInt(seconds%minutes)
+                  //             }
+                  //         }
+                  //     );
+                  //     timer.addEventListener('secondsUpdated', function (e) {
+                  //         $('#time_'+row.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
+                  //     });
+                  // }
+                });
               }
             });
             return deferred.promise();
@@ -11715,9 +11950,15 @@ $(function () {
               "X-CSRF-TOKEN": $('input[name=_token]').val()
             },
             url: "/job-card-details",
-            data: data
+            data: data,
+            success: function success() {
+              Toast.fire({
+                icon: 'success',
+                title: 'Task added successfully!'
+              });
+            }
           });
-          $("#serviceJsGrid").jsGrid("loadData");
+          $("#mechanicJsGrid").jsGrid("loadData");
           return res;
         },
         updateItem: function updateItem(item) {
@@ -11729,7 +11970,7 @@ $(function () {
             url: "/job-card-detail/" + item.id,
             data: item
           });
-          $("#serviceJsGrid").jsGrid("loadData");
+          $("#mechanicJsGrid").jsGrid("loadData");
           return res;
         },
         deleteItem: function deleteItem(item) {

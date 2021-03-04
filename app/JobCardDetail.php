@@ -25,7 +25,11 @@ class JobCardDetail extends Model
     public function getTimeAttribute(){
         $time = 0;
         foreach($this->timesheets()->get() as $timesheet){
-            $time += ($timesheet->ended_at - $timesheet->started_at);
+            if($timesheet->ended_at){
+                $time += ($timesheet->ended_at - $timesheet->started_at);
+            } else if($this->state == "start") {
+                $time += (round(microtime(true) * 1000) - $timesheet->started_at);
+            }
         }
         return $time;
     }
