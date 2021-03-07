@@ -94,7 +94,7 @@
                 response.forEach(function(booking){
                     bookings.push(JSON.parse(booking.event));
                 });
-                
+                loadCalendar(bookings);
             },
             error: function(response) {
 
@@ -130,9 +130,9 @@
           });
         });
 
-
         $('#vehicle_id').select2();
-        document.addEventListener('DOMContentLoaded', function() {
+        function loadCalendar(bookings) {
+          console.log(bookings);
           var calendarEl = document.getElementById('calendar');
           var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
@@ -165,24 +165,14 @@
               listWeek: { buttonText: 'list week' },
               listMonth: { buttonText: 'list month' }
             },
-            events: {
-              url: '/bookings-json',
-              data: function(response) { // a function that returns an object
-                var bookings = [];
-                response.forEach(function(booking){
-                    bookings.push(JSON.parse(booking.event));
-                });
-                console.log(response);
-                return bookings;
-              }
-            },
+            events: bookings,
             eventClick: function(info) {
               var eventObj = info.event;
               console.log(eventObj);                
             },
           });
           calendar.render();
-        });
+        }
     </script>
 @endpush
 @endsection
