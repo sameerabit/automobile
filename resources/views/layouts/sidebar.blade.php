@@ -206,18 +206,16 @@
                               <ul class="nav nav-treeview">
                                 
                                 <li class="nav-item">
-                                      <a href="{{ route('insurance_companies.index') }}" class="nav-link">
+                                      <a href="{{ route('roles.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Companies</p>
+                                        <p>Roles</p>
                                       </a>
-                                  <a href="{{ route('insurance_claim.index') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
-                                    <p>List</p>
-                                  </a>
-                                  <a href="{{ route('insurance_claim.create') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
-                                    <p>Create New</p>
-                                  </a>
+                                </li>
+                                <li class="nav-item">
+                                      <a href="{{ route('permissions.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Permissions</p>
+                                      </a>
                                 </li>
 
                               </ul>

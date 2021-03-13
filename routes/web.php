@@ -86,3 +86,6 @@ use Illuminate\Support\Facades\Route;
     Route::post('insurance-claim-details', 'InsuranceClaim\InsuranceClaimDetailsController@store')->name('jinsurance_claim_detail.store');
 
 
+    Route::resource('roles', 'RoleController');
+    Route::resource('permissions', 'PermissionController');
+
