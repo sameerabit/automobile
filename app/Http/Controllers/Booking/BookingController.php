@@ -33,5 +33,18 @@ class BookingController extends Controller
         return response()->json($bookings);
     }
 
+    public function getSingleBooking($id)
+    {
+        $booking = Booking::find($id);
+        return response()->json($booking);
+    }
+
+    public function deleteBooking($id)
+    {
+        $booking = Booking::find($id);
+        $booking->delete();
+        return response()->json(["message" => $booking]);
+    }
+
 
 }

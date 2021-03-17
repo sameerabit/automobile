@@ -70,6 +70,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('bookings','Booking\BookingController@index')->name('booking.index');
     Route::post('bookings','Booking\BookingController@store')->name('booking.store');
     Route::get('bookings-json','Booking\BookingController@getBookingJson')->name('bookings.json');
+    Route::get('bookings-json/{id}','Booking\BookingController@getSingleBooking')->name('bookings.json');
+    Route::delete('bookings-json/{id}','Booking\BookingController@deleteBooking')->name('bookings.delete');
     
 
 

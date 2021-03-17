@@ -46,7 +46,8 @@
                 <form class="needs-validation" action="#" id="addItemToTableForm">
 
                 <div class="modal-body">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-12">
+                            <input type="hidden" class="form-control" id="event_id" name="event_id">
                                 <label for="vehicle">Vehicle</label>
                                 <select id="vehicle_id" class="form-control">
                                     @foreach($vehicles as $vehicle)
@@ -68,8 +69,10 @@
                           </div>
                 </div>
                 <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" id="deleteEvent" >Delete</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" id="bookButton" class="btn btn-primary">ADD</button>
+                  
                 </div>
                 </form>
               </div>
@@ -82,25 +85,89 @@
 
     <script>
 
-        $(function(){
-          $.ajax({
-            type: "GET",
-            headers: {
-                "X-CSRF-TOKEN": $('input[name=_token]').val()
-            },
-            url: '/bookings-json',
-            success: function(response) {
-                var bookings = [];
-                response.forEach(function(booking){
-                    bookings.push(JSON.parse(booking.event));
-                });
-                loadCalendar(bookings);
-            },
-            error: function(response) {
 
-            },
-            dataType: 'json'
-          });
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+        callForCalendarData();
+
+        function callForCalendarData(){
+
+            $.ajax({
+              type: "GET",
+              headers: {
+                  "X-CSRF-TOKEN": $('input[name=_token]').val()
+              },
+              url: '/bookings-json',
+              success: function(response) {
+                  var bookings = [];
+                  response.forEach(function(booking){
+                    bookingEvent = JSON.parse(booking.event);
+                    bookingEvent["id"] = booking.id;
+                    console.log(bookingEvent);
+                    bookings.push(bookingEvent);
+                  });
+                  loadCalendar(bookings);
+              },
+              error: function(response) {
+
+              },
+              dataType: 'json'
+            });
+          }
+
+        function loadEventToModal(event_id){
+          $.ajax({
+              type: "GET",
+              headers: {
+                  "X-CSRF-TOKEN": $('input[name=_token]').val()
+              },
+              url: '/bookings-json/'+event_id,
+              success: function(res) {
+                $('#start').val(JSON.parse(res.event).start);
+                $('#end').val(JSON.parse(res.event).end);
+                $('#title').val(JSON.parse(res.event).title);
+                $('#event_id').val(res.id);
+                $('#deleteEvent').show();
+                $('#bookingModal').modal('toggle');
+              },
+              error: function(response) {
+
+              },
+              dataType: 'json'
+            });
+      
+        }
+
+        $('#deleteEvent').on('click', function(event){
+
+          event_id = $('#event_id').val();
+          $.ajax({
+              type: "DELETE",
+              headers: {
+                  "X-CSRF-TOKEN": $('input[name=_token]').val()
+              },
+              url: '/bookings-json/'+event_id,
+              success: function(res) {
+                if(res.message){
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Event Deleted successfully!'
+                  })
+                }
+                callForCalendarData();
+                $('#bookingModal').modal('toggle');
+              },
+              error: function(response) {
+
+              },
+              dataType: 'json'
+            });
+      
         });
 
         $('#bookButton').on('click',function(e){
@@ -121,7 +188,9 @@
             },
             url: '/bookings',
             success: function(response) {
-                return response;
+              $('#bookingModal').modal('toggle');
+              callForCalendarData();
+
             },
             error: function(response) {
 
@@ -132,7 +201,6 @@
 
         $('#vehicle_id').select2();
         function loadCalendar(bookings) {
-          console.log(bookings);
           var calendarEl = document.getElementById('calendar');
           var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
@@ -151,6 +219,7 @@
                 text: 'Add Booking',
                 click: function() {
                   $('#bookingModal').modal('toggle');
+                  $('#deleteEvent').css("display", "none");
                 }
               },
               custom2: {
@@ -168,7 +237,8 @@
             events: bookings,
             eventClick: function(info) {
               var eventObj = info.event;
-              console.log(eventObj);                
+              
+              loadEventToModal(info.event._def.publicId);
             },
           });
           calendar.render();
