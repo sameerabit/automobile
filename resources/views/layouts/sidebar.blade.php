@@ -169,7 +169,7 @@
                               <a href="#" class="nav-link">
                                   <i class="fas fa-car-crash"></i>
                                 <p>
-                                    Insurance Claim
+                                    Insurance Claims
                                   <i class="fas fa-angle-left right"></i>
                                   <span class="badge badge-info right"></span>
                                 </p>

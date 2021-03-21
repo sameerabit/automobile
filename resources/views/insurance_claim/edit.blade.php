@@ -34,7 +34,7 @@
 @endpush
 @section('content')
     <div class="container">
-
+        <a class="btn btn-primary" href="{{ route('insurance_claim.edit',$insuranceClaim->id) }}?export=pdf">Export to PDF</a>
         <div class="row py-2">
             <div class="col-md-12">
                 <div class="card">

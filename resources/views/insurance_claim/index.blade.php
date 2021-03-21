@@ -2,7 +2,11 @@
 
 @section('content')
 <div class="container">
-
+<div class="row">
+        <div class="col-md-3 offset-md-9">
+            <a class="btn btn-block btn-primary btn-lg" href="{{ route('insurance_claim.create') }}">Add Claim</a>
+        </div>
+    </div>
     <div class="row py-2">
         <div class="col-md-12">
             <div class="card">
@@ -41,7 +45,7 @@
                       <tr>
                             <td>{{ $insuranceClaim->id }}</td>
                             <td>{{ $insuranceClaim->vehicle->reg_no }}</td>
-                            <td>{{ $insuranceClaim->company_name }}</td>
+                            <td>{{ $insuranceClaim->company->name }}</td>
                             <td>{{ $insuranceClaim->agent_name }}</td>
                             <td>{{ $insuranceClaim->date }}</td>
                             <td class="d-flex">

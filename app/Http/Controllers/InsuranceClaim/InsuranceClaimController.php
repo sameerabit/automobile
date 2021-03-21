@@ -7,6 +7,7 @@ use App\InsuranceClaim;
 use App\InsuranceCompany;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PDF;
 
 class InsuranceClaimController extends Controller
 {
@@ -29,9 +30,17 @@ class InsuranceClaimController extends Controller
         return response()->json($insuranceClaim);
     }
 
-    public function edit(InsuranceClaim $insuranceClaim){
+    public function edit(InsuranceClaim $insuranceClaim, Request $request){
         $vehicles = Vehicle::all();
         $insuranceCompanies = InsuranceCompany::all();
+        if ($request->has('export')) {
+            if ($request->get('export') == 'pdf') {
+                PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+                $pdf = PDF::loadView('insurance_claim.claim-pdf', compact('insuranceClaim'));
+                // return view('insurance_claim.claim-pdf',compact('insuranceClaim'));
+                return $pdf->download('insurance_claim.pdf');
+            }
+        }
         return view('insurance_claim.edit',[
             'vehicles' => $vehicles,
             'insuranceClaim' => $insuranceClaim,

@@ -25,6 +25,6 @@ class InsuranceClaim extends Model
     }
 
     public function company(){
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(InsuranceCompany::class);
     }
 }
