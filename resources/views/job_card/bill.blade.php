@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @push('stylesheets')
 
-
     <link type="text/css" rel="stylesheet" href="{{ asset('bower_components/jsgrid/dist/jsgrid.min.css') }}" />
     <link type="text/css" rel="stylesheet" href="{{ asset('bower_components/jsgrid/dist/jsgrid-theme.min.css') }}" />
 
@@ -45,7 +44,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6">
-                                    <h3 class="card-title">Edit Job Card</h3>
+                                    <h3 class="card-title">Job Card Billing</h3>
 
                                 </div>
                             </div>
@@ -69,11 +68,6 @@
                                 <input type="date" class="form-control" id="jobDate" placeholder="Job Date"
                                     value="{{ $jobCard->date }}">
                                      <input type="hidden" id="job_card_id" value="{{ $jobCard->id }}">
-                            </div>
-                        </div>
-                        <div class="row py-2">
-                            <div class="col text-left">
-                                <button type="button" class="btn btn-sm btn-primary mx-3" id="saveRecord">Save</button>
                             </div>
                         </div>
                         <nav>
@@ -104,7 +98,7 @@
                     </div>
                     <div class="row py-2">
                         <div class="col text-right">
-                            <a href="{{ route('job_cards.bill',$jobCard->id) }}" class="btn btn-lg btn-primary mx-3" id="saveBill">Make Bill</a>
+                            <button type="button" class="btn btn-lg btn-primary mx-3" id="saveBill">Print</button>
                         </div>
                     </div>
                     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -135,7 +129,7 @@
 
         <script src="{{ asset('bower_components/jsgrid/dist/jsgrid.min.js') }}"></script>
         <script src="{{ mix('/js/easytimer.min.js') }}"></script>
-        <script src="{{ mix('/js/job_card.js') }}"></script>
+        <script src="{{ mix('/js/job_card_bill.js') }}"></script>
         <script src="{{ mix('/js/job_sales.js') }}"></script>
 
 

@@ -164,79 +164,6 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 width: 75
                             },
                             {
-                                name: "action",
-                                width: 130,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var timer = new easytimer.Timer();
-                                    var $startButton = $("<button>")
-                                        .text('Start')
-                                        .addClass('btn btn-sm btn-primary')
-                                        .click(function(e) {
-                                            item.state = "start";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            $.when(getJobDetail(item.id)).done(function(res){   
-                                                if(res.time != 0){
-                                                    seconds = Math.floor(res.time/1000);
-                                                    minutes = Math.floor(seconds/60);
-                                                    hours = Math.floor(minutes/60);
-                                                    days = Math.floor(hours/24);
-                                                    time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                                    timer.start({precision: 'seconds', startValues: {days: days,hours: hours, minutes: minutes, seconds: minutes}});
-                                                } 
-                                                if(res.time==0){
-                                                    timer.start();
-                                                }
-                                                res = updateTimeEvents(item.id, Date.now(), 'start' );
-                                                if(res.readyState == 1){
-                                                    $("#mechanicJsGrid").jsGrid("loadData");
-                                                }
-                                            });
-                                            timer.addEventListener('secondsUpdated', function (e) {
-                                                $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                            });
-                                            e.stopPropagation();
-                                    });
-                                    var $pauseButton = $("<button>")
-                                        // .attr('disabled',"true")
-                                        .text('Pause')
-                                        .addClass('btn btn-sm btn-warning')
-                                        .click(function(e) {
-                                            item.state = "pause";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            timer.pause();
-                                            updateTimeEvents(item.id, Date.now(), 'pause' );
-                                            e.stopPropagation();
-                                    });
-                                    var $finishButton = $("<button>")
-                                        .text('Reset')
-                                        .addClass('btn btn-sm btn-danger')
-                                        .click(function(e) {
-                                            item.state = "stop";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            timer.stop();
-                                            updateTimeEvents(item.id, Date.now(), 'stop' );
-                                            e.stopPropagation();
-                                    });
-                                    if(item.time && item.state == "start"){
-                                        seconds = Math.floor(item.time/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                        timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.addEventListener('secondsUpdated', function (e) {
-                                            $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                        });
-                                    }
-                                    updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                    return  $result.add($startButton)
-                                            .add($finishButton)
-                                            .add($pauseButton);
-
-                                }
-                            },
-                            {
                                 name: 'time',
                                 width: 80,
                                 itemTemplate: function(value, item) {
@@ -289,29 +216,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             deferred.resolve(response);
                                             var timer = new easytimer.Timer();
                                             response.forEach(function(row){
-                                                // timeArr = row.time.split(":");
-                                                // dateDiffInt =  Date.now() - row.time;
-                                                // console.log(dateDiffInt);
-                                                // seconds = Math.floor(dateDiffInt/1000);
-                                                // minutes = Math.floor(seconds/60);
-                                                // hours = Math.floor(minutes/60);
-                                                // days = Math.floor(hours/24);
-                                                // if(row.state == "start") {
-                                                //     timer.start(
-                                                //         {
-                                                //             startValues:{
-                                                //                 days:parseInt(days),
-                                                //                 hours:parseInt(hours),
-                                                //                 minutes:parseInt(minutes),
-                                                //                 seconds: parseInt(seconds%minutes)
-                                                //             }
-                                                //         }
-                                                //     );
-                                                //     timer.addEventListener('secondsUpdated', function (e) {
-                                                //         $('#time_'+row.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                                //     });
-                                                // }
-                                               
+                                            
                                             });
                                         }
                                     });
@@ -417,79 +322,6 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 width: 75
                             },
                             {
-                                name: "action",
-                                width: 130,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var timer = new easytimer.Timer();
-                                    var $startButton = $("<button>")
-                                        .text('Start')
-                                        .addClass('btn btn-sm btn-primary')
-                                        .click(function(e) {
-                                            item.state = "start";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            $.when(getJobDetail(item.id)).done(function(res){
-                                                if(res.time != 0){
-                                                    seconds = Math.floor(res.time/1000);
-                                                    minutes = Math.floor(seconds/60);
-                                                    hours = Math.floor(minutes/60);
-                                                    days = Math.floor(hours/24);
-                                                    time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                                    timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                                } 
-                                                if(res.time==0){
-                                                    timer.start();
-                                                }
-                                                res = updateTimeEvents(item.id, Date.now(), 'start' );
-                                                if(res.readyState == 1){
-                                                    $("#tinkeringJsGrid").jsGrid("loadData");
-                                                }
-                                            });
-                                            timer.addEventListener('secondsUpdated', function (e) {
-                                                $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                            });
-                                            e.stopPropagation();
-                                    });
-                                    var $pauseButton = $("<button>")
-                                        // .attr('disabled',"true")
-                                        .text('Pause')
-                                        .addClass('btn btn-sm btn-warning')
-                                        .click(function(e) {
-                                            item.state = "pause";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            timer.pause();
-                                            updateTimeEvents(item.id, Date.now(), 'pause' );
-                                            e.stopPropagation();
-                                    });
-                                    var $finishButton = $("<button>")
-                                        .text('Reset')
-                                        .addClass('btn btn-sm btn-danger')
-                                        .click(function(e) {
-                                            item.state = "stop";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            timer.stop();
-                                            updateTimeEvents(item.id, Date.now(), 'stop' );
-                                            e.stopPropagation();
-                                    });
-                                    if(item.time && item.state == "start"){
-                                        seconds = Math.floor(item.time/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.addEventListener('secondsUpdated', function (e) {
-                                            $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                        });
-                                    }
-                                    updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                    return  $result.add($startButton)
-                                            .add($finishButton)
-                                            .add($pauseButton);
-
-                                }
-                            },
-                            {
                                 name: 'time',
                                 width: 80,
                                 itemTemplate: function(value, item) {
@@ -542,29 +374,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             deferred.resolve(response);
                                             var timer = new easytimer.Timer();
                                             response.forEach(function(row){
-                                                // timeArr = row.time.split(":");
-                                                // dateDiffInt =  Date.now() - row.time;
-                                                // console.log(dateDiffInt);
-                                                // seconds = Math.floor(dateDiffInt/1000);
-                                                // minutes = Math.floor(seconds/60);
-                                                // hours = Math.floor(minutes/60);
-                                                // days = Math.floor(hours/24);
-                                                // if(row.state == "start") {
-                                                //     timer.start(
-                                                //         {
-                                                //             startValues:{
-                                                //                 days:parseInt(days),
-                                                //                 hours:parseInt(hours),
-                                                //                 minutes:parseInt(minutes),
-                                                //                 seconds: parseInt(seconds%minutes)
-                                                //             }
-                                                //         }
-                                                //     );
-                                                //     timer.addEventListener('secondsUpdated', function (e) {
-                                                //         $('#time_'+row.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                                //     });
-                                                // }
-                                               
+                                                
                                             });
                                         }
                                     });
@@ -670,79 +480,6 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 width: 75
                             },
                             {
-                                name: "action",
-                                width: 130,
-                                itemTemplate: function(value, item) {
-                                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                                    var timer = new easytimer.Timer();
-                                    var $startButton = $("<button>")
-                                        .text('Start')
-                                        .addClass('btn btn-sm btn-primary')
-                                        .click(function(e) {
-                                            item.state = "start";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            $.when(getJobDetail(item.id)).done(function(res){
-                                                if(res.time != 0){
-                                                    seconds = Math.floor(res.time/1000);
-                                                    minutes = Math.floor(seconds/60);
-                                                    hours = Math.floor(minutes/60);
-                                                    days = Math.floor(hours/24);
-                                                    time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                                    timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                                } 
-                                                if(res.time==0){
-                                                    timer.start();
-                                                }
-                                                res = updateTimeEvents(item.id, Date.now(), 'start' );
-                                                if(res.readyState == 1){
-                                                    $("#serviceJsGrid").jsGrid("loadData");
-                                                }
-                                            });
-                                            timer.addEventListener('secondsUpdated', function (e) {
-                                                $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                            });
-                                            e.stopPropagation();
-                                    });
-                                    var $pauseButton = $("<button>")
-                                        // .attr('disabled',"true")
-                                        .text('Pause')
-                                        .addClass('btn btn-sm btn-warning')
-                                        .click(function(e) {
-                                            item.state = "pause";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            timer.pause();
-                                            updateTimeEvents(item.id, Date.now(), 'pause' );
-                                            e.stopPropagation();
-                                    });
-                                    var $finishButton = $("<button>")
-                                        .text('Reset')
-                                        .addClass('btn btn-sm btn-danger')
-                                        .click(function(e) {
-                                            item.state = "stop";
-                                            updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                            timer.stop();
-                                            updateTimeEvents(item.id, Date.now(), 'stop' );
-                                            e.stopPropagation();
-                                    });
-                                    if(item.time && item.state == "start"){
-                                        seconds = Math.floor(item.time/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.addEventListener('secondsUpdated', function (e) {
-                                            $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                        });
-                                    }
-                                    updateButtonState(item,$startButton,$pauseButton,$finishButton);
-                                    return  $result.add($startButton)
-                                            .add($finishButton)
-                                            .add($pauseButton);
-
-                                }
-                            },
-                            {
                                 name: 'time',
                                 width: 80,
                                 itemTemplate: function(value, item) {
@@ -795,28 +532,6 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             deferred.resolve(response);
                                             var timer = new easytimer.Timer();
                                             response.forEach(function(row){
-                                                // timeArr = row.time.split(":");
-                                                // dateDiffInt =  Date.now() - row.time;
-                                                // console.log(dateDiffInt);
-                                                // seconds = Math.floor(dateDiffInt/1000);
-                                                // minutes = Math.floor(seconds/60);
-                                                // hours = Math.floor(minutes/60);
-                                                // days = Math.floor(hours/24);
-                                                // if(row.state == "start") {
-                                                //     timer.start(
-                                                //         {
-                                                //             startValues:{
-                                                //                 days:parseInt(days),
-                                                //                 hours:parseInt(hours),
-                                                //                 minutes:parseInt(minutes),
-                                                //                 seconds: parseInt(seconds%minutes)
-                                                //             }
-                                                //         }
-                                                //     );
-                                                //     timer.addEventListener('secondsUpdated', function (e) {
-                                                //         $('#time_'+row.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                                //     });
-                                                // }
                                                
                                             });
                                         }

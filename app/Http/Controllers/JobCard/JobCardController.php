@@ -54,6 +54,14 @@ class JobCardController extends Controller
          );
     }
 
+    public function createBill(JobCard $jobCard){
+        $vehicles = Vehicle::all();
+        return view('job_card.bill',[
+            'vehicles' => $vehicles,
+            'jobCard' => $jobCard
+        ]);
+    }
+
 
 
 

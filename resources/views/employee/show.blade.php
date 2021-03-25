@@ -2,12 +2,18 @@
 
 @section('content')
 <div class="container">
+<div class="row">
+        <div class="col-md-3 offset-md-9">
+            <a class="btn btn-block btn-primary btn-lg" href="{{ route('employees.create') }}">Add Employee</a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-8">
             <div class="card card-secondary">
     <div class="card-header">
       <h3 class="card-title">Show Employee</h3>
     </div>
+    
     <!-- /.card-header -->
     <!-- form start -->
 <form action="{{ route('vehicles.store') }}" method="POST" role="form">

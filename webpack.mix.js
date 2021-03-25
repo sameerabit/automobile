@@ -15,6 +15,7 @@ mix.copy('node_modules/easytimer.js/dist/easytimer.js', 'public/js/easytimer.min
 
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/job_card.js', 'public/js/job_card.js')
+    .js('resources/js/job_card_bill.js', 'public/js/job_card_bill.js')
     .js('resources/js/insurance_claim.js', 'public/js/insurance_claim.js')
     .js('resources/js/job_sales.js', 'public/js/job_sales.js')
    .sass('resources/sass/app.scss', 'public/css');
