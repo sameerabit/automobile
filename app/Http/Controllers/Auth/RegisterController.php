@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -29,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = 'register';
 
     /**
      * Create a new controller instance.
@@ -38,7 +39,15 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+     //   $this->middleware('guest');
+    }
+
+    public function showRegistrationForm()
+    {
+        $roles = Role::all();
+        return view('auth.register',[
+            "roles" => $roles
+        ]);
     }
 
     /**
@@ -64,10 +73,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
         ]);
+        $user->assignRole(Role::findById($data['role_id'])->name);
+        return $user;
     }
 }

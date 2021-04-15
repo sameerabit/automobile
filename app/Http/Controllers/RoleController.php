@@ -35,7 +35,8 @@ class RoleController extends Controller
     {
         $role = new Role();
         return view('role.create',[
-            'role' => $role
+            'role' => $role,
+            'permissions' => Permission::all()
         ]);
     }
 
@@ -48,6 +49,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $role = Role::create(['name' => $request->name]);
+        $role->givePermissionTo($request->permissions);
         return redirect()->route('roles.show',$role->id)->with(
             ['success' => 'Role Saved Successfully']
          );
@@ -62,7 +64,8 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         return view('role.show',[
-            'role' => $role
+            'role' => $role,
+            'permissions' => Permission::all()
         ]);
     }
 
@@ -75,7 +78,9 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         return view('role.edit',[
-            'role' => $role
+            'role' => $role,
+            'permissions' => Permission::all(),
+            'rolePermissions' => $role->permissions()->get()->pluck('name')->toArray()
         ]);
     }
 
@@ -94,6 +99,7 @@ class RoleController extends Controller
         $role->fill($request->all());
         $role->save();
         $role->fresh();
+        $role->syncPermissions($request->permissions);
         return redirect()->route('roles.show',$role->id)->with(
            ['success' => 'Role Updated Successfully']
         );

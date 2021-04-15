@@ -9,7 +9,8 @@ class JobCard extends Model
 
     protected $fillable = [
         'vehicle_id',
-        'date'
+        'date',
+        'booking_id'
     ];
 
     public function details(){

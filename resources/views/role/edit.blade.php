@@ -22,6 +22,18 @@
           {!! $errors->first('name', '<p class="error invalid-feedback">:message</p>') !!}
        
         </div>
+
+        <div class="row">
+        @foreach($permissions as $permission)
+          <div class="form-check col-3">
+            <input class="form-check-input" @if(in_array($permission->name, $rolePermissions)) checked @endif  type="checkbox" value="{{ $permission->name }}" name="permissions[]">
+            <label class="form-check-label" for="flexCheckDefault">
+              {{ $permission->name }}
+            </label>
+          </div>
+        @endforeach
+          
+        </div>
         
       </div>
       <!-- /.card-body -->
