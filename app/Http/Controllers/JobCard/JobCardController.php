@@ -63,7 +63,14 @@ class JobCardController extends Controller
     public function createBill(JobCard $jobCard)
     {
         $vehicles = Vehicle::all();
+        foreach($jobCard->details()->get() as $detail){
+            if ($detail->state == "start") {
 
+                return back()->with(
+                    ['warning' => 'Still there are task with START status. Please stop them to proceed.']
+                );
+            }
+        }
         return view('job_card.bill', [
             'vehicles' => $vehicles,
             'jobCard'  => $jobCard,
