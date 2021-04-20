@@ -1,4 +1,5 @@
 <?php
+
 namespace Grav\Plugin\Console;
 
 use Grav\Console\ConsoleCommand;
@@ -6,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Class LogCommand
+ * Class LogCommand.
  *
  * @package Grav\Plugin\Console
  */
@@ -31,12 +32,9 @@ class LogCommand extends ConsoleCommand
         'ERROR'     => 'red',
         'CRITICAL'  => 'red',
         'ALERT'     => 'red',
-        'EMERGENCY' => 'magenta'
+        'EMERGENCY' => 'magenta',
     ];
 
-    /**
-     *
-     */
     protected function configure()
     {
         $this->logfile = LOG_DIR . 'grav.log';
@@ -61,13 +59,13 @@ class LogCommand extends ConsoleCommand
     }
 
     /**
-     * @return int|null|void
+     * @return int|void|null
      */
     protected function serve()
     {
         $this->options = [
             'trace' => $this->input->getOption('trace'),
-            'limit' => $this->input->getOption('limit')
+            'limit' => $this->input->getOption('limit'),
         ];
 
         if (!file_exists($this->logfile)) {
@@ -92,7 +90,7 @@ class LogCommand extends ConsoleCommand
     /**
      * @param $line
      *
-     * @return null|string
+     * @return string|null
      */
     protected function parseLine($line)
     {
@@ -127,4 +125,3 @@ class LogCommand extends ConsoleCommand
         return implode("\n", $output);
     }
 }
-

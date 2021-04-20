@@ -17,7 +17,7 @@ class CreateSupplierReturnsTable extends Migration
             $table->id();
             $table->integer('supplier_id');
             $table->date('return_date');
-            $table->string('reference',500);
+            $table->string('reference', 500);
             $table->timestamps();
         });
     }

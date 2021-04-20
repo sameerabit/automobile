@@ -8,6 +8,6 @@ class Booking extends Model
 {
     protected $fillable = [
         'event',
-        'vehicle_id'
+        'vehicle_id',
     ];
 }

@@ -1,15 +1,14 @@
 <?php
+
 namespace Grav\Plugin;
 
+use Grav\Common\Config\Config;
 use Grav\Common\Page\Collection;
-use Grav\Common\Plugin;
-use Grav\Common\Uri;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Types;
+use Grav\Common\Plugin;
 use Grav\Common\Taxonomy;
-use Grav\Common\Utils;
-use Grav\Common\Data\Data;
-use Grav\Common\Config\Config;
+use Grav\Common\Uri;
 use RocketTheme\Toolbox\Event\Event;
 
 class SimplesearchPlugin extends Plugin
@@ -36,13 +35,15 @@ class SimplesearchPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => ['onPluginsInitialized', 0],
-            'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
-            'onGetPageTemplates' => ['onGetPageTemplates', 0],
+            'onTwigTemplatePaths'  => ['onTwigTemplatePaths', 0],
+            'onGetPageTemplates'   => ['onGetPageTemplates', 0],
         ];
     }
 
     /**
-     * Add page template types. (for Admin plugin)
+     * Add page template types. (for Admin plugin).
+     *
+     * @param Event $event
      */
     public function onGetPageTemplates(Event $event)
     {
@@ -50,7 +51,6 @@ class SimplesearchPlugin extends Plugin
         $types = $event->types;
         $types->scanTemplates('plugins://simplesearch/templates');
     }
-
 
     /**
      * Add current directory to twig lookup paths.
@@ -70,11 +70,10 @@ class SimplesearchPlugin extends Plugin
         }
 
         $this->enable([
-            'onPagesInitialized' => ['onPagesInitialized', 0],
-            'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
+            'onPagesInitialized'  => ['onPagesInitialized', 0],
+            'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
         ]);
     }
-
 
     /**
      * Build search results.
@@ -89,7 +88,7 @@ class SimplesearchPlugin extends Plugin
 
             // Support `route: '@self'` syntax
             if ($route === '@self') {
-                $route = $page->route();
+                $route                                 = $page->route();
                 $page->header()->simplesearch['route'] = $route;
             }
         }
@@ -100,7 +99,7 @@ class SimplesearchPlugin extends Plugin
         }
 
         /** @var Uri $uri */
-        $uri = $this->grav['uri'];
+        $uri   = $this->grav['uri'];
         $query = $uri->param('query') ?: $uri->query('query');
         $route = $this->config->get('plugins.simplesearch.route');
 
@@ -113,12 +112,12 @@ class SimplesearchPlugin extends Plugin
         $this->query = array_filter(array_filter(explode(',', $query), 'trim'), 'strlen');
 
         /** @var Taxonomy $taxonomy_map */
-        $taxonomy_map = $this->grav['taxonomy'];
-        $taxonomies = [];
+        $taxonomy_map  = $this->grav['taxonomy'];
+        $taxonomies    = [];
         $find_taxonomy = [];
 
-        $filters = (array) $this->config->get('plugins.simplesearch.filters');
-        $operator = $this->config->get('plugins.simplesearch.filter_combinator', 'and');
+        $filters      = (array) $this->config->get('plugins.simplesearch.filters');
+        $operator     = $this->config->get('plugins.simplesearch.filter_combinator', 'and');
         $new_approach = false;
 
         // if @none found, skip processing taxonomies
@@ -135,15 +134,14 @@ class SimplesearchPlugin extends Plugin
 
         if (!$should_process || !$filters || $query === false || (count($filters) == 1 && !reset($filters))) {
             /** @var \Grav\Common\Page\Pages $pages */
-            $pages = $this->grav['pages'];
+            $pages            = $this->grav['pages'];
             $this->collection = $pages->all();
         } else {
-
             foreach ($filters as $key => $filter) {
                 // flatten item if it's wrapped in an array
                 if (is_int($key)) {
                     if (is_array($filter)) {
-                        $key = key($filter);
+                        $key    = key($filter);
                         $filter = $filter[$key];
                     } else {
                         $key = $filter;
@@ -161,8 +159,8 @@ class SimplesearchPlugin extends Plugin
             }
 
             if ($new_approach) {
-                $params = $page->header()->content;
-                $params['query'] = $this->config->get('plugins.simplesearch.query');
+                $params           = $page->header()->content;
+                $params['query']  = $this->config->get('plugins.simplesearch.query');
                 $this->collection = $page->collection($params, false);
             } else {
                 $this->collection = new Collection();
@@ -174,7 +172,7 @@ class SimplesearchPlugin extends Plugin
         $this->collection->published()->routable();
 
         //Check if user has permission to view page
-        if($this->grav['config']->get('plugins.login.enabled')) {
+        if ($this->grav['config']->get('plugins.login.enabled')) {
             $this->collection = $this->checkForPermissions($this->collection);
         }
         $extras = [];
@@ -191,10 +189,9 @@ class SimplesearchPlugin extends Plugin
 
                     if ($cpage->modular()) {
                         $this->collection->remove($cpage);
-                        $parent = $cpage->parent();
+                        $parent                  = $cpage->parent();
                         $extras[$parent->path()] = ['slug' => $parent->slug()];
                     }
-
                 }
             }
         }
@@ -233,15 +230,16 @@ class SimplesearchPlugin extends Plugin
     /**
      * Filter the pages, and return only the pages the user has access to.
      * Implementation based on Login Plugin authorizePage() function.
+     *
+     * @param mixed $collection
      */
     public function checkForPermissions($collection)
     {
-        $user = $this->grav['user'];
+        $user             = $this->grav['user'];
         $returnCollection = new Collection();
         foreach ($collection as $page) {
-
             $header = $page->header();
-            $rules = isset($header->access) ? (array)$header->access : [];
+            $rules  = isset($header->access) ? (array) $header->access : [];
 
             if ($this->config->get('plugins.login.parent_acl')) {
                 // If page has no ACL rules, use its parent's rules
@@ -249,7 +247,7 @@ class SimplesearchPlugin extends Plugin
                     $parent = $page->parent();
                     while (!$rules and $parent) {
                         $header = $parent->header();
-                        $rules = isset($header->access) ? (array)$header->access : [];
+                        $rules  = isset($header->access) ? (array) $header->access : [];
                         $parent = $parent->parent();
                     }
                 }
@@ -277,6 +275,7 @@ class SimplesearchPlugin extends Plugin
                 }
             }
         }
+
         return $returnCollection;
     }
 
@@ -288,7 +287,7 @@ class SimplesearchPlugin extends Plugin
         $twig = $this->grav['twig'];
 
         if ($this->query) {
-            $twig->twig_vars['query'] = implode(', ', $this->query);
+            $twig->twig_vars['query']          = implode(', ', $this->query);
             $twig->twig_vars['search_results'] = $this->collection;
         }
 
@@ -296,11 +295,11 @@ class SimplesearchPlugin extends Plugin
             $this->grav['assets']->add('plugin://simplesearch/css/simplesearch.css');
         }
 
-
-        $this->grav['assets']->addJs('plugin://simplesearch/js/simplesearch.js', [ 'group' => 'bottom' ]);
+        $this->grav['assets']->addJs('plugin://simplesearch/js/simplesearch.js', ['group' => 'bottom']);
     }
 
-    private function matchText($haystack, $needle) {
+    private function matchText($haystack, $needle)
+    {
         if ($this->config->get('plugins.simplesearch.ignore_accented_characters')) {
             setlocale(LC_ALL, 'en_US');
             try {
@@ -309,6 +308,7 @@ class SimplesearchPlugin extends Plugin
                 $result = mb_stripos($haystack, $needle);
             }
             setlocale(LC_ALL, '');
+
             return $result;
         } else {
             return mb_stripos($haystack, $needle);
@@ -319,13 +319,14 @@ class SimplesearchPlugin extends Plugin
      * @param $query
      * @param Page $page
      * @param $taxonomies
+     *
      * @return bool
      */
     private function notFound($query, $page, $taxonomies)
     {
         $searchable_types = ['title', 'content', 'taxonomy'];
-        $results = true;
-        $search_content = $this->config->get('plugins.simplesearch.search_content');
+        $results          = true;
+        $search_content   = $this->config->get('plugins.simplesearch.search_content');
 
         foreach ($searchable_types as $type) {
             if ($type === 'title') {
@@ -335,14 +336,14 @@ class SimplesearchPlugin extends Plugin
                     continue;
                 }
                 $page_taxonomies = $page->taxonomy();
-                $taxonomy_match = false;
+                $taxonomy_match  = false;
                 foreach ((array) $page_taxonomies as $taxonomy => $values) {
                     // if taxonomies filter set, make sure taxonomy filter is valid
                     if (is_array($taxonomies) && !empty($taxonomies) && !in_array($taxonomy, $taxonomies)) {
                         continue;
                     }
 
-                    $taxonomy_values = implode('|',$values);
+                    $taxonomy_values = implode('|', $values);
                     if ($this->matchText($taxonomy_values, $query) !== false) {
                         $taxonomy_match = true;
                         break;
@@ -358,10 +359,11 @@ class SimplesearchPlugin extends Plugin
                 $result = $this->matchText(strip_tags($content), $query) === false;
             }
             $results = $results && $result;
-            if ($results === false ) {
+            if ($results === false) {
                 break;
             }
         }
+
         return $results;
     }
 }

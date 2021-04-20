@@ -26,7 +26,7 @@ class AddBookingIdToJobCardsTable extends Migration
     public function down()
     {
         Schema::table('job_cards', function (Blueprint $table) {
-                $table->dropColumn('booking_id');
+            $table->dropColumn('booking_id');
         });
     }
 }

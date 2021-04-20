@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 
 class JobCardController extends Controller
 {
-
     public function create()
     {
         $vehicles = Vehicle::all();
-        return view('job_card.create',[
-            'vehicles' => $vehicles
+
+        return view('job_card.create', [
+            'vehicles' => $vehicles,
         ]);
     }
 
@@ -23,14 +23,17 @@ class JobCardController extends Controller
         $jobCard = new JobCard();
         $jobCard->fill($request->all());
         $jobCard->save();
+
         return response()->json($jobCard);
     }
 
-    public function edit(JobCard $jobCard){
+    public function edit(JobCard $jobCard)
+    {
         $vehicles = Vehicle::all();
-        return view('job_card.edit',[
+
+        return view('job_card.edit', [
             'vehicles' => $vehicles,
-            'jobCard' => $jobCard
+            'jobCard'  => $jobCard,
         ]);
     }
 
@@ -41,28 +44,29 @@ class JobCardController extends Controller
         //     $jobCardQuery->where('vehicle_no','like',"%$request->q%");
         //     $jobCardQuery->orWhere('vehicle_no','like',"%$request->q%");
         // }
-        $jobCards = $jobCardQuery->orderBy('id','DESC')->paginate();
-        return view('job_card.index',[
-            'jobCards' => $jobCards
+        $jobCards = $jobCardQuery->orderBy('id', 'DESC')->paginate();
+
+        return view('job_card.index', [
+            'jobCards' => $jobCards,
         ]);
     }
 
-    public function destroy(JobCard $jobCard){
+    public function destroy(JobCard $jobCard)
+    {
         $jobCard->delete();
+
         return redirect()->route('job_cards.index')->with(
             ['success' => 'Job Card Deleted Successfully']
          );
     }
 
-    public function createBill(JobCard $jobCard){
+    public function createBill(JobCard $jobCard)
+    {
         $vehicles = Vehicle::all();
-        return view('job_card.bill',[
+
+        return view('job_card.bill', [
             'vehicles' => $vehicles,
-            'jobCard' => $jobCard
+            'jobCard'  => $jobCard,
         ]);
     }
-
-
-
-
 }

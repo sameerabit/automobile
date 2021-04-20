@@ -12,12 +12,11 @@ class Employee extends Model
         'phone_1',
         'phone_2',
         'address',
-        'image_url'
+        'image_url',
     ];
 
-    public function getImageUrlAttribute($value){
+    public function getImageUrlAttribute($value)
+    {
         return $value == null ? "default.png" : $value;
     }
-
 }
-

@@ -17,8 +17,8 @@ class CreateSupplierBillsTable extends Migration
             $table->id();
             $table->integer('supplier_id');
             $table->date('billing_date');
-            $table->string('reference',500);
-            $table->string('image_url',500)->nullable();
+            $table->string('reference', 500);
+            $table->string('image_url', 500)->nullable();
             $table->timestamps();
         });
     }

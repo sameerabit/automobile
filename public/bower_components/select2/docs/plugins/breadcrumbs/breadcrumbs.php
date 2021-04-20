@@ -1,7 +1,8 @@
 <?php
+
 namespace Grav\Plugin;
 
-use \Grav\Common\Plugin;
+use Grav\Common\Plugin;
 
 class BreadcrumbsPlugin extends Plugin
 {
@@ -11,23 +12,24 @@ class BreadcrumbsPlugin extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0]
+            'onPluginsInitialized' => ['onPluginsInitialized', 0],
         ];
     }
 
     /**
-     * Initialize configuration
+     * Initialize configuration.
      */
     public function onPluginsInitialized()
     {
         if ($this->isAdmin()) {
             $this->active = false;
+
             return;
         }
 
         $this->enable([
             'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
-            'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
+            'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
         ]);
     }
 

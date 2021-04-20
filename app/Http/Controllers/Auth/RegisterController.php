@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +20,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -39,28 +38,30 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-     //   $this->middleware('guest');
+        //   $this->middleware('guest');
     }
 
     public function showRegistrationForm()
     {
         $roles = Role::all();
-        return view('auth.register',[
-            "roles" => $roles
+
+        return view('auth.register', [
+            "roles" => $roles,
         ]);
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required','string', 'max:255', 'unique:users,username'],
+            'name'     => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -68,17 +69,19 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \App\User
      */
     protected function create(array $data)
     {
-        $user =  User::create([
-            'name' => $data['name'],
+        $user = User::create([
+            'name'     => $data['name'],
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
         ]);
         $user->assignRole(Role::findById($data['role_id'])->name);
+
         return $user;
     }
 }

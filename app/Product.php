@@ -11,7 +11,7 @@ class Product extends Model
         'description',
         'image_url',
         'category_id',
-        'brand_id'
+        'brand_id',
     ];
 
     public function brand()
@@ -24,4 +24,3 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 }
-

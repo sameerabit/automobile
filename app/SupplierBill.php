@@ -18,9 +18,8 @@ class SupplierBill extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function supplierBillDetails(){
+    public function supplierBillDetails()
+    {
         return $this->hasMany(SupplierBillDetails::class, 'supplier_bill_id');
     }
-
 }
-

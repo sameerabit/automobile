@@ -33,4 +33,3 @@ class SupplierBillDetails extends Model
         return $this->belongsTo(Unit::class);
     }
 }
-

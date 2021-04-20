@@ -1,4 +1,5 @@
 <?php
+
 namespace Grav\Plugin;
 
 use Grav\Common\Grav;
@@ -30,6 +31,7 @@ class Breadcrumbs
         if (!$this->breadcrumbs) {
             $this->build();
         }
+
         return $this->breadcrumbs;
     }
 
@@ -40,18 +42,19 @@ class Breadcrumbs
      */
     protected function build()
     {
-        $hierarchy = array();
-        $grav = Grav::instance();
-        $current = $grav['page'];
+        $hierarchy = [];
+        $grav      = Grav::instance();
+        $current   = $grav['page'];
 
         while ($current && !$current->root()) {
             $hierarchy[$current->url()] = $current;
-            $current = $current->parent();
+            $current                    = $current->parent();
         }
 
         // Page cannot be routed.
         if (!$current) {
-            $this->breadcrumbs = array();
+            $this->breadcrumbs = [];
+
             return;
         }
 
@@ -61,7 +64,6 @@ class Breadcrumbs
                 $hierarchy[] = $home;
             }
         }
-
 
         $this->breadcrumbs = array_reverse($hierarchy);
     }

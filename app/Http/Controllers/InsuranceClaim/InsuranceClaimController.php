@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\InsuranceClaim;
 
-use App\Vehicle;
+use App\Http\Controllers\Controller;
 use App\InsuranceClaim;
 use App\InsuranceCompany;
+use App\Vehicle;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use PDF;
 
 class InsuranceClaimController extends Controller
 {
-
     public function create()
     {
         $insuranceCompanies = InsuranceCompany::all();
-        $vehicles = Vehicle::all();
-        return view('insurance_claim.create',[
-            'vehicles' => $vehicles,
-            'insurance_companies' => $insuranceCompanies
+        $vehicles           = Vehicle::all();
+
+        return view('insurance_claim.create', [
+            'vehicles'            => $vehicles,
+            'insurance_companies' => $insuranceCompanies,
         ]);
     }
 
@@ -27,11 +27,13 @@ class InsuranceClaimController extends Controller
         $insuranceClaim = new InsuranceClaim();
         $insuranceClaim->fill($request->all());
         $insuranceClaim->save();
+
         return response()->json($insuranceClaim);
     }
 
-    public function edit(InsuranceClaim $insuranceClaim, Request $request){
-        $vehicles = Vehicle::all();
+    public function edit(InsuranceClaim $insuranceClaim, Request $request)
+    {
+        $vehicles           = Vehicle::all();
         $insuranceCompanies = InsuranceCompany::all();
         if ($request->has('export')) {
             if ($request->get('export') == 'pdf') {
@@ -41,10 +43,11 @@ class InsuranceClaimController extends Controller
                 return $pdf->download('insurance_claim.pdf');
             }
         }
-        return view('insurance_claim.edit',[
-            'vehicles' => $vehicles,
-            'insuranceClaim' => $insuranceClaim,
-            'insurance_companies' => $insuranceCompanies
+
+        return view('insurance_claim.edit', [
+            'vehicles'            => $vehicles,
+            'insuranceClaim'      => $insuranceClaim,
+            'insurance_companies' => $insuranceCompanies,
         ]);
     }
 
@@ -55,20 +58,19 @@ class InsuranceClaimController extends Controller
         //     $insuranceClaimQuery->where('vehicle_no','like',"%$request->q%");
         //     $insuranceClaimQuery->orWhere('vehicle_no','like',"%$request->q%");
         // }
-        $insuranceClaims = $insuranceClaimQuery->orderBy('id','DESC')->paginate();
-        return view('insurance_claim.index',[
-            'insuranceClaims' => $insuranceClaims
+        $insuranceClaims = $insuranceClaimQuery->orderBy('id', 'DESC')->paginate();
+
+        return view('insurance_claim.index', [
+            'insuranceClaims' => $insuranceClaims,
         ]);
     }
 
-    public function destroy(InsuranceClaim $insuranceClaim){
+    public function destroy(InsuranceClaim $insuranceClaim)
+    {
         $insuranceClaim->delete();
+
         return redirect()->route('insurance_claim.index')->with(
             ['success' => 'Insurance Claim Deleted Successfully']
          );
     }
-
-
-
-
 }

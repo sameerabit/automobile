@@ -29,6 +29,6 @@ class CreateTimesheetTable extends Migration
      */
     public function down()
     {
-        //
+
     }
 }

@@ -8,23 +8,23 @@ use App\JobSale;
 use App\Product;
 use Illuminate\Http\Request;
 
-
 class JobSaleController extends Controller
 {
-
     public function getJobSale($id)
     {
-        $jobSales = JobSale::where('job_card_id',$id)->get();
+        $jobSales = JobSale::where('job_card_id', $id)->get();
+
         return response()->json(new JobSaleCollection($jobSales));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $product = Product::find($request->product_id);
-        if(!$product){
-            $product = new Product();
-            $product->name = $request->product_id; //product id is the name here.
+        if (!$product) {
+            $product              = new Product();
+            $product->name        = $request->product_id; //product id is the name here.
             $product->category_id = 1; //product id is the name here.
-            $product->brand_id = 1; //product id is the name here.
+            $product->brand_id    = 1; //product id is the name here.
             $product->save();
             $product->fresh();
         }
@@ -33,6 +33,7 @@ class JobSaleController extends Controller
         $jobSale->product_id = $product->id;
         $jobSale->save();
         $jobSale->fresh();
+
         return response()->json($jobSale);
     }
 }

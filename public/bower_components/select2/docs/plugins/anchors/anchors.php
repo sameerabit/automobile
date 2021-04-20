@@ -1,9 +1,9 @@
 <?php
+
 namespace Grav\Plugin;
 
-use \Grav\Common\Plugin;
-use \Grav\Common\Grav;
-use \Grav\Common\Page\Page;
+use Grav\Common\Page\Page;
+use Grav\Common\Plugin;
 
 class AnchorsPlugin extends Plugin
 {
@@ -13,12 +13,12 @@ class AnchorsPlugin extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0]
+            'onPluginsInitialized' => ['onPluginsInitialized', 0],
         ];
     }
 
     /**
-     * Initialize configuration
+     * Initialize configuration.
      */
     public function onPluginsInitialized()
     {
@@ -26,14 +26,14 @@ class AnchorsPlugin extends Plugin
             $this->active = false;
         } else {
             $this->enable([
-                'onPageInitialized' => ['onPageInitialized', 0],
-                'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
+                'onPageInitialized'   => ['onPageInitialized', 0],
+                'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
             ]);
         }
     }
 
     /**
-     * Initialize configuration
+     * Initialize configuration.
      */
     public function onPageInitialized()
     {
@@ -54,11 +54,11 @@ class AnchorsPlugin extends Plugin
         if ($this->config->get('plugins.anchors.active')) {
             $selectors = $this->config->get('plugins.anchors.selectors', 'h1,h2,h3,h4');
 
-            $visible = "visible: '{$this->config->get('plugins.anchors.visible', 'hover')}',";
+            $visible   = "visible: '{$this->config->get('plugins.anchors.visible', 'hover')}',";
             $placement = "placement: '{$this->config->get('plugins.anchors.placement', 'right')}',";
-            $icon = $this->config->get('plugins.anchors.icon') ? "icon: '{$this->config->get('plugins.anchors.icon')}'," : '';
-            $class = $this->config->get('plugins.anchors.class') ? "class: '{$this->config->get('plugins.anchors.class')}'," : '';
-            $truncate = "truncate: {$this->config->get('plugins.anchors.truncate', 64)}";
+            $icon      = $this->config->get('plugins.anchors.icon') ? "icon: '{$this->config->get('plugins.anchors.icon')}'," : '';
+            $class     = $this->config->get('plugins.anchors.class') ? "class: '{$this->config->get('plugins.anchors.class')}'," : '';
+            $truncate  = "truncate: {$this->config->get('plugins.anchors.truncate', 64)}";
 
             $this->grav['assets']->addJs('plugin://anchors/js/anchor.min.js');
 
@@ -72,7 +72,6 @@ class AnchorsPlugin extends Plugin
                                 };
                                 anchors.add('$selectors');
                              });";
-
 
             $this->grav['assets']->addInlineJs($anchors_init);
         }

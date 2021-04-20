@@ -13,8 +13,6 @@ class Vehicle extends Model
         'name',
         'reg_no',
         'chassis',
-        'image_url'
+        'image_url',
     ];
-
 }
-

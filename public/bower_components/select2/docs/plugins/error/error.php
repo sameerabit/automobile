@@ -1,11 +1,11 @@
 <?php
+
 namespace Grav\Plugin;
 
-use Grav\Common\Plugin;
-use Grav\Common\Grav;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Pages;
 use Grav\Common\Page\Types;
+use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
 
 class ErrorPlugin extends Plugin
@@ -16,9 +16,9 @@ class ErrorPlugin extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            'onPageNotFound' => ['onPageNotFound', 0],
-            'onGetPageTemplates' => ['onGetPageTemplates', 0],
-            'onTwigTemplatePaths' => ['onTwigTemplatePaths', -10]
+            'onPageNotFound'      => ['onPageNotFound', 0],
+            'onGetPageTemplates'  => ['onGetPageTemplates', 0],
+            'onTwigTemplatePaths' => ['onTwigTemplatePaths', -10],
         ];
     }
 
@@ -47,6 +47,8 @@ class ErrorPlugin extends Plugin
 
     /**
      * Add page template types.
+     *
+     * @param Event $event
      */
     public function onGetPageTemplates(Event $event)
     {
