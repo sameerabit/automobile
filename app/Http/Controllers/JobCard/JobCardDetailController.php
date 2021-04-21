@@ -8,6 +8,7 @@ use App\JobCard;
 use App\JobCardDetail;
 use App\Timesheet;
 use Illuminate\Http\Request;
+use Twilio\Rest\Client;
 
 class JobCardDetailController extends Controller
 {
@@ -63,6 +64,9 @@ class JobCardDetailController extends Controller
         }
         $jobCardDetail->state = $request->state;
         $jobCardDetail->save();
+        $message = "Hello {$jobCardDetail->jobCard->vehicle->owner_name}, We just started repairing your vehicle {$jobCardDetail->jobCard->vehicle->reg_no}. We'll Notify you once done. Thank you. ";
+        
+        $this->sendMessage($message, $jobCardDetail->jobCard->vehicle->owner_phone);
 
         return response()->json($jobCardDetail);
     }
@@ -71,4 +75,20 @@ class JobCardDetailController extends Controller
     {
         return response()->json($jobCardDetail);
     }
+
+
+/**
+ * Sends sms to user using Twilio's programmable sms client
+ * @param String $message Body of sms
+ * @param Number $recipients string or array of phone number of recepient
+ */
+private function sendMessage($message, $recipients)
+{
+    $account_sid = getenv("TWILIO_SID");
+    $auth_token = getenv("TWILIO_AUTH_TOKEN");
+    $twilio_number = getenv("TWILIO_NUMBER");
+    $client = new Client($account_sid, $auth_token);
+    $client->messages->create($recipients, 
+            ['from' => $twilio_number, 'body' => $message] );
+}
 }

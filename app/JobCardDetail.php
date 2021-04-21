@@ -22,6 +22,10 @@ class JobCardDetail extends Model
         return $this->hasMany(Timesheet::class);
     }
 
+    public function jobCard(){
+        return $this->belongsTo(JobCard::class);
+    }
+
     public function getTimeAttribute()
     {
         $time = 0;
