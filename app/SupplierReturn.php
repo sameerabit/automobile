@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class SupplierReturn extends Model
 {
     protected $fillable = [
-        'supplier_id',
         'return_date',
         'reference',
+        'supplier_bill_id'
     ];
-
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
 
     public function supplierReturnDetails()
     {
         return $this->hasMany(supplierReturnDetails::class, 'return_id');
+    }
+
+    public function supplierBill()
+    {
+        return $this->belongsTo(SupplierBill::class);
     }
 }

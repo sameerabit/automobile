@@ -43,7 +43,7 @@
                       @foreach ($supplierReturns as $supplierReturn)
                       <tr>
                             <td>{{ $supplierReturn->id }}</td>
-                            <td>{{ $supplierReturn->supplier->name }}</td>
+                            <td>{{ $supplierReturn->supplierBill->supplier->name }}</td>
                             <td>{{ $supplierReturn->return_date }}</td>
                             <td>{{ $supplierReturn->created_at }}</td>
                             <td class="d-flex">

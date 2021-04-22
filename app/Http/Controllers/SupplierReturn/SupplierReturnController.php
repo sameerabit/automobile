@@ -5,8 +5,10 @@ namespace App\Http\Controllers\SupplierReturn;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SupplierReturn as ResourcesSupplierReturn;
 use App\Repositories\SupplierReturnRepository;
+use App\SupplierBill;
 use App\SupplierReturn;
 use App\SupplierReturnDetails;
+use App\Unit;
 use Illuminate\Http\Request;
 
 class SupplierReturnController extends Controller
@@ -24,14 +26,20 @@ class SupplierReturnController extends Controller
         ]);
     }
 
+    public function createReturn($bill_id)
+    {
+        $supplierReturn = SupplierReturn::where('supplier_bill_id',$bill_id)->first();
+        return view('supplier_return.create', [
+            'bill_id' => $bill_id,
+            'supplierReturn' => $supplierReturn
+        ]);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
-            'supplier_id' => 'required',
             'reference'   => 'required',
             'return_date' => 'required',
-        ], [
-            'supplier_id.required' => 'Supplier is required',
         ]);
         $supplierReturn = $this->repository->save($request->all());
 
@@ -87,11 +95,8 @@ class SupplierReturnController extends Controller
     public function update(Request $request, SupplierReturn $supplierReturn)
     {
         $this->validate($request, [
-            'supplier_id' => 'required',
             'reference'   => 'required',
             'return_date' => 'required',
-        ], [
-            'supplier_id.required' => 'Supplier is required',
         ]);
         $supplierReturn = $this->repository->update($supplierReturn, $request->all());
 
@@ -121,4 +126,5 @@ class SupplierReturnController extends Controller
 
         return response()->json($supplierReturnDetails);
     }
+
 }

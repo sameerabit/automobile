@@ -37,7 +37,7 @@
                     <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="supplier">Supplier</label>
-                                <select id="supplier_id" class="form-control">
+                                <select id="supplier_id" class="form-control" disabled>
                                 </select>
                                 <input type="hidden" value="{{ $supplierReturn->supplier_id }}" class="form-control" id="selected_supplier_id">
 
@@ -318,7 +318,7 @@
             });
 
             $("#supplier_id").select2("trigger", "select", {
-                data: { id: "{{ $supplierReturn->supplier->name }}",title:"{{ $supplierReturn->supplier->id }}" }
+                data: { id: "{{ $supplierReturn->supplierBill->supplier->name }}",title:"{{ $supplierReturn->supplierBill->supplier->id }}" }
             });
 
             $('#supplier_id').on('select2:select', function (e) {

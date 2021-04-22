@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierReturnsTable extends Migration
+class AddSupplierBillIdToSupplierReturnsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateSupplierReturnsTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_returns', function (Blueprint $table) {
-            $table->id();
-            $table->date('return_date');
-            $table->string('reference', 500);
-            $table->timestamps();
+        Schema::table('supplier_returns', function (Blueprint $table) {
+            $table->integer('supplier_bill_id')->nullable();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateSupplierReturnsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_returns');
+        Schema::table('supplier_returns', function (Blueprint $table) {
+            $table->dropColumn('supplier_bill_id');
+        });
     }
 }

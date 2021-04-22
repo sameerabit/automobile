@@ -36,7 +36,7 @@
                         <th>Supplier</th>
                         <th>Bill Date</th>
                         <th>Created At</th>
-                        <th style="width: 200px">Action</th>
+                        <th style="width: 300px">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -48,6 +48,7 @@
                             <td>{{ $supplierBill->created_at }}</td>
                             <td class="d-flex">
                                 <a class="btn btn-warning btn-sm m-auto" href="{{ route('supplier-bill.edit',$supplierBill->id) }}"><i class="fas fa-edit"></i>Edit</a>
+                                <a class="btn btn-info btn-sm m-auto" href="{{ route('bill.create_return',$supplierBill->id) }}"><i class="fas fa-edit"></i>Return</a>
                                 <form action="{{ route('supplier-bill.destroy',$supplierBill->id) }}"
                                     method="POST" class="form form-inline js-confirm">
                                   {{ method_field('delete') }}

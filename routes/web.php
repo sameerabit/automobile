@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('supplier-bill-details/{bill_id}', 'SupplierBill\SupplierBillController@getSupplierBillDetails');
 
     Route::resource('supplier-returns', 'SupplierReturn\SupplierReturnController');
+    Route::get('supplier-returns/{bill_id}/make', 'SupplierReturn\SupplierReturnController@createReturn')->name('bill.create_return');
     Route::get('supplier-return-details/{return_id}', 'SupplierReturn\SupplierReturnController@getSupplierReturnDetails');
 
     Route::get('job-cards/create', 'JobCard\JobCardController@create')->name('job-cards.create');

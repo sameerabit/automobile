@@ -32,6 +32,11 @@
                                 @csrf
                                 <input type="text" class="form-control" id="reference" placeholder="Reference">
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="reference">Bill ID</label>
+                                @csrf
+                                <input type="text" disabled class="form-control" value="{{ $bill_id }}" id="bill_id">
+                            </div>
                     </div>
                     <div class="form-row">
                             <div class="form-group col-md-6">
@@ -163,9 +168,10 @@
                 reference= $('#reference').val();
                 returnDate = $('#returnDate').val();
                 supplierId = $('#supplier_id').val();
-
+                billId = $('#bill_id').val();
                 var supplierBill = {
                     'supplier_id': supplierId,
+                    'supplier_bill_id': billId,
                     'return_date': returnDate,
                     'reference' : reference,
                     'supllierReturnDetails': formattedTableData
