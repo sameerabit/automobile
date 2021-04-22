@@ -83,3 +83,6 @@ use Illuminate\Support\Facades\Route;
 
     Route::resource('roles', 'RoleController');
     Route::resource('permissions', 'PermissionController');
+
+
+    Route::get('products-report', 'Report\ReportController@products')->name('report.products');

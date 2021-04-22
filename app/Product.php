@@ -23,4 +23,14 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function supplierDetails()
+    {
+        return $this->hasMany(SupplierBillDetails::class);
+    }
+
+    public function qty()
+    {
+        return $this->supplierDetails->sum('quantity');
+    }
 }

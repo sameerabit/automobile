@@ -238,9 +238,9 @@
                               <ul class="nav nav-treeview">
                                 
                                 <li class="nav-item">
-                                  <a href="{{ route('insurance_claim.index') }}" class="nav-link">
+                                  <a href="{{ route('report.products') }}" class="nav-link">
                                     <i class="fas fa-truck-pickup nav-icon"></i>
-                                    <p>List</p>
+                                    <p>Products Report</p>
                                   </a>
                                   <a href="{{ route('insurance_claim.create') }}" class="nav-link">
                                     <i class="fas fa-truck-pickup nav-icon"></i>
