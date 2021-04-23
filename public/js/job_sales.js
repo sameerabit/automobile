@@ -93,6 +93,8 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 $(function () {
   $.ajax({
     type: "GET",
@@ -116,7 +118,7 @@ $(function () {
   };
 
   SelectField.prototype = new jsGrid.Field({
-    css: "date-field",
+    css: "form-control",
     // redefine general property 'css'
     align: "center",
     // redefine general property 'align'
@@ -196,14 +198,20 @@ $(function () {
         align: "center",
         items: products,
         textField: "name"
-      }, {
+      }, _defineProperty({
         name: "quantity",
         type: "number",
         sorting: false,
         title: "Qty",
         width: 100,
         validate: "required"
-      }, {
+      }, "validate", {
+        validator: "range",
+        message: function message(value, item) {
+          return "Qty should be greater than 0";
+        },
+        param: [1, 1000000]
+      }), {
         name: "price",
         type: "number",
         sorting: false,
@@ -246,6 +254,7 @@ $(function () {
               url: "/job-sales/" + $('#job_card_id').val(),
               data: filter,
               success: function success(response) {
+                console.log(response);
                 deferred.resolve(response);
               }
             });
@@ -288,7 +297,7 @@ $(function () {
             headers: {
               "X-CSRF-TOKEN": $('input[name=_token]').val()
             },
-            url: "/job-card-detail/" + item.id,
+            url: "/job-sales/" + item.id,
             data: data
           });
           $("#itemsSalesJsGrid").jsGrid("loadData");

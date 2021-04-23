@@ -25,7 +25,7 @@
 
                 SelectField.prototype = new jsGrid.Field({
 
-                    css: "date-field",            // redefine general property 'css'
+                    css: "form-control",            // redefine general property 'css'
                     align: "center",              // redefine general property 'align'
 
                     myCustomProperty: "foo",      // custom property
@@ -114,7 +114,14 @@
                                     sorting: false,
                                     title: "Qty",
                                     width: 100,
-                                    validate: "required"
+                                    validate: "required",
+                                    validate: {
+                                        validator: "range",
+                                        message: function(value, item) {
+                                            return "Qty should be greater than 0";
+                                        },
+                                        param: [1, 1000000]
+                                    }
                                 },
                                 {
                                     name: "price",
@@ -164,6 +171,7 @@
                                             url: "/job-sales/"+$('#job_card_id').val(),
                                             data: filter,
                                             success: function(response) {
+                                                console.log(response);
                                                 deferred.resolve(response);
                                             }
                                         });
@@ -208,7 +216,7 @@
                                         headers: {
                                             "X-CSRF-TOKEN": $('input[name=_token]').val()
                                         },
-                                        url: "/job-card-detail/"+item.id,
+                                        url: "/job-sales/"+item.id,
                                         data: data
                                     });
                                     $("#itemsSalesJsGrid").jsGrid("loadData");

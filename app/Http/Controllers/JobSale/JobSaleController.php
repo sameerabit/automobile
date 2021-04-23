@@ -36,4 +36,21 @@ class JobSaleController extends Controller
 
         return response()->json($jobSale);
     }
+
+    public function update(Request $request, JobSale $jobSale)
+    {
+        $product = Product::find($request->product_id);
+        $jobSale->fill($request->all());
+        $jobSale->product_id = $product->id;
+        $jobSale->save();
+        $jobSale->fresh();
+
+        return response()->json($jobSale);
+    }
+
+    public function delete(JobSale $jobSale)
+    {
+        $jobSale->delete();
+        return response()->json($jobSale);
+    }
 }
