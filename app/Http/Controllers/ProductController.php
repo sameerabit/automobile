@@ -6,6 +6,7 @@ use App\Brand;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -159,6 +160,21 @@ class ProductController extends Controller
         }
         $products = $query->get();
 
+        return response([
+            "items"       => $products,
+            "total_count" => $products->count(),
+        ]);
+    }
+
+    public function searchByBillId(Request $request,$bill_id)
+    {
+        $query = DB::table('products')->join('supplier_bill_details','supplier_bill_details.product_id','=','products.id')
+        ->where('supplier_bill_details.supplier_bill_id',$bill_id)
+        ->select('products.*')->groupBy('products.id');
+        if ($request->has('q') && $request->q) {
+            $query->where('products.name', 'like', "%$request->q%");
+        }
+        $products = $query->get();
         return response([
             "items"       => $products,
             "total_count" => $products->count(),

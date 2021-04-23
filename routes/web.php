@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
     Route::resource('products', 'ProductController');
     Route::get('products-json', 'ProductController@allJson');
     Route::get('products-search', 'ProductController@searchByName');
+    Route::get('products-search-by-bill-id/{bill_id}', 'ProductController@searchByBillId');
     Route::get('suppliers-search', 'SupplierController@searchByName');
 
     Route::resource('units', 'UnitController');
@@ -87,3 +88,7 @@ use Illuminate\Support\Facades\Route;
 
 
     Route::get('products-report', 'Report\ReportController@products')->name('report.products');
+
+
+    Route::get('users', 'Auth\UserController@index')->name('users.index');
+    Route::get('users/{user}reset','Auth\ResetPasswordController@resetPasswordForUser')->name('users.reset.password');

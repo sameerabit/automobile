@@ -76,10 +76,11 @@ class SupplierReturnController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(SupplierReturn $supplier_return)
+    public function edit(SupplierReturn $supplierReturn)
     {
         return view('supplier_return.edit', [
-            'supplierReturn' => $supplier_return,
+            'supplierReturn' => $supplierReturn,
+            'bill_id' => $supplierReturn->supplier_bill_id
         ]);
     }
 

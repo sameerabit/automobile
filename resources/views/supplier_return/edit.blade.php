@@ -33,6 +33,10 @@
                                 <input type="hidden" value="{{ $supplierReturn->id }}" class="form-control" id="supplier_return_id">
                             
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="reference">Bill ID</label>
+                                <input type="text" disabled class="form-control" value="{{ $bill_id }}" id="bill_id">
+                            </div>
                     </div>
                     <div class="form-row">
                             <div class="form-group col-md-6">
@@ -330,7 +334,7 @@
             $("#product_id").select2({
                 theme: "classic",
                 ajax: {
-                    url: "/products-search",
+                    url: "/products-search-by-bill-id/"+$('#bill_id').val(),
                     dataType: 'json',
                     delay: 10,
                     data: function (params) {

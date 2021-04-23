@@ -16,7 +16,7 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">New Supplier Return</h3>
+                          <h3 class="card-title">Supplier Return</h3>
 
                       </div>
                     </div>
@@ -34,7 +34,6 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="reference">Bill ID</label>
-                                @csrf
                                 <input type="text" disabled class="form-control" value="{{ $bill_id }}" id="bill_id">
                             </div>
                     </div>
@@ -335,7 +334,7 @@
             $("#product_id").select2({
                 theme: "classic",
                 ajax: {
-                    url: "/products-search",
+                    url: "/products-search-by-bill-id/"+$('#bill_id').val(),
                     dataType: 'json',
                     delay: 10,
                     data: function (params) {

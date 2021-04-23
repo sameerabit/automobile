@@ -55,7 +55,7 @@ class RoleController extends Controller
         $role = Role::create(['name' => $request->name]);
         $role->givePermissionTo($request->permissions);
 
-        return redirect()->route('roles.show', $role->id)->with(
+        return redirect()->route('roles.edit', $role->id)->with(
             ['success' => 'Role Saved Successfully']
          );
     }
@@ -112,7 +112,7 @@ class RoleController extends Controller
         $role->fresh();
         $role->syncPermissions($request->permissions);
 
-        return redirect()->route('roles.show', $role->id)->with(
+        return redirect()->route('roles.edit', $role->id)->with(
            ['success' => 'Role Updated Successfully']
         );
     }

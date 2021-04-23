@@ -202,6 +202,12 @@
                     {{ session('warning') }}
                 </div>
               @endif
+
+              @if(session('danger'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('danger') }}
+                </div>
+              @endif
           </div>
         </div>
         <div class="row">

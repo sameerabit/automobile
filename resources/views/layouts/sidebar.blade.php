@@ -78,12 +78,12 @@
                                       <p>Supplier Bills List</p>
                                     </a>
                                   </li>
-                                  <li class="nav-item">
+                                  <!-- <li class="nav-item">
                                     <a href="{{ route('supplier-returns.create') }}" class="nav-link">
                                       <i class="far fa-circle nav-icon"></i>
                                       <p>Supplier Returns</p>
                                     </a>
-                                  </li>
+                                  </li> -->
                                   <li class="nav-item">
                                     <a href="{{ route('supplier-returns.index') }}" class="nav-link">
                                       <i class="far fa-circle nav-icon"></i>
@@ -204,7 +204,13 @@
                                 </p>
                               </a>
                               <ul class="nav nav-treeview">
-                              <li class="nav-item">
+                                <li class="nav-item">
+                                        <a href="{{ route('users.index') }}" class="nav-link">
+                                          <i class="far fa-circle nav-icon"></i>
+                                          <p>Users</p>
+                                        </a>
+                                  </li>
+                                <li class="nav-item">
                                       <a href="{{ route('register') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Add User</p>
