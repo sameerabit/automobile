@@ -11225,7 +11225,7 @@ $(function () {
     $("#mechanicJsGrid").jsGrid({
       width: "100%",
       height: "400px",
-      inserting: true,
+      inserting: false,
       editing: true,
       sorting: true,
       paging: true,
@@ -11264,32 +11264,43 @@ $(function () {
         title: "Est. Time (h)",
         width: 75
       }, {
+        name: "est_cost",
+        type: "number",
+        validate: {
+          validator: "range",
+          message: function message(value, item) {
+            return "Value should be greater than or equal to 0";
+          },
+          param: [0, 1000]
+        },
+        sorting: false,
+        title: "Est. Cost",
+        width: 75
+      }, {
         name: 'time',
         width: 80,
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
 
           if (value) {
-            seconds = Math.floor(value / 1000);
-            minutes = Math.floor(seconds / 60);
-            hours = Math.floor(minutes / 60);
-            days = Math.floor(hours / 24);
-            time = days + "-" + hours + ":" + minutes + ":" + seconds % minutes;
-            var timer = new easytimer.Timer();
-            timer.start({
-              precision: 'seconds',
-              startValues: {
-                days: days,
-                hours: hours,
-                minutes: minutes,
-                seconds: minutes
-              }
-            });
-            timer.pause();
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + days + " - " + timer.getTimeValues().toString() + "</p>");
+            hours = value / (1000 * 60 * 60);
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours + "</p>");
             return $result.add($time);
           }
         }
+      }, {
+        name: "actual_cost",
+        type: "number",
+        validate: {
+          validator: "range",
+          message: function message(value, item) {
+            return "Value should be greater than or equal to 0";
+          },
+          param: [0, 1000]
+        },
+        sorting: false,
+        title: "Act. Cost",
+        width: 75
       }, {
         type: "control",
         width: 100
@@ -11297,10 +11308,14 @@ $(function () {
       onRefreshed: function onRefreshed(args) {
         var items = args.grid.option("data");
         var total = {
-          estimation_time: 0
+          estimation_time: 0,
+          time: 0
         };
         items.forEach(function (item) {
           total.estimation_time += item.estimation_time;
+        });
+        items.forEach(function (item) {
+          total.time += item.time;
         });
         var $totalRow = $("<tr colspan='4'>").addClass("total-row");
 
@@ -11353,6 +11368,7 @@ $(function () {
           return res;
         },
         updateItem: function updateItem(item) {
+          console.log(item);
           res = $.ajax({
             type: "PUT",
             headers: {
@@ -11380,7 +11396,7 @@ $(function () {
     $("#tinkeringJsGrid").jsGrid({
       width: "100%",
       height: "400px",
-      inserting: true,
+      inserting: false,
       editing: true,
       sorting: true,
       paging: true,
@@ -11425,22 +11441,8 @@ $(function () {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
 
           if (value) {
-            seconds = Math.floor(value / 1000);
-            minutes = Math.floor(seconds / 60);
-            hours = Math.floor(minutes / 60);
-            days = Math.floor(hours / 24);
-            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes;
-            var timer = new easytimer.Timer();
-            timer.start({
-              precision: 'seconds',
-              startValues: {
-                hours: hours,
-                minutes: minutes,
-                seconds: minutes
-              }
-            });
-            timer.pause();
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + days + " - " + timer.getTimeValues().toString() + "</p>");
+            hours = value / (1000 * 60 * 60);
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours + "</p>");
             return $result.add($time);
           }
         }
@@ -11451,10 +11453,14 @@ $(function () {
       onRefreshed: function onRefreshed(args) {
         var items = args.grid.option("data");
         var total = {
-          estimation_time: 0
+          estimation_time: 0,
+          time: 0
         };
         items.forEach(function (item) {
           total.estimation_time += item.estimation_time;
+        });
+        items.forEach(function (item) {
+          total.time += item.time;
         });
         var $totalRow = $("<tr colspan='4'>").addClass("total-row");
 
@@ -11534,7 +11540,7 @@ $(function () {
     $("#serviceJsGrid").jsGrid({
       width: "100%",
       height: "400px",
-      inserting: true,
+      inserting: false,
       editing: true,
       sorting: true,
       paging: true,
@@ -11579,22 +11585,8 @@ $(function () {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
 
           if (value) {
-            seconds = Math.floor(value / 1000);
-            minutes = Math.floor(seconds / 60);
-            hours = Math.floor(minutes / 60);
-            days = Math.floor(hours / 24);
-            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes;
-            var timer = new easytimer.Timer();
-            timer.start({
-              precision: 'seconds',
-              startValues: {
-                hours: hours,
-                minutes: minutes,
-                seconds: minutes
-              }
-            });
-            timer.pause();
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + days + " - " + timer.getTimeValues().toString() + "</p>");
+            hours = value / (1000 * 60 * 60);
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours + "</p>");
             return $result.add($time);
           }
         }
@@ -11605,10 +11597,14 @@ $(function () {
       onRefreshed: function onRefreshed(args) {
         var items = args.grid.option("data");
         var total = {
-          estimation_time: 0
+          estimation_time: 0,
+          time: 0
         };
         items.forEach(function (item) {
           total.estimation_time += item.estimation_time;
+        });
+        items.forEach(function (item) {
+          total.time += item.time;
         });
         var $totalRow = $("<tr colspan='4'>").addClass("total-row");
 

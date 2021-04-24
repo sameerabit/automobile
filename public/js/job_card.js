@@ -11274,11 +11274,15 @@ $(function () {
             updateButtonState(item, $startButton, $pauseButton, $finishButton);
             $.when(getJobDetail(item.id)).done(function (res) {
               if (res.time != 0) {
-                seconds = Math.floor(res.time / 1000);
-                minutes = Math.floor(seconds / 60);
-                hours = Math.floor(minutes / 60);
-                days = Math.floor(hours / 24);
-                time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+                value = res.time;
+                days = value / (1000 * 60 * 60 * 24);
+                balance = value % (1000 * 60 * 60 * 24);
+                hours = Math.floor(balance / (1000 * 60 * 60));
+                balance = value % (1000 * 60 * 60);
+                minutes = Math.floor(balance / (1000 * 60));
+                balance = value % (1000 * 60);
+                seconds = Math.floor(balance / 1000);
+                time = days + " " + hours + ":" + minutes + ":" + seconds;
                 timer.start({
                   precision: 'seconds',
                   startValues: {
@@ -11322,11 +11326,15 @@ $(function () {
           });
 
           if (item.time && item.state == "start") {
-            seconds = Math.floor(item.time / 1000);
-            minutes = Math.floor(seconds / 60);
-            hours = Math.floor(minutes / 60);
-            days = Math.floor(hours / 24);
-            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+            value = item.time;
+            days = value / (1000 * 60 * 60 * 24);
+            balance = value % (1000 * 60 * 60 * 24);
+            hours = Math.floor(balance / (1000 * 60 * 60));
+            balance = value % (1000 * 60 * 60);
+            minutes = Math.floor(balance / (1000 * 60));
+            balance = value % (1000 * 60);
+            seconds = Math.floor(balance / 1000);
+            time = days + " " + hours + ":" + minutes + ":" + seconds;
             timer.start({
               precision: 'seconds',
               startValues: {
@@ -11378,7 +11386,8 @@ $(function () {
       onRefreshed: function onRefreshed(args) {
         var items = args.grid.option("data");
         var total = {
-          estimation_time: 0
+          estimation_time: 0,
+          actual_time: 0
         };
         items.forEach(function (item) {
           total.estimation_time += item.estimation_time;
@@ -11532,14 +11541,19 @@ $(function () {
             updateButtonState(item, $startButton, $pauseButton, $finishButton);
             $.when(getJobDetail(item.id)).done(function (res) {
               if (res.time != 0) {
-                seconds = Math.floor(res.time / 1000);
-                minutes = Math.floor(seconds / 60);
-                hours = Math.floor(minutes / 60);
-                days = Math.floor(hours / 24);
-                time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+                value = res.time;
+                days = value / (1000 * 60 * 60 * 24);
+                balance = value % (1000 * 60 * 60 * 24);
+                hours = Math.floor(balance / (1000 * 60 * 60));
+                balance = value % (1000 * 60 * 60);
+                minutes = Math.floor(balance / (1000 * 60));
+                balance = value % (1000 * 60);
+                seconds = Math.floor(balance / 1000);
+                time = days + " " + hours + ":" + minutes + ":" + seconds;
                 timer.start({
                   precision: 'seconds',
                   startValues: {
+                    days: days,
                     hours: hours,
                     minutes: minutes,
                     seconds: minutes
@@ -11579,14 +11593,19 @@ $(function () {
           });
 
           if (item.time && item.state == "start") {
-            seconds = Math.floor(item.time / 1000);
-            minutes = Math.floor(seconds / 60);
-            hours = Math.floor(minutes / 60);
-            days = Math.floor(hours / 24);
-            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+            value = item.time;
+            days = value / (1000 * 60 * 60 * 24);
+            balance = value % (1000 * 60 * 60 * 24);
+            hours = Math.floor(balance / (1000 * 60 * 60));
+            balance = value % (1000 * 60 * 60);
+            minutes = Math.floor(balance / (1000 * 60));
+            balance = value % (1000 * 60);
+            seconds = Math.floor(balance / 1000);
+            time = days + " " + hours + ":" + minutes + ":" + seconds;
             timer.start({
               precision: 'seconds',
               startValues: {
+                days: days,
                 hours: hours,
                 minutes: minutes,
                 seconds: minutes
@@ -11787,14 +11806,19 @@ $(function () {
             updateButtonState(item, $startButton, $pauseButton, $finishButton);
             $.when(getJobDetail(item.id)).done(function (res) {
               if (res.time != 0) {
-                seconds = Math.floor(res.time / 1000);
-                minutes = Math.floor(seconds / 60);
-                hours = Math.floor(minutes / 60);
-                days = Math.floor(hours / 24);
-                time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+                value = res.time;
+                days = value / (1000 * 60 * 60 * 24);
+                balance = value % (1000 * 60 * 60 * 24);
+                hours = Math.floor(balance / (1000 * 60 * 60));
+                balance = value % (1000 * 60 * 60);
+                minutes = Math.floor(balance / (1000 * 60));
+                balance = value % (1000 * 60);
+                seconds = Math.floor(balance / 1000);
+                time = days + " " + hours + ":" + minutes + ":" + seconds;
                 timer.start({
                   precision: 'seconds',
                   startValues: {
+                    days: days,
                     hours: hours,
                     minutes: minutes,
                     seconds: minutes
@@ -11834,14 +11858,19 @@ $(function () {
           });
 
           if (item.time && item.state == "start") {
-            seconds = Math.floor(item.time / 1000);
-            minutes = Math.floor(seconds / 60);
-            hours = Math.floor(minutes / 60);
-            days = Math.floor(hours / 24);
-            time = days + " " + hours + ":" + minutes + ":" + seconds % minutes ? seconds % minutes : 0;
+            value = item.time;
+            days = value / (1000 * 60 * 60 * 24);
+            balance = value % (1000 * 60 * 60 * 24);
+            hours = Math.floor(balance / (1000 * 60 * 60));
+            balance = value % (1000 * 60 * 60);
+            minutes = Math.floor(balance / (1000 * 60));
+            balance = value % (1000 * 60);
+            seconds = Math.floor(balance / 1000);
+            time = days + " " + hours + ":" + minutes + ":" + seconds;
             timer.start({
               precision: 'seconds',
               startValues: {
+                days: days,
                 hours: hours,
                 minutes: minutes,
                 seconds: minutes

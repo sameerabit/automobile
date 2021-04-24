@@ -140,7 +140,13 @@
                                     <p>Employees</p>
                                   </a>
                                 </li>
-
+                                
+                                <li class="nav-item">
+                                  <a href="{{ route('hourly-rates.create') }}" class="nav-link">
+                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <p>Hourly Rate</p>
+                                  </a>
+                                </li>
                               </ul>
                             </li>
 

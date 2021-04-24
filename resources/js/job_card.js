@@ -177,11 +177,15 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             $.when(getJobDetail(item.id)).done(function(res){   
                                                 if(res.time != 0){
-                                                    seconds = Math.floor(res.time/1000);
-                                                    minutes = Math.floor(seconds/60);
-                                                    hours = Math.floor(minutes/60);
-                                                    days = Math.floor(hours/24);
-                                                    time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
+                                                    value = res.time;
+                                                    days = value/(1000*60*60*24);
+                                                    balance = value%(1000*60*60*24);
+                                                    hours = Math.floor(balance/(1000*60*60));
+                                                    balance = value%(1000*60*60);
+                                                    minutes = Math.floor(balance/(1000*60));
+                                                    balance = value%(1000*60);
+                                                    seconds = Math.floor(balance/1000);
+                                                    time = days+" "+ hours + ":" + minutes + ":" + seconds ;
                                                     timer.start({precision: 'seconds', startValues: {days: days,hours: hours, minutes: minutes, seconds: minutes}});
                                                 } 
                                                 if(res.time==0){
@@ -219,11 +223,15 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             e.stopPropagation();
                                     });
                                     if(item.time && item.state == "start"){
-                                        seconds = Math.floor(item.time/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
+                                        value = item.time;
+                                        days = value/(1000*60*60*24);
+                                        balance = value%(1000*60*60*24);
+                                        hours = Math.floor(balance/(1000*60*60));
+                                        balance = value%(1000*60*60);
+                                        minutes = Math.floor(balance/(1000*60));
+                                        balance = value%(1000*60);
+                                        seconds = Math.floor(balance/1000);
+                                        time = days+" "+ hours + ":" + minutes + ":" + seconds;
                                         timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
                                         timer.addEventListener('secondsUpdated', function (e) {
                                             $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
@@ -264,17 +272,19 @@ const { constrainPoint } = require("@fullcalendar/core");
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
                             var total = {
-                                estimation_time: 0
+                                estimation_time: 0,
+                                actual_time: 0
                             };
 
                             items.forEach(function(item) {
-                            total.estimation_time += item.estimation_time;
+                                total.estimation_time += item.estimation_time;
                             });
                             var $totalRow = $("<tr colspan='4'>").addClass("total-row");
-
                             args.grid._renderCells($totalRow, total);
-
                             args.grid._content.append($totalRow);
+
+                           
+
                         },
                         controller: {
                             loadData: function(filter) {
@@ -430,12 +440,16 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             $.when(getJobDetail(item.id)).done(function(res){
                                                 if(res.time != 0){
-                                                    seconds = Math.floor(res.time/1000);
-                                                    minutes = Math.floor(seconds/60);
-                                                    hours = Math.floor(minutes/60);
-                                                    days = Math.floor(hours/24);
-                                                    time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                                    timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
+                                                    value = res.time;
+                                                    days = value/(1000*60*60*24);
+                                                    balance = value%(1000*60*60*24);
+                                                    hours = Math.floor(balance/(1000*60*60));
+                                                    balance = value%(1000*60*60);
+                                                    minutes = Math.floor(balance/(1000*60));
+                                                    balance = value%(1000*60);
+                                                    seconds = Math.floor(balance/1000);
+                                                    time = days+" "+ hours + ":" + minutes + ":" + seconds ;
+                                                    timer.start({precision: 'seconds', startValues: {days: days,hours: hours, minutes: minutes, seconds: minutes}});
                                                 } 
                                                 if(res.time==0){
                                                     timer.start();
@@ -472,12 +486,16 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             e.stopPropagation();
                                     });
                                     if(item.time && item.state == "start"){
-                                        seconds = Math.floor(item.time/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
+                                        value = item.time;
+                                        days = value/(1000*60*60*24);
+                                        balance = value%(1000*60*60*24);
+                                        hours = Math.floor(balance/(1000*60*60));
+                                        balance = value%(1000*60*60);
+                                        minutes = Math.floor(balance/(1000*60));
+                                        balance = value%(1000*60);
+                                        seconds = Math.floor(balance/1000);
+                                        time = days+" "+ hours + ":" + minutes + ":" + seconds;
+                                        timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
                                         timer.addEventListener('secondsUpdated', function (e) {
                                             $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
                                         });
@@ -683,12 +701,16 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             $.when(getJobDetail(item.id)).done(function(res){
                                                 if(res.time != 0){
-                                                    seconds = Math.floor(res.time/1000);
-                                                    minutes = Math.floor(seconds/60);
-                                                    hours = Math.floor(minutes/60);
-                                                    days = Math.floor(hours/24);
-                                                    time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                                    timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
+                                                    value = res.time;
+                                                    days = value/(1000*60*60*24);
+                                                    balance = value%(1000*60*60*24);
+                                                    hours = Math.floor(balance/(1000*60*60));
+                                                    balance = value%(1000*60*60);
+                                                    minutes = Math.floor(balance/(1000*60));
+                                                    balance = value%(1000*60);
+                                                    seconds = Math.floor(balance/1000);
+                                                    time = days+" "+ hours + ":" + minutes + ":" + seconds ;
+                                                    timer.start({precision: 'seconds', startValues: {days: days,hours: hours, minutes: minutes, seconds: minutes}});
                                                 } 
                                                 if(res.time==0){
                                                     timer.start();
@@ -725,12 +747,16 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             e.stopPropagation();
                                     });
                                     if(item.time && item.state == "start"){
-                                        seconds = Math.floor(item.time/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + (seconds%minutes) ? (seconds%minutes) : 0;
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
+                                        value = item.time;
+                                        days = value/(1000*60*60*24);
+                                        balance = value%(1000*60*60*24);
+                                        hours = Math.floor(balance/(1000*60*60));
+                                        balance = value%(1000*60*60);
+                                        minutes = Math.floor(balance/(1000*60));
+                                        balance = value%(1000*60);
+                                        seconds = Math.floor(balance/1000);
+                                        time = days+" "+ hours + ":" + minutes + ":" + seconds;
+                                        timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
                                         timer.addEventListener('secondsUpdated', function (e) {
                                             $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
                                         });

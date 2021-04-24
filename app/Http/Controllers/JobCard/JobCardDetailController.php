@@ -66,7 +66,7 @@ class JobCardDetailController extends Controller
         $jobCardDetail->save();
         $message = "Hello {$jobCardDetail->jobCard->vehicle->owner_name}, We just started repairing your vehicle {$jobCardDetail->jobCard->vehicle->reg_no}. We'll Notify you once done. Thank you. ";
         
-        $this->sendMessage($message, $jobCardDetail->jobCard->vehicle->owner_phone);
+        // $this->sendMessage($message, $jobCardDetail->jobCard->vehicle->owner_phone);
 
         return response()->json($jobCardDetail);
     }

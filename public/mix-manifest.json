@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/employee_hourly_rate.js": "/js/employee_hourly_rate.js",
     "/js/insurance_claim.js": "/js/insurance_claim.js",
     "/js/job_card.js": "/js/job_card.js",
     "/js/job_card_bill.js": "/js/job_card_bill.js",

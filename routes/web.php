@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-    Auth::routes();
+Auth::routes();
 
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::resource('suppliers', 'SupplierController');
@@ -89,6 +90,12 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('products-report', 'Report\ReportController@products')->name('report.products');
 
-
     Route::get('users', 'Auth\UserController@index')->name('users.index');
-    Route::get('users/{user}reset','Auth\ResetPasswordController@resetPasswordForUser')->name('users.reset.password');
+    Route::get('users/{user}reset', 'Auth\ResetPasswordController@resetPasswordForUser')->name('users.reset.password');
+
+    Route::get('hourly-rates/create', 'HourlyRate\HourlyRateController@create')->name('hourly-rates.create');
+    Route::get('hourly-rates', 'HourlyRate\HourlyRateController@index')->name('hourly-rates.index');
+    Route::delete('hourly-rates/{hourly-rate}', 'HourlyRate\HourlyRateController@destroy')->name('hourly-rates.delete');
+    Route::put('hourly-rates/{hourly-rate}', 'HourlyRate\HourlyRateController@update')->name('hourly-rates.update');
+    Route::post('hourly-rates', 'HourlyRate\HourlyRateController@store')->name('hourly-rates.store');
+});

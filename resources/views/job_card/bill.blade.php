@@ -94,29 +94,17 @@
                                 <div class="my-2" id="tinkeringJsGrid"></div>
                             </div>
                         </div>
-
+                        <div class="my-1">
+                            <h4>Product Sales Details</h4>
+                        </div>
+                        <div class="my-2" id="itemsSalesJsGrid"></div>
                     </div>
                     <div class="row py-2">
                         <div class="col text-right">
                             <button type="button" class="btn btn-lg btn-primary mx-3" id="saveBill">Print</button>
                         </div>
                     </div>
-                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Sales</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="my-2" id="itemsSalesJsGrid"></div>
-                              </div>
-
-                          </div>
-                        </div>
-                      </div>
+                   
 
                 </div>
             </div>

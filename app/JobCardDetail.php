@@ -15,6 +15,8 @@ class JobCardDetail extends Model
         'days',
         'time',
         'state', // start, pause, stop
+        'est_cost',
+        'actual_cost'
     ];
 
     public function timesheets()

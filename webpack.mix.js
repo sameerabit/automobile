@@ -18,4 +18,5 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/job_card_bill.js', 'public/js/job_card_bill.js')
     .js('resources/js/insurance_claim.js', 'public/js/insurance_claim.js')
     .js('resources/js/job_sales.js', 'public/js/job_sales.js')
+    .js('resources/js/employee_hourly_rate.js', 'public/js/employee_hourly_rate.js')
    .sass('resources/sass/app.scss', 'public/css');

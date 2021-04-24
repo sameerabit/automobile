@@ -124,7 +124,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                     $("#mechanicJsGrid").jsGrid({
                         width: "100%",
                         height: "400px",
-                        inserting: true,
+                        inserting: false,
                         editing: true,
                         sorting: true,
                         paging: true,
@@ -164,23 +164,44 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 width: 75
                             },
                             {
+                                name: "est_cost",
+                                type: "number",
+                                validate: {
+                                    validator: "range",
+                                    message: function(value, item) {
+                                        return "Value should be greater than or equal to 0";
+                                    },
+                                    param: [0, 1000]
+                                },
+                                sorting: false,
+                                title: "Est. Cost",
+                                width: 75
+                            },
+                            {
                                 name: 'time',
                                 width: 80,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
-                                        seconds = Math.floor(value/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+"-"+ hours + ":" + minutes + ":" + seconds%minutes;
-                                        var timer = new easytimer.Timer();
-                                        timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.pause();
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ days + " - "+timer.getTimeValues().toString() +"</p>");
+                                        hours = value/(1000*60*60);
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ hours +"</p>");
                                         return  $result.add($time);
                                     }
                                 }
+                            },
+                            {
+                                name: "actual_cost",
+                                type: "number",
+                                validate: {
+                                    validator: "range",
+                                    message: function(value, item) {
+                                        return "Value should be greater than or equal to 0";
+                                    },
+                                    param: [0, 1000]
+                                },
+                                sorting: false,
+                                title: "Act. Cost",
+                                width: 75
                             },
                             {
                                 type: "control",
@@ -191,17 +212,23 @@ const { constrainPoint } = require("@fullcalendar/core");
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
                             var total = {
-                                estimation_time: 0
+                                estimation_time: 0,
+                                time: 0
                             };
 
                             items.forEach(function(item) {
                             total.estimation_time += item.estimation_time;
                             });
+                            
+                            items.forEach(function(item) {
+                                total.time += item.time;
+                            });
+                            
                             var $totalRow = $("<tr colspan='4'>").addClass("total-row");
-
                             args.grid._renderCells($totalRow, total);
-
                             args.grid._content.append($totalRow);
+
+
                         },
                         controller: {
                             loadData: function(filter) {
@@ -252,6 +279,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 return res;
                             },
                             updateItem: function(item) {
+                                console.log(item);
                                  res = $.ajax({
                                     type: "PUT",
                                     headers: {
@@ -282,7 +310,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                     $("#tinkeringJsGrid").jsGrid({
                         width: "100%",
                         height: "400px",
-                        inserting: true,
+                        inserting: false,
                         editing: true,
                         sorting: true,
                         paging: true,
@@ -327,15 +355,8 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
-                                        seconds = Math.floor(value/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + seconds%minutes;
-                                        var timer = new easytimer.Timer();
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.pause();
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ days + " - "+timer.getTimeValues().toString() +"</p>");
+                                        hours = value/(1000*60*60);
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ hours +"</p>");
                                         return  $result.add($time);
                                     }
                                 }
@@ -349,16 +370,20 @@ const { constrainPoint } = require("@fullcalendar/core");
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
                             var total = {
-                                estimation_time: 0
+                                estimation_time: 0,
+                                time: 0
                             };
 
                             items.forEach(function(item) {
                             total.estimation_time += item.estimation_time;
                             });
+                            
+                            items.forEach(function(item) {
+                                total.time += item.time;
+                            });
+                            
                             var $totalRow = $("<tr colspan='4'>").addClass("total-row");
-
                             args.grid._renderCells($totalRow, total);
-
                             args.grid._content.append($totalRow);
                         },
                         controller: {
@@ -440,7 +465,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                     $("#serviceJsGrid").jsGrid({
                         width: "100%",
                         height: "400px",
-                        inserting: true,
+                        inserting: false,
                         editing: true,
                         sorting: true,
                         paging: true,
@@ -485,15 +510,8 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
-                                        seconds = Math.floor(value/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + seconds%minutes;
-                                        var timer = new easytimer.Timer();
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.pause();
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ days + " - "+timer.getTimeValues().toString() +"</p>");
+                                        hours = value/(1000*60*60);
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ hours +"</p>");
                                         return  $result.add($time);
                                     }
                                 }
@@ -507,16 +525,20 @@ const { constrainPoint } = require("@fullcalendar/core");
                         onRefreshed: function(args) {
                             var items = args.grid.option("data");
                             var total = {
-                                estimation_time: 0
+                                estimation_time: 0,
+                                time: 0
                             };
 
                             items.forEach(function(item) {
                             total.estimation_time += item.estimation_time;
                             });
+                            
+                            items.forEach(function(item) {
+                                total.time += item.time;
+                            });
+                            
                             var $totalRow = $("<tr colspan='4'>").addClass("total-row");
-
                             args.grid._renderCells($totalRow, total);
-
                             args.grid._content.append($totalRow);
                         },
                         controller: {
