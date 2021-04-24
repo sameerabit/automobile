@@ -13,6 +13,6 @@ class HourlyRate extends Model
 
     public function employee()
     {
-        $this->belongsTo(HourlyRate::class);
+        $this->belongsTo(Employee::class);
     }
 }

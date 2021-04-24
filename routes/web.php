@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('hourly-rates/create', 'HourlyRate\HourlyRateController@create')->name('hourly-rates.create');
     Route::get('hourly-rates', 'HourlyRate\HourlyRateController@index')->name('hourly-rates.index');
-    Route::delete('hourly-rates/{hourly-rate}', 'HourlyRate\HourlyRateController@destroy')->name('hourly-rates.delete');
-    Route::put('hourly-rates/{hourly-rate}', 'HourlyRate\HourlyRateController@update')->name('hourly-rates.update');
+    Route::delete('hourly-rates/{hourly_rate}', 'HourlyRate\HourlyRateController@destroy')->name('hourly-rates.delete');
+    Route::put('hourly-rates/{hourly_rate}', 'HourlyRate\HourlyRateController@update')->name('hourly-rates.update');
     Route::post('hourly-rates', 'HourlyRate\HourlyRateController@store')->name('hourly-rates.store');
 });

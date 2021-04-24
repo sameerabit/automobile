@@ -29,8 +29,28 @@ class Product extends Model
         return $this->hasMany(SupplierBillDetails::class);
     }
 
+    public function supplierReturns()
+    {
+        return $this->hasMany(SupplierReturnDetails::class);
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(JobSale::class);
+    }
+
     public function qty()
     {
         return $this->supplierDetails->sum('quantity');
+    }
+
+    public function returnQty()
+    {
+        return $this->supplierReturns->sum('quantity');
+    }
+
+    public function salesQty()
+    {
+        return $this->sales->sum('quantity');
     }
 }

@@ -28,6 +28,10 @@ class JobCardDetail extends Model
         return $this->belongsTo(JobCard::class);
     }
 
+    public function employee(){
+        return $this->belongsTo(Employee::class);
+    }
+
     public function getTimeAttribute()
     {
         $time = 0;

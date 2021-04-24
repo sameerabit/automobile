@@ -188,7 +188,7 @@ $(function () {
             success: function success() {
               Toast.fire({
                 icon: 'success',
-                title: 'Task added successfully!'
+                title: 'Rate added successfully!'
               });
             }
           });

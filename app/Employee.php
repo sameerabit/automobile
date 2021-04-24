@@ -15,8 +15,22 @@ class Employee extends Model
         'image_url',
     ];
 
+    protected $append = [
+        'rate'
+    ];
+
     public function getImageUrlAttribute($value)
     {
         return $value == null ? "default.png" : $value;
+    }
+
+    public function rate()
+    {
+        return $this->hasMany(HourlyRate::class);
+    }
+
+    public function getRateAttribute()
+    {
+        return $this->rate()->pluck('rate');
     }
 }

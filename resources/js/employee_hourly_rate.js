@@ -102,7 +102,7 @@
                                     success: function(){
                                         Toast.fire({
                                             icon: 'success',
-                                            title: 'Task added successfully!'
+                                            title: 'Rate added successfully!'
                                         })
                                     }
                                 });

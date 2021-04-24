@@ -41,7 +41,7 @@
                       <tr>
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>{{ $product->qty() }}</td>
+                            <td>{{ $product->qty() - $product->returnQty() - $product->salesQty() }}</td>
                           </tr>
                       @endforeach  
                     </tbody>

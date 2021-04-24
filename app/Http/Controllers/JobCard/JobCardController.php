@@ -71,6 +71,11 @@ class JobCardController extends Controller
                 );
             }
         }
+        foreach($jobCard->details as $detail){
+            $detail->est_cost = $detail->employee->rate[0]*$detail->estimation_time;
+            $detail->actual_cost = $detail->employee->rate[0]* ($detail->time == null ? 0 : $detail->time) /(1000*60*60);
+            $detail->save();
+        }
         return view('job_card.bill', [
             'vehicles' => $vehicles,
             'jobCard'  => $jobCard,
