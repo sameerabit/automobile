@@ -59,6 +59,16 @@
                     insertTemplate: function() {
                         var insertControl = this._insertControl = this._createSelect();
 
+                        var insertControl = jsGrid.fields.select.prototype.insertTemplate.call(this);
+
+                        var priceField = this._grid.fields[3];
+
+                        // Attach onchange listener !
+                        insertControl.change(function (e,x) {
+                            var selectedValue = $(this).val();
+                            priceField.insertTemplate(selectedValue);
+                        });
+
                         setTimeout(function() {
                             insertControl.select2({
                                 tags: true
@@ -69,7 +79,14 @@
                     },
 
                     editTemplate: function(value) {
-                        var editControl = this._editControl = this._createSelect(value);
+                        var editControl = jsGrid.fields.select.prototype.editTemplate.call(this, value);
+
+                        // Attach onchange listener !
+                        editControl.change(function(){
+                            var selectedValue = $(this).val();
+
+                        });
+                        
 
                         setTimeout(function() {
                             editControl.select2({
@@ -94,6 +111,7 @@
                 });
 
                 jsGrid.fields.select2 = SelectField;
+
 
                     function loadGrid(){
                         $("#itemsSalesJsGrid").jsGrid({
@@ -129,7 +147,31 @@
                                     sorting: false,
                                     title: "Price",
                                     width: 100,
-                                    validate: "required"
+                                    validate: "required",
+                                    insertTemplate: function (value) {
+                                        var $insertControl = jsGrid.fields.number.prototype.insertTemplate.call(this, value);
+                                        if (value != undefined) {
+                                            var $cntrl = $(".jsgrid-insert-row td:nth-child(4)").children();
+                                            console.log($cntrl[3].value = value);
+                                            
+                                            // if ($cntrl != undefined) {
+                                            //     $cntrl.innerHTML = value;
+                                            // }
+                                            // __insertprice = value;
+                                        }
+                                        return $insertControl;
+                                    },
+                                    editTemplate: function (value, item) {
+                                        var $editControl = jsGrid.fields.number.prototype.editTemplate.call(this, value);
+                                        if (value != undefined) {
+                                            var $cntrl = $(".jsgrid-edit-row").children('td').eq(1)[0];
+                                            if ($cntrl != undefined) {
+                                                $cntrl.innerHTML = value;
+                                            }
+                                            item.price = value;
+                                        }
+                                        return $editControl;
+                                    }
                                 },
                                 {
                                     name: "return_qty",
