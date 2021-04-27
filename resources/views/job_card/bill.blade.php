@@ -101,7 +101,7 @@
                     </div>
                     <div class="row py-2">
                         <div class="col text-right">
-                            <button type="button" class="btn btn-lg btn-primary mx-3" id="saveBill">Print</button>
+                            <a class="btn btn-primary" href="{{ route('job_cards.bill',$jobCard->id) }}?export=pdf">Export to PDF</a>
                         </div>
                     </div>
                    

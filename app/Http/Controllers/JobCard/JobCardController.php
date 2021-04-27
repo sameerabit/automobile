@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\JobCard;
 use App\Vehicle;
 use Illuminate\Http\Request;
+use PDF;
+
 
 class JobCardController extends Controller
 {
@@ -60,7 +62,7 @@ class JobCardController extends Controller
          );
     }
 
-    public function createBill(JobCard $jobCard)
+    public function createBill(JobCard $jobCard, Request $request)
     {
         $vehicles = Vehicle::all();
         foreach($jobCard->details()->get() as $detail){
@@ -76,6 +78,18 @@ class JobCardController extends Controller
             $detail->actual_cost = $detail->employee->rate[0]* ($detail->time == null ? 0 : $detail->time) /(1000*60*60);
             $detail->save();
         }
+
+        if ($request->has('export')) {
+            if ($request->get('export') == 'pdf') {
+                PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+               
+                $pdf = PDF::loadView('job_card.pdf', [
+                    'jobCard'  => $jobCard,
+                ]);
+                return $pdf->download('job_card.pdf');
+            }
+        }
+
         return view('job_card.bill', [
             'vehicles' => $vehicles,
             'jobCard'  => $jobCard,

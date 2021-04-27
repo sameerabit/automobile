@@ -11284,7 +11284,7 @@ $(function () {
 
           if (value) {
             hours = value / (1000 * 60 * 60);
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours + "</p>");
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours.toFixed(2) + "</p>");
             return $result.add($time);
           }
         }
@@ -11300,7 +11300,12 @@ $(function () {
         },
         sorting: false,
         title: "Act. Cost",
-        width: 75
+        width: 75,
+        itemTemplate: function itemTemplate(value, item) {
+          if (value) {
+            return value.toFixed(2);
+          }
+        }
       }, {
         type: "control",
         width: 100
@@ -11442,7 +11447,7 @@ $(function () {
 
           if (value) {
             hours = value / (1000 * 60 * 60);
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours + "</p>");
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours.toFixed(2) + "</p>");
             return $result.add($time);
           }
         }
@@ -11586,7 +11591,7 @@ $(function () {
 
           if (value) {
             hours = value / (1000 * 60 * 60);
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours + "</p>");
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + hours.toFixed(2) + "</p>");
             return $result.add($time);
           }
         }

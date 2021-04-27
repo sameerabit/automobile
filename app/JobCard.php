@@ -21,4 +21,9 @@ class JobCard extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(JobSale::class);
+    }
 }
