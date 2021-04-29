@@ -1,12 +1,12 @@
 
             $(function() {
-
+                var products;
                 $.ajax({
                     type: "GET",
                     headers: {
                         "X-CSRF-TOKEN": $('input[name=_token]').val()
                     },
-                    url: '/products-json',
+                    url: '/products-batch-search',
                     success: function(response) {
                         products = response.items;
                         if (products.length > 0) {
@@ -25,7 +25,7 @@
 
                 SelectField.prototype = new jsGrid.Field({
 
-                    css: "form-control",            // redefine general property 'css'
+                    // css: "form-control",            // redefine general property 'css'
                     align: "center",              // redefine general property 'align'
 
                     myCustomProperty: "foo",      // custom property
@@ -58,15 +58,19 @@
 
                     insertTemplate: function() {
                         var insertControl = this._insertControl = this._createSelect();
-
-                        var insertControl = jsGrid.fields.select.prototype.insertTemplate.call(this);
-
                         var priceField = this._grid.fields[3];
 
                         // Attach onchange listener !
                         insertControl.change(function (e,x) {
                             var selectedValue = $(this).val();
-                            priceField.insertTemplate(selectedValue);
+                            product =  products.find(product => product.id === parseInt(selectedValue));
+                            
+                            var $cntrl = $(".jsgrid-insert-row td:nth-child(4)").children();
+                            if(product){
+                                $cntrl[3].value = product.selling_price;
+                                $cntrl[2].value = product.quantity;
+                            }
+                            
                         });
 
                         setTimeout(function() {
@@ -78,15 +82,18 @@
                         return insertControl;
                     },
 
-                    editTemplate: function(value) {
-                        var editControl = jsGrid.fields.select.prototype.editTemplate.call(this, value);
-
+                    editTemplate: function(value,item) {
+                        var editControl = this._editControl = this._createSelect(value);
                         // Attach onchange listener !
-                        editControl.change(function(){
-                            var selectedValue = $(this).val();
-
-                        });
-                        
+                        // editControl.change(function(){
+                        //     var selectedValue = $(this).val();
+                        //     product =  products.find(product => product.id === parseInt(selectedValue));
+                            
+                        //     var $cntrl = $(".jsgrid-insert-row td:nth-child(4)").children();
+                        //     $cntrl[3].value = product.selling_price;
+                        //     $cntrl[2].value = product.quantity;
+                        // });
+                        console.log(this);
 
                         setTimeout(function() {
                             editControl.select2({
@@ -123,6 +130,11 @@
                             paging: true,
                             filtering: false,
                             autoload:   true,
+                            invalidNotify: function(args) {
+                                $.map(args.errors, function(error) {
+                                    toastr.error(error.field.name+' : '+ error.message)
+                                });
+                            },
                             fields: [
                                 { name: "id", css: "hide", width: 0},
                                 { name: "product", type: "select2", width: 300, align: "center", items: products, textField: "name" },
@@ -132,14 +144,18 @@
                                     sorting: false,
                                     title: "Qty",
                                     width: 100,
-                                    validate: "required",
-                                    validate: {
-                                        validator: "range",
+                                    validate: [
+                                        "required",
+                                        "stock",
+                                        {validator: "range",param: [1, 1000000000],
                                         message: function(value, item) {
-                                            return "Qty should be greater than 0";
-                                        },
-                                        param: [1, 1000000]
+                                            if(value <= 0){
+                                                return "Qty should be a positive number";
+                                            }
+                                            return 'required';
+                                        }
                                     }
+                                    ]
                                 },
                                 {
                                     name: "price",
@@ -147,30 +163,14 @@
                                     sorting: false,
                                     title: "Price",
                                     width: 100,
-                                    validate: "required",
-                                    insertTemplate: function (value) {
-                                        var $insertControl = jsGrid.fields.number.prototype.insertTemplate.call(this, value);
-                                        if (value != undefined) {
-                                            var $cntrl = $(".jsgrid-insert-row td:nth-child(4)").children();
-                                            console.log($cntrl[3].value = value);
-                                            
-                                            // if ($cntrl != undefined) {
-                                            //     $cntrl.innerHTML = value;
-                                            // }
-                                            // __insertprice = value;
-                                        }
-                                        return $insertControl;
-                                    },
-                                    editTemplate: function (value, item) {
-                                        var $editControl = jsGrid.fields.number.prototype.editTemplate.call(this, value);
-                                        if (value != undefined) {
-                                            var $cntrl = $(".jsgrid-edit-row").children('td').eq(1)[0];
-                                            if ($cntrl != undefined) {
-                                                $cntrl.innerHTML = value;
+                                    validate: {
+                                        validator: "range",
+                                        message: function(value, item) {
+                                            if(value <= 0){
+                                                return "Price should be a positive value";
                                             }
-                                            item.price = value;
-                                        }
-                                        return $editControl;
+                                        },
+                                        param: [1, 1000000000]
                                     }
                                 },
                                 {
@@ -225,7 +225,7 @@
                                     jobCardId = $('#job_card_id').val();
 
                                     var data = {
-                                            product_id : item.product[0],
+                                            product_batch_id : item.product[0],
                                             quantity : item.quantity,
                                             return_qty :  item.return_qty,
                                             price :  item.price,
@@ -246,7 +246,7 @@
                                 updateItem: function(item) {
                                     jobCardId = $('#job_card_id').val();
                                     var data = {
-                                            product_id : item.product_id,
+                                            product_batch_id : item.product_batch_id,
                                             quantity : item.quantity,
                                             return_qty :  item.return_qty,
                                             price :  item.price,
@@ -277,7 +277,20 @@
                                 }
                             }
                         });
-                    }
 
+                        jsGrid.validators.stock = {
+                            message: function(value, item){
+                                return "Qty exceeds than stock. Maximum qty is "+ product.quantity;
+                            },
+                            validator: function(value, item) {
+                                    product =  products.find(product => product.id === parseInt(item.product[0]));
+                                    if(product && product.quantity < value){
+
+                                        return false;
+                                    }
+                                    return true;
+                            }
+                        }
+                    }
 
             });

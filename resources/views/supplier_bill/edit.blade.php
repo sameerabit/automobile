@@ -75,6 +75,7 @@
                                 <th>Quantity</th>
                                 <th>Buying Price</th>
                                 <th>Selling Price</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -88,6 +89,7 @@
                                 <th>Quantity</th>
                                 <th>Buying Price</th>
                                 <th>Selling Price</th>
+                                <th>Id</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -120,10 +122,6 @@
                       <input type="hidden" id="product_name">
                     </div>
                     <div class="form-group">
-                      <label for="quantity"  class="col-form-label">Quantity</label>
-                      <input type="number" class="form-control" id="quantity" name="quantity">
-                    </div>
-                    <div class="form-group">
                             <label for="unit" class="col-form-label">Unit</label>
                             <select class="form-control" name="unit" id="unit">
                                 @foreach ($units as $unit)
@@ -131,6 +129,11 @@
                                 @endforeach
                             </select>
                     </div>
+                    <div class="form-group">
+                      <label for="quantity"  class="col-form-label">Quantity</label>
+                      <input type="number" class="form-control" id="quantity" name="quantity">
+                    </div>
+                   
                     <div class="form-group">
                             <label for="buying_price" class="col-form-label">Buying Price</label>
                             <input type="number" class="form-control" id="buying_price" name="buying_price">
@@ -260,6 +263,7 @@
                     formattedRow['quantity'] = data[4];
                     formattedRow['buying_price'] = data[5];
                     formattedRow['selling_price'] = data[6];
+                    formattedRow['id'] = data[7];
                     formattedData.push(formattedRow);
                 });
                 return formattedData;
@@ -275,6 +279,11 @@
                         },
                         {
                             "targets": [ 3 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            "targets": [ 7 ],
                             "visible": false,
                             "searchable": false
                         }
@@ -326,7 +335,8 @@
                         unit,
                         quantity,
                         buyingPrice,
-                        sellingPrice
+                        sellingPrice,
+                        null
                     ]).draw( false );
                 } else {
                     Toast.fire({
@@ -453,7 +463,8 @@
                             row.unit_id,
                             row.quantity,
                             row.buying_price,
-                            row.selling_price
+                            row.selling_price,
+                            row.id,
                         ]).draw( false );
                     });
                 }

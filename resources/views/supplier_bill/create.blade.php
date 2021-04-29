@@ -116,10 +116,6 @@
                       <input type="hidden" id="product_name">
                     </div>
                     <div class="form-group">
-                      <label for="quantity" class="col-form-label">Quantity</label>
-                      <input type="number" class="form-control" id="quantity" name="quantity">
-                    </div>
-                    <div class="form-group">
                             <label for="unit" class="col-form-label">Unit</label>
                             <select class="form-control" name="unit" id="unit">
                                 @foreach ($units as $unit)
@@ -127,6 +123,11 @@
                                 @endforeach
                             </select>
                     </div>
+                    <div class="form-group">
+                      <label for="quantity" class="col-form-label">Quantity</label>
+                      <input type="number" class="form-control" id="quantity" name="quantity">
+                    </div>
+                    
                     <div class="form-group">
                             <label for="buying_price" class="col-form-label">Buying Price</label>
                             <input type="number" class="form-control" id="buying_price" name="buying_price">

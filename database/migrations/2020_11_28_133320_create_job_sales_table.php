@@ -15,7 +15,7 @@ class CreateJobSalesTable extends Migration
     {
         Schema::create('job_sales', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
+            $table->integer('product_batch_id');
             $table->integer('job_card_id');
             $table->double('quantity');
             $table->double('price');

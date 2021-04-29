@@ -82,9 +82,20 @@ class JobCardController extends Controller
         if ($request->has('export')) {
             if ($request->get('export') == 'pdf') {
                 PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
-               
+                $opciones_ssl=array(
+                    "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                    ),
+                    );
+                    $img_path = public_path('uploads/logo.jpg');
+                    $extencion = pathinfo($img_path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($img_path, false, stream_context_create($opciones_ssl));
+                    $img_base_64 = base64_encode($data);
+                    $image_path = 'data:image/' . $extencion . ';base64,' . $img_base_64;
                 $pdf = PDF::loadView('job_card.pdf', [
                     'jobCard'  => $jobCard,
+                    'image_path' => $image_path
                 ]);
                 return $pdf->download('job_card.pdf');
             }

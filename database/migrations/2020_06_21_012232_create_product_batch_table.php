@@ -13,9 +13,9 @@ class CreateProductBatchTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_batch', function (Blueprint $table) {
+        Schema::create('product_batches', function (Blueprint $table) {
             $table->id();
-            $table->integer('supplier_bill_id');
+            $table->integer('supplier_bill_detail_id');
             $table->integer('product_id');
             $table->float('quantity');
             $table->timestamps();

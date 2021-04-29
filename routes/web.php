@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('products-json', 'ProductController@allJson');
     Route::get('products-search', 'ProductController@searchByName');
     Route::get('products-search-by-bill-id/{bill_id}', 'ProductController@searchByBillId');
+    Route::get('products-batch-search', 'ProductController@searchProductBatchByProductName');
     Route::get('suppliers-search', 'SupplierController@searchByName');
 
     Route::resource('units', 'UnitController');

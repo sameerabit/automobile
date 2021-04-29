@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SupplierBillDetails extends Model
 {
-    use SoftDeletes;
-
     protected $fillable = [
+        'id',
         'supplier_bill_id',
         'product_id',
         'quantity',

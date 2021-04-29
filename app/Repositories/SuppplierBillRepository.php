@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\ProductBatch;
 use App\SupplierBill;
 use App\SupplierBillDetails;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,11 +30,25 @@ class SupplierBillRepository
                 $supplerBillDetails->add(new SupplierBillDetails($supplierBillDetail));
             }
             $supplierBill->supplierBillDetails()->saveMany($supplerBillDetails);
+            $this->insertItemBatch($supplierBill);
             DB::commit();
 
             return $supplierBill;
         } catch (\Exception $e) {
             DB::rollback();
+        }
+    }
+
+    private function insertItemBatch(SupplierBill $supplierBill)
+    {
+        foreach ($supplierBill->supplierBillDetails as $detail) {
+            if (!ProductBatch::where('supplier_bill_detail_id', $detail->id)->exists()) {
+                $productBatch = new ProductBatch();
+                $productBatch->supplier_bill_detail_id = $detail->id;
+                $productBatch->quantity = $detail->quantity;
+                $productBatch->product_id = $detail->product_id;
+                $productBatch->save();
+            }
         }
     }
 

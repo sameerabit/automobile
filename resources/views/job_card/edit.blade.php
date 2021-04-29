@@ -73,7 +73,8 @@
                         </div>
                         <div class="row py-2">
                             <div class="col text-left">
-                                <button type="button" class="btn btn-sm btn-primary mx-3" id="saveRecord">Save</button>
+                                <!-- <button type="button" class="btn btn-sm btn-primary mx-3" id="saveRecord">Save</button> -->
+                                <button type="button" class="btn btn-primary mx-2 my-2 float-right" data-toggle="modal" data-target=".bd-example-modal-lg">Sales Items</button>
                             </div>
                         </div>
                         <nav>
@@ -90,7 +91,6 @@
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-mechanic" role="tabpanel"
                                 aria-labelledby="nav-mechanic-tab">
-                                <button type="button" class="btn btn-primary mx-2 my-2 float-right" data-toggle="modal" data-target=".bd-example-modal-lg">Sales Items</button>
                                 <div class="my-2" id="mechanicJsGrid"></div>
                             </div>
                             <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab">

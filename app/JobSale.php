@@ -8,14 +8,14 @@ class JobSale extends Model
 {
     protected $fillable = [
         'job_card_id',
-        'product_id',
+        'product_batch_id',
         'quantity',
         'price',
         'return_qty',
     ];
 
-    public function product()
+    public function productBatch()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProductBatch::class);
     }
 }

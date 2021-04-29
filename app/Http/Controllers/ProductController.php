@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Brand;
 use App\Category;
+use App\Http\Resources\ProductCollection;
 use App\Product;
+use App\ProductBatch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -161,8 +163,27 @@ class ProductController extends Controller
         $products = $query->get();
 
         return response([
-            "items"       => $products,
+            "items"       => new ProductCollection($products),
             "total_count" => $products->count(),
+        ]);
+    }
+
+    public function searchProductBatchByProductName(Request $request)
+    {
+        $query = DB::table('product_batches')
+        ->select('product_batches.id',DB::raw("CONCAT(products.name,'   -   ',brands.name,'   -    Rs. ',supplier_bill_details.selling_price) as name"),
+        'product_batches.id','supplier_bill_details.quantity','supplier_bill_details.selling_price')
+        ->join('products','product_batches.product_id','=','products.id')
+        ->join('supplier_bill_details','supplier_bill_details.id','=','product_batches.supplier_bill_detail_id')
+        ->join('brands','brands.id','=','products.brand_id')
+        ->where('product_batches.quantity','>',0);
+        if ($request->has('q') && $request->q) {
+            $query->where('products.name', 'like', "%$request->q%");
+        }
+        $productBatches = $query->get();
+        return response([
+            "items"       => $productBatches,
+            "total_count" => $productBatches->count(),
         ]);
     }
 
