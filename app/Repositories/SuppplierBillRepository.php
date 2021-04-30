@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Events\StockAdjust;
 use App\ProductBatch;
 use App\SupplierBill;
 use App\SupplierBillDetails;
@@ -56,13 +57,19 @@ class SupplierBillRepository
     {
         try {
             DB::beginTransaction();
-
+            $oldBillDetails = SupplierBillDetails::where('supplier_bill_id',$supplierBill->id)->get();
             $supplierBill->fill($data);
             $supplierBill->save();
             $supplierBill->fresh();
             $supplierBill->supplierBillDetails()->delete();
             $supplerBillDetails = new Collection();
             foreach (json_decode($data['supllierBillDetails'], true)  as $supplierBillDetail) {
+                $bill = $oldBillDetails->filter(function($item) use ($supplierBillDetail) {
+                    return $item->product_id == $supplierBillDetail['product_id'];
+                })->first();
+                $qtyChange = $supplierBillDetail['quantity'] - $bill['quantity'];
+                $productBatch = ProductBatch::where('supplier_bill_detail_id',$bill->id)->first();
+                event(new StockAdjust($productBatch, $qtyChange));
                 $supplerBillDetails->add(new SupplierBillDetails($supplierBillDetail));
             }
             $supplierBill->supplierBillDetails()->saveMany($supplerBillDetails);

@@ -29,7 +29,7 @@ class JobSaleController extends Controller
             $product->brand_id    = 1; //product id is the name here.
             $product->save();
             $product->fresh();
-            
+
             $productBatch = new ProductBatch();
             $productBatch->supplier_bill_detail_id = 0;
             $productBatch->quantity = $request->quantity;
@@ -42,18 +42,19 @@ class JobSaleController extends Controller
         $jobSale->product_batch_id = $productBatch->id;
         $jobSale->save();
         $jobSale->fresh();
-        event(new StockAdjust($productBatch, $jobSale->quantity));
+        event(new StockAdjust($productBatch, (-$jobSale->quantity)));
         return response()->json($jobSale);
     }
 
     public function update(Request $request, JobSale $jobSale)
     {
         $productBatch = ProductBatch::find($request->product_batch_id);
+        $qtyChnage = $jobSale->quantity - $request->quantity;
         $jobSale->fill($request->all());
         $jobSale->product_batch_id = $productBatch->id;
         $jobSale->save();
         $jobSale->fresh();
-
+        event(new StockAdjust($productBatch, $qtyChnage));
         return response()->json($jobSale);
     }
 

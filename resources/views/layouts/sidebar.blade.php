@@ -49,7 +49,7 @@
                                   </li>
                                   <li class="nav-item">
                                       <a href="{{ route('categories.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fa fa-list-alt nav-icon"></i>
                                         <p>Categories</p>
                                       </a>
                                   </li>
@@ -62,19 +62,19 @@
                                   
                                     <li class="nav-item">
                                       <a href="{{ route('units.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-ruler-vertical nav-icon"></i>
                                         <p>Units</p>
                                       </a>
                                     </li>
                                   <li class="nav-item">
                                     <a href="{{ route('supplier-bill.create') }}" class="nav-link">
-                                      <i class="far fa-circle nav-icon"></i>
+                                    <i class="fas fa-file-invoice  nav-icon"></i>
                                       <p>Supplier Bill</p>
                                     </a>
                                   </li>
                                   <li class="nav-item">
                                     <a href="{{ route('supplier-bill.index') }}" class="nav-link">
-                                      <i class="far fa-circle nav-icon"></i>
+                                      <i class="fas fa-clipboard-list nav-icon"></i>
                                       <p>Supplier Bills List</p>
                                     </a>
                                   </li>
@@ -86,7 +86,7 @@
                                   </li> -->
                                   <li class="nav-item">
                                     <a href="{{ route('supplier-returns.index') }}" class="nav-link">
-                                      <i class="far fa-circle nav-icon"></i>
+                                      <i class="fas fa-undo nav-icon"></i>
                                       <p>Supplier Return Details</p>
                                     </a>
                                   </li>
@@ -104,21 +104,21 @@
                               <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                   <a href="{{ route('vehicles.index') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <i class="fas fa-car-alt nav-icon"></i>
                                     <p>Vehicles</p>
                                   </a>
                                 </li>
 
                                 <li class="nav-item">
                                   <a href="{{ route('job-cards.create') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <i class="fas fa-credit-card nav-icon"></i>
                                     <p>New Job Card</p>
                                   </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('job_cards.index') }}" class="nav-link">
-                                      <i class="fas fa-truck-pickup nav-icon"></i>
-                                      <p>Job Cards</p>
+                                      <i class="fas fa-clipboard-list nav-icon"></i>
+                                      <p>Job Cards List</p>
                                     </a>
                                   </li>
                               </ul>
@@ -136,7 +136,7 @@
                               <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                   <a href="{{ route('employees.index') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <i class="fas fa-user-circle nav-icon"></i>
                                     <p>Employees</p>
                                   </a>
                                 </li>
@@ -163,8 +163,14 @@
                                 
                                 <li class="nav-item">
                                   <a href="{{ route('booking.index') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
-                                    <p>Create New Booking</p>
+                                    <i class="fas fa-calendar nav-icon"></i>
+                                    <p>Calendar Booking</p>
+                                  </a>
+                                </li>
+                                <li class="nav-item">
+                                  <a href="{{ route('booking.all') }}" class="nav-link">
+                                    <i class="fas fa-calendar nav-icon"></i>
+                                    <p>Booking List</p>
                                   </a>
                                 </li>
 

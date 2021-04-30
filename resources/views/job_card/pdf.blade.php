@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Insurance Claim</title>
+    <title>Job Card</title>
     <style>
         .page-break {
             page-break-after: always;
@@ -104,7 +104,7 @@
                                 <?php $sales_cost = 0 ?>
                                 @foreach($jobCard->sales as $sale)
                                 <tr>
-                                    <td>{{ $sale->product->name }}</td>
+                                    <td>{{ $sale->productBatch->product->name }}</td>
                                     <td style="text-align:right">{{ number_format(($sale->quantity - $sale->return_qty),2) }}</td>
                                     <td style="text-align:right">{{ number_format($sale->price,2) }}</td>
                                     <td style="text-align:right">{{ number_format(($sale->quantity - $sale->return_qty) * $sale->price,2) }}</td>

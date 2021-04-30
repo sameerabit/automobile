@@ -21,6 +21,14 @@ class BookingController extends Controller
         ]);
     }
 
+    public function all()
+    {
+        $bookings = Booking::paginate(20);
+        return view('booking.all', [
+            'bookings' => $bookings,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $booking = new Booking();
@@ -28,6 +36,13 @@ class BookingController extends Controller
         $booking->save();
         $this->createEmptyJob($booking);
 
+        return response()->json($booking);
+    }
+
+    public function update(Booking $booking,Request $request)
+    {
+        $booking->fill($request->all());
+        $booking->save();
         return response()->json($booking);
     }
 

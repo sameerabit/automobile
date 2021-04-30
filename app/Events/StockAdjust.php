@@ -22,7 +22,7 @@ class StockAdjust
      */
     public function __construct(ProductBatch $productBatch, $quantity)
     {
-        $productBatch->quantity = $productBatch->quantity -  $quantity;
+        $productBatch->quantity = $productBatch->quantity+$quantity;
         $productBatch->save();
     }
 

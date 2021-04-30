@@ -210,6 +210,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             timer.pause();
                                             updateTimeEvents(item.id, Date.now(), 'pause' );
+                                            location.reload();
                                             e.stopPropagation();
                                     });
                                     var $finishButton = $("<button>")
@@ -220,23 +221,10 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             timer.stop();
                                             updateTimeEvents(item.id, Date.now(), 'stop' );
+                                            location.reload();
+
                                             e.stopPropagation();
                                     });
-                                    if(item.time && item.state == "start"){
-                                        value = item.time;
-                                        days = value/(1000*60*60*24);
-                                        balance = value%(1000*60*60*24);
-                                        hours = Math.floor(balance/(1000*60*60));
-                                        balance = value%(1000*60*60);
-                                        minutes = Math.floor(balance/(1000*60));
-                                        balance = value%(1000*60);
-                                        seconds = Math.floor(balance/1000);
-                                        time = days+" "+ hours + ":" + minutes + ":" + seconds;
-                                        timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.addEventListener('secondsUpdated', function (e) {
-                                            $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
-                                        });
-                                    }
                                     updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                     return  $result.add($startButton)
                                             .add($finishButton)
@@ -250,15 +238,15 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
-                                        seconds = Math.floor(value/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+"-"+ hours + ":" + minutes + ":" + seconds%minutes;
-                                        var timer = new easytimer.Timer();
-                                        timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.pause();
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ days + " - "+timer.getTimeValues().toString() +"</p>");
+                                        days = value/(1000*60*60*24);
+                                        balance = value%(1000*60*60*24);
+                                        hours = Math.floor(balance/(1000*60*60));
+                                        balance = value%(1000*60*60);
+                                        minutes = Math.floor(balance/(1000*60));
+                                        balance = value%(1000*60);
+                                        seconds = Math.floor(balance/1000);
+                                        time = Math.floor(days) +" "+ hours + ":" + minutes + ":" + seconds ;
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
                                         return  $result.add($time);
                                     }
                                 }
@@ -473,6 +461,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             timer.pause();
                                             updateTimeEvents(item.id, Date.now(), 'pause' );
+                                            location.reload();
                                             e.stopPropagation();
                                     });
                                     var $finishButton = $("<button>")
@@ -483,6 +472,8 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             timer.stop();
                                             updateTimeEvents(item.id, Date.now(), 'stop' );
+                                            location.reload();
+
                                             e.stopPropagation();
                                     });
                                     if(item.time && item.state == "start"){
@@ -513,15 +504,15 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
-                                        seconds = Math.floor(value/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + seconds%minutes;
-                                        var timer = new easytimer.Timer();
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.pause();
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ days + " - "+timer.getTimeValues().toString() +"</p>");
+                                        days = value/(1000*60*60*24);
+                                        balance = value%(1000*60*60*24);
+                                        hours = Math.floor(balance/(1000*60*60));
+                                        balance = value%(1000*60*60);
+                                        minutes = Math.floor(balance/(1000*60));
+                                        balance = value%(1000*60);
+                                        seconds = Math.floor(balance/1000);
+                                        time = Math.floor(days) +" "+ hours + ":" + minutes + ":" + seconds ;
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
                                         return  $result.add($time);
                                     }
                                 }
@@ -734,6 +725,8 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             timer.pause();
                                             updateTimeEvents(item.id, Date.now(), 'pause' );
+                                            location.reload();
+
                                             e.stopPropagation();
                                     });
                                     var $finishButton = $("<button>")
@@ -744,6 +737,8 @@ const { constrainPoint } = require("@fullcalendar/core");
                                             updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                             timer.stop();
                                             updateTimeEvents(item.id, Date.now(), 'stop' );
+                                            location.reload();
+
                                             e.stopPropagation();
                                     });
                                     if(item.time && item.state == "start"){
@@ -774,15 +769,15 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
-                                        seconds = Math.floor(value/1000);
-                                        minutes = Math.floor(seconds/60);
-                                        hours = Math.floor(minutes/60);
-                                        days = Math.floor(hours/24);
-                                        time = days+" "+ hours + ":" + minutes + ":" + seconds%minutes;
-                                        var timer = new easytimer.Timer();
-                                        timer.start({precision: 'seconds', startValues: {hours: hours, minutes: minutes, seconds: minutes}});
-                                        timer.pause();
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ days + " - "+timer.getTimeValues().toString() +"</p>");
+                                        days = value/(1000*60*60*24);
+                                        balance = value%(1000*60*60*24);
+                                        hours = Math.floor(balance/(1000*60*60));
+                                        balance = value%(1000*60*60);
+                                        minutes = Math.floor(balance/(1000*60));
+                                        balance = value%(1000*60);
+                                        seconds = Math.floor(balance/1000);
+                                        time = Math.floor(days) +" "+ hours + ":" + minutes + ":" + seconds ;
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
                                         return  $result.add($time);
                                     }
                                 }

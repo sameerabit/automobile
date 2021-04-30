@@ -69,7 +69,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('job-sales/{job_sale}', 'JobSale\JobSaleController@delete')->name('job_sales.delete');
 
     Route::get('bookings', 'Booking\BookingController@index')->name('booking.index');
+    Route::get('bookings-all', 'Booking\BookingController@all')->name('booking.all');
     Route::post('bookings', 'Booking\BookingController@store')->name('booking.store');
+    Route::put('bookings/{booking}', 'Booking\BookingController@update')->name('booking.update');
     Route::get('bookings-json', 'Booking\BookingController@getBookingJson')->name('bookings.json');
     Route::get('bookings-json/{id}', 'Booking\BookingController@getSingleBooking')->name('bookings.json');
     Route::delete('bookings-json/{id}', 'Booking\BookingController@deleteBooking')->name('bookings.delete');

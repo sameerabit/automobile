@@ -95,22 +95,26 @@
 
 $(function () {
   var products;
-  $.ajax({
-    type: "GET",
-    headers: {
-      "X-CSRF-TOKEN": $('input[name=_token]').val()
-    },
-    url: '/products-batch-search',
-    success: function success(response) {
-      products = response.items;
+  loadProducts();
 
-      if (products.length > 0) {
-        loadGrid();
-      }
-    },
-    error: function error(response) {},
-    dataType: 'json'
-  });
+  function loadProducts() {
+    $.ajax({
+      type: "GET",
+      headers: {
+        "X-CSRF-TOKEN": $('input[name=_token]').val()
+      },
+      url: '/products-batch-search',
+      success: function success(response) {
+        products = response.items;
+
+        if (products.length > 0) {
+          loadGrid();
+        }
+      },
+      error: function error(response) {},
+      dataType: 'json'
+    });
+  }
 
   var SelectField = function SelectField(config) {
     jsGrid.Field.call(this, config);
@@ -130,11 +134,13 @@ $(function () {
     _createSelect: function _createSelect(selected) {
       var textField = this.textField;
       var $result = $("<select>");
+      $fOption = $("<option>").text('Select Item').val(0);
+      $result.append($fOption);
       $.each(this.items, function (_, item) {
         var value = item[textField];
         var $opt = $("<option>").text(value).val(item.id);
 
-        if ($.inArray(value, selected) > -1) {
+        if (selected && value.replace(/\s/g, '') == selected.replace(/\s/g, '')) {
           $opt.attr("selected", "selected");
         }
 
@@ -167,16 +173,21 @@ $(function () {
       return insertControl;
     },
     editTemplate: function editTemplate(value, item) {
-      var editControl = this._editControl = this._createSelect(value); // Attach onchange listener !
-      // editControl.change(function(){
-      //     var selectedValue = $(this).val();
-      //     product =  products.find(product => product.id === parseInt(selectedValue));
-      //     var $cntrl = $(".jsgrid-insert-row td:nth-child(4)").children();
-      //     $cntrl[3].value = product.selling_price;
-      //     $cntrl[2].value = product.quantity;
-      // });
+      var editControl = this._editControl = this._createSelect(value); //    / Attach onchange listener !
 
 
+      editControl.change(function () {
+        var selectedValue = $(this).val();
+        product = products.find(function (product) {
+          return product.id === parseInt(selectedValue);
+        });
+        var $cntrl = $(".jsgrid-insert-row td:nth-child(4)").children();
+
+        if (product) {
+          $cntrl[3].value = product.selling_price;
+          $cntrl[2].value = product.quantity;
+        }
+      });
       console.log(this);
       setTimeout(function () {
         editControl.select2({
@@ -223,7 +234,8 @@ $(function () {
         width: 300,
         align: "center",
         items: products,
-        textField: "name"
+        textField: "name",
+        validate: "select2Validate"
       }, {
         name: "quantity",
         type: "number",
@@ -317,6 +329,7 @@ $(function () {
             url: "/job-sales",
             data: data
           });
+          loadProducts();
           $("#itemsSalesJsGrid").jsGrid("loadData");
           return res;
         },
@@ -338,6 +351,7 @@ $(function () {
             url: "/job-sales/" + item.id,
             data: data
           });
+          loadProducts();
           $("#itemsSalesJsGrid").jsGrid("loadData");
           return res;
         },
@@ -355,6 +369,9 @@ $(function () {
     });
     jsGrid.validators.stock = {
       message: function message(value, item) {
+        product = products.find(function (product) {
+          return product.id === parseInt(item.product[0]);
+        });
         return "Qty exceeds than stock. Maximum qty is " + product.quantity;
       },
       validator: function validator(value, item) {
@@ -363,6 +380,18 @@ $(function () {
         });
 
         if (product && product.quantity < value) {
+          return false;
+        }
+
+        return true;
+      }
+    };
+    jsGrid.validators.select2Validate = {
+      message: function message(value, item) {
+        return "Please Select a product";
+      },
+      validator: function validator(value, item) {
+        if (value[0] == 0) {
           return false;
         }
 

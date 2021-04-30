@@ -75,7 +75,7 @@
                                 <th>Quantity</th>
                                 <th>Buying Price</th>
                                 <th>Selling Price</th>
-                                <th></th>
+                                <th>Id</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,6 +120,7 @@
                       <input id="selected_product_id" type="hidden" class="form-control" style="width: 100%"/>
 
                       <input type="hidden" id="product_name">
+                      <input type="hidden" id="bill_detail_id">
                     </div>
                     <div class="form-group">
                             <label for="unit" class="col-form-label">Unit</label>
@@ -245,7 +246,7 @@
 
                 $('#product_id').val('1'); // Select the option with a value of '1'
                 $('#product_id').trigger('change'); // Notify any JS components that the value changed
-
+                $('#bill_detail_id').val(selectedRowData[7]);
                 var productSelect = $('#product_id');
                 var option = new Option(selectedRowData[1],selectedRowData[0], true, true);
                 productSelect.append(option).trigger('change');
@@ -325,7 +326,7 @@
                 quantity = $('#quantity').val();
                 unit = $('#unit').val();
                 unit_name = $("#unit option:selected").text();
-
+                bill_detail_id = $('#bill_detail_id').val();
                 
                 if(!product_ids.includes(parseInt(product_id))){
                     datatable.row.add([
@@ -336,7 +337,7 @@
                         quantity,
                         buyingPrice,
                         sellingPrice,
-                        null
+                        bill_detail_id
                     ]).draw( false );
                 } else {
                     Toast.fire({

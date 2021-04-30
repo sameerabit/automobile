@@ -21,4 +21,30 @@ class ProductBatch extends Model
     {
         return $this->belongsTo(SupplierBillDetails::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(JobSale::class);
+    }
+
+    public function qty()
+    {
+        if($this->supplierBillDetail){
+            return $this->supplierBillDetail->sum('quantity');
+        }
+        return 0;
+    }
+
+    public function returnQty()
+    {
+        if($this->supplierBillDetail){
+            return $this->supplierBillDetail->sum('quantity');
+        }
+        return 0;
+    }
+
+    public function salesQty()
+    {
+        return $this->sales->sum('quantity');
+    }
 }

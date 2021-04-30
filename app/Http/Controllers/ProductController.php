@@ -172,7 +172,7 @@ class ProductController extends Controller
     {
         $query = DB::table('product_batches')
         ->select('product_batches.id',DB::raw("CONCAT(products.name,'   -   ',brands.name,'   -    Rs. ',supplier_bill_details.selling_price) as name"),
-        'product_batches.id','supplier_bill_details.quantity','supplier_bill_details.selling_price')
+        'product_batches.id','product_batches.quantity','supplier_bill_details.selling_price')
         ->join('products','product_batches.product_id','=','products.id')
         ->join('supplier_bill_details','supplier_bill_details.id','=','product_batches.supplier_bill_detail_id')
         ->join('brands','brands.id','=','products.brand_id')

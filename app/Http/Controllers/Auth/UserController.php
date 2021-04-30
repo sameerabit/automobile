@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -18,11 +18,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if(!Auth::user()->can('manager user')) {
-            return back()->with([
-                'danger' => 'Permission Denied'
-            ]);
-        }
+        // if(!Auth::user()->can('manager user')) {
+        //     return back()->with([
+        //         'danger' => 'Permission Denied'
+        //     ]);
+        // }
         $query = User::query();
         if ($request->has('q') && $request->q) {
             $query->where('name', 'like', "%$request->q%");
