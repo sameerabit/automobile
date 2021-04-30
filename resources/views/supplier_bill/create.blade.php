@@ -19,9 +19,7 @@
                                 <h3 class="card-title">New Supplier Bill</h3>
 
                             </div>
-                            <div class="col-3">
-                                <input type="button" id="pdf" class="btn btn-primary" value="PDF"/>
-                            </div>
+                           
                         </div>
                         <div>
                         </div>
@@ -154,52 +152,9 @@
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 
 <script>
     $(document).ready(function() {
-
-
-        $('#pdf').on('click',function() {
-            var pdf = new jsPDF('p', 'pt', 'A4');
-            // source can be HTML-formatted string, or a reference
-            // to an actual DOM element from which the text will be scraped.
-            source = $('#card')[0];
-
-            // we support special element handlers. Register them with jQuery-style 
-            // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-            // There is no support for any other type of selectors 
-            // (class, of compound) at this time.
-            specialElementHandlers = {
-                // element with id of "bypass" - jQuery style selector
-                '#bypassme': function(element, renderer) {
-                    // true = "handled elsewhere, bypass text extraction"
-                    return true
-                }
-            };
-            margins = {
-                top: 80,
-                bottom: 60,
-                left: 40,
-                width: 522
-            };
-            // all coords and widths are in jsPDF instance's declared units
-            // 'inches' in this case
-            pdf.fromHTML(
-                source, // HTML string or DOM elem ref.
-                margins.left, // x coord
-                margins.top, { // y coord
-                    'width': margins.width, // max width of content on PDF
-                    'elementHandlers': specialElementHandlers
-                },
-
-                function(dispose) {
-                    // dispose: object with X, Y of the last line add to the PDF 
-                    //          this allow the insertion of new lines after html
-                    pdf.save('Test.pdf');
-                }, margins
-            );
-        });
 
         var editMode = false;
 
@@ -230,6 +185,10 @@
         $('#saveBill').on('click', function() {
             var tableData = datatable.data().toArray();
             var formattedTableData = formatData(tableData);
+            if(formattedTableData.length == 0){
+                toastr.error("At least there should be a row to save.");
+                return;
+            }
             reference = $('#reference').val();
             billDate = $('#billDate').val();
             supplierId = $('#supplier_id').val();

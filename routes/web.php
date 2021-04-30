@@ -94,6 +94,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('products-report', 'Report\ReportController@products')->name('report.products');
 
     Route::get('users', 'Auth\UserController@index')->name('users.index');
+    Route::get('users/{id}/edit', 'Auth\UserController@edit')->name('users.edit');
+    Route::put('users/{user}', 'Auth\UserController@update')->name('users.update');
     Route::get('users/{user}reset', 'Auth\ResetPasswordController@resetPasswordForUser')->name('users.reset.password');
 
     Route::get('hourly-rates/create', 'HourlyRate\HourlyRateController@create')->name('hourly-rates.create');

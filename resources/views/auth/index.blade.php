@@ -36,6 +36,7 @@
                         <th style="width: 10px">#</th>
                         <th>Name</th>
                         <th>User Name</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -44,6 +45,7 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->username }}</td>
+                            <td><a href="{{ route('users.edit',$user->id) }}">Edit</a></td>
                           </tr>
                       @endforeach  
                     </tbody>

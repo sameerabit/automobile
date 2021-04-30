@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -32,6 +33,22 @@ class UserController extends Controller
         return view('auth.index', [
             'users' => $users,
         ]);
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        $roles = Role::all();
+        return view('auth.edit', [
+            'user' => $user,
+            "roles" => $roles,
+        ]);
+    }
+
+    public function update(User $user, Request $request)
+    {
+        $user->assignRole(Role::findById($request->role_id)->name);
+        return back();
     }
 
 }

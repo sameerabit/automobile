@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
@@ -46,6 +47,9 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
+        if(!Auth::user()->can('manage user')){
+            return back()->with('warning','Permission Denied');
+        }
         $roles = Role::all();
 
         return view('auth.register', [
@@ -66,6 +70,7 @@ class RegisterController extends Controller
             'name'     => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users,username'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role_id' => ['required'],
         ]);
     }
 
