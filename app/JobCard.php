@@ -43,6 +43,10 @@ class JobCard extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function paidAmount(){
+        return $this->payments()->sum('amount');
+    }
+
     public function paymentStatus()
     {
         return $this->payments->sum('amount') < ($this->totalSales() + $this->totalServicePrice());

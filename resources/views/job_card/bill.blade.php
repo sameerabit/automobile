@@ -127,13 +127,16 @@
                                 <p>Sales Total : {{ number_format($jobCard->totalSales(),2) }}</p>
                             </div>
                             <div class="row ml-2">
-                                <p>Total to pay : {{ number_format($jobCard->totalSales()+$jobCard->totalServicePrice() ,2) }}</p>
+                                <p>Paid : {{ number_format($jobCard->paidAmount() ,2) }}</p>
+                            </div>
+                            <div class="row ml-2">
+                                <p>Total to pay : {{ number_format(($jobCard->totalSales()+ $jobCard->totalServicePrice() - $jobCard->paidAmount()) ,2) }}</p>
                             </div>
                             <div class="row">
                                 <div class="col-8">
                                     @csrf
                                     <input type="hidden" name="job_card_id" value="{{$jobCard->id}}">
-                                    <input type="number" required class="form-control" name="amount" id="amount" max="10000000">
+                                    <input type="number" required class="form-control" name="amount" id="amount" max="{{number_format($jobCard->totalSales()+ $jobCard->totalServicePrice() - $jobCard->paidAmount(),2) }}">
                                 </div>
                                 <div class="col-4">
                                     <input type="submit" class="btn btn-primary">

@@ -49,7 +49,9 @@
                                     method="POST" class="form form-inline js-confirm">
                                   {{ method_field('delete') }}
                                   @csrf
-                                  <button class="btn btn-danger btn-sm js-tooltip delete-btn" data-toggle="modal" data-target="#modal-warning"><i class="fas fa-trash-alt"></i> Delete</button>
+                                  @if($category->id!=1)
+                                    <button class="btn btn-danger btn-sm js-tooltip delete-btn" data-toggle="modal" data-target="#modal-warning"><i class="fas fa-trash-alt"></i> Delete</button>
+                                  @endif
                                 </form>
                             </td>
                           </tr>

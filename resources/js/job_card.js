@@ -228,6 +228,21 @@ const { constrainPoint } = require("@fullcalendar/core");
 
                                             e.stopPropagation();
                                     });
+                                    if(item.time && item.state == "start"){
+                                        value = item.time;
+                                        days = value/(1000*60*60*24);
+                                        balance = value%(1000*60*60*24);
+                                        hours = Math.floor(balance/(1000*60*60));
+                                        balance = value%(1000*60*60);
+                                        minutes = Math.floor(balance/(1000*60));
+                                        balance = value%(1000*60);
+                                        seconds = Math.floor(balance/1000);
+                                        time = days+" "+ hours + ":" + minutes + ":" + seconds;
+                                        timer.start({precision: 'seconds', startValues: {days: days, hours: hours, minutes: minutes, seconds: minutes}});
+                                        timer.addEventListener('secondsUpdated', function (e) {
+                                            $('#time_'+item.id).html(timer.getTimeValues().days+" "+timer.getTimeValues().toString());
+                                        });
+                                    }
                                     updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                     return  $result.add($startButton)
                                             .add($finishButton)

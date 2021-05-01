@@ -259,7 +259,14 @@
                                     <i class="far fa-sticky-note nav-icon"></i>
                                     <p>Products Report</p>
                                   </a>
-                                 
+                                </li>
+
+                                <li class="nav-item">
+                                  <a href="{{ route('report.daily-business') }}" class="nav-link">
+                                    <i class="far fa-sticky-note nav-icon"></i>
+                                    <p>Daily Business</p>
+                                  </a>
+                                  
                                 </li>
 
                               </ul>

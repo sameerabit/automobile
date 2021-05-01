@@ -171,7 +171,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                     message: function(value, item) {
                                         return "Value should be greater than or equal to 0";
                                     },
-                                    param: [0, 1000]
+                                    param: [0, 100000000000]
                                 },
                                 sorting: false,
                                 title: "Est. Cost",
@@ -197,7 +197,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                     message: function(value, item) {
                                         return "Value should be greater than or equal to 0";
                                     },
-                                    param: [0, 1000]
+                                    param: [0, 100000000000]
                                 },
                                 sorting: false,
                                 title: "Act. Cost",
@@ -367,6 +367,25 @@ const { constrainPoint } = require("@fullcalendar/core");
                                 }
                             },
                             {
+                                name: "actual_cost",
+                                type: "number",
+                                validate: {
+                                    validator: "range",
+                                    message: function(value, item) {
+                                        return "Value should be greater than or equal to 0";
+                                    },
+                                    param: [0, 100000000000]
+                                },
+                                sorting: false,
+                                title: "Act. Cost",
+                                width: 75,
+                                itemTemplate: function(value, item) {
+                                    if(value){
+                                        return value.toFixed(2);
+                                    }
+                                }
+                            },
+                            {
                                 type: "control",
                                 width: 100,
 
@@ -503,7 +522,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                     message: function(value, item) {
                                         return "Value should be greater than or equal to 0";
                                     },
-                                    param: [0, 1000]
+                                    param: [0, 10000000000]
                                 },
                                 sorting: false,
                                 title: "Est. Time (h)",
@@ -518,6 +537,25 @@ const { constrainPoint } = require("@fullcalendar/core");
                                         hours = value/(1000*60*60);
                                         var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ hours.toFixed(2) +"</p>");
                                         return  $result.add($time);
+                                    }
+                                }
+                            },
+                            {
+                                name: "actual_cost",
+                                type: "number",
+                                validate: {
+                                    validator: "range",
+                                    message: function(value, item) {
+                                        return "Value should be greater than or equal to 0";
+                                    },
+                                    param: [0, 10000000000]
+                                },
+                                sorting: false,
+                                title: "Act. Cost",
+                                width: 75,
+                                itemTemplate: function(value, item) {
+                                    if(value){
+                                        return value.toFixed(2);
                                     }
                                 }
                             },
