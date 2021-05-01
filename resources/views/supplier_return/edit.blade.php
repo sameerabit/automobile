@@ -114,6 +114,7 @@
                     </div>
                     <div class="form-group">
                       <label for="quantity"  class="col-form-label">Quantity</label>
+                      <input type="hidden" class="form-control" id="stock_qty" name="stock_qty">
                       <input type="number" class="form-control" id="quantity" name="quantity">
                     </div>
                     <div class="form-group">
@@ -331,6 +332,17 @@
 
             });
 
+            $("#addItemToTableForm").validate({
+                rules: {
+                    quantity: "required",
+                    product_id: "required",
+                    price: "required",
+                },
+                submitHandler: function(form) {
+                    return false;
+                }
+            });
+
             $("#product_id").select2({
                 theme: "classic",
                 ajax: {
@@ -382,6 +394,9 @@
                     var data = e.params.data;
                     $('#product_name').val(data.name);
                     $('#selected_product_id').val(data.id);
+                    $('#price').val(data.buying_price);
+                    $('#stock_qty').val(data.quantity);
+                    $('#quantity').attr('max',data.quantity);
 
                 });
 

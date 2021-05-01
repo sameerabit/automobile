@@ -191,7 +191,7 @@ class ProductController extends Controller
     {
         $query = DB::table('products')->join('supplier_bill_details','supplier_bill_details.product_id','=','products.id')
         ->where('supplier_bill_details.supplier_bill_id',$bill_id)
-        ->select('products.*')->groupBy('products.id');
+        ->select('products.id', 'products.name','supplier_bill_details.quantity','supplier_bill_details.buying_price')->groupBy('supplier_bill_details.product_id');
         if ($request->has('q') && $request->q) {
             $query->where('products.name', 'like', "%$request->q%");
         }
