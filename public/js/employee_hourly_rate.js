@@ -154,7 +154,7 @@ $(function () {
         name: "rate",
         type: "number",
         sorting: false,
-        title: "Hourly Rate",
+        title: "Hourly Rate (Rs.)",
         width: 75
       }, {
         type: "control",

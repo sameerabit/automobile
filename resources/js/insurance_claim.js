@@ -1,6 +1,10 @@
 
             $(function() {
-                // $('#details').hide();
+                $('#details').hide();
+                if($('#insurance_claim_id').val()>0){
+                    $('#details').show();
+                    $('#saveRecord').hide();
+                }
                 $('#vehicle_id').select2();
                 loadGrid();
 
@@ -20,6 +24,18 @@
                 var employees;
 
                 $('#saveRecord').on('click',function(){
+
+                    $("#insuranceForm").validate({
+                        rules: {
+                            agent_name: "required",
+                            phone_1 : "required",
+                        },
+                        submitHandler: function(form) {
+                            return false;
+                        }
+                    });
+
+
                     var date = $('#date').val();
                     var vehicle_id = $('#vehicle_id').val();
                     var company_id = $('#company_id').val();
@@ -73,7 +89,7 @@
                                 type: "text",
                                 title: "Item",
                                 autosearch: true,
-                                width: 100,
+                                width: 300,
                             },
                             {
                                 name: "est_cost",
@@ -98,7 +114,7 @@
                             {
                                 name: "reason",
                                 type: "textarea",
-                                width: 300,
+                                width: 200,
                                 validate: "required",
                                 title: "Reason"
                             },

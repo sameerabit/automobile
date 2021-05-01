@@ -8,6 +8,7 @@ use App\Http\Resources\ProductCollection;
 use App\Product;
 use App\ProductBatch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -102,6 +103,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        if(!Auth::user()->can('edit product')){
+            return back()->with('warning','Permission Denied');
+        }
         $categories = Category::all();
         $brands     = Brand::all();
 

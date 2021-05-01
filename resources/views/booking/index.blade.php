@@ -21,6 +21,10 @@
     right: 7px;
   }
 
+  .fc-custom2-button {
+    display: none;
+  }
+
   .total-row button {
     display: none
   }
@@ -255,12 +259,12 @@
             $('#deleteEvent').css("display", "none");
           }
         },
-        custom2: {
-          text: 'custom 2',
-          click: function() {
-            alert('clicked custom button 2!');
-          }
-        }
+        // custom2: {
+        //   text: 'custom 2',
+        //   click: function() {
+        //     alert('clicked custom button 2!');
+        //   }
+        // }
       },
       views: {
         listDay: {
