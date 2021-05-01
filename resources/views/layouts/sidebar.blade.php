@@ -266,6 +266,12 @@
                                     <i class="far fa-sticky-note nav-icon"></i>
                                     <p>Daily Business</p>
                                   </a>
+                                </li>
+                                <li class="nav-item">
+                                  <a href="{{ route('report.employee-working-time') }}" class="nav-link">
+                                    <i class="far fa-sticky-note nav-icon"></i>
+                                    <p>Employee Hours</p>
+                                  </a>
                                   
                                 </li>
 

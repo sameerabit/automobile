@@ -94,6 +94,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('products-report', 'Report\ReportController@products')->name('report.products');
     Route::get('daily-business-report', 'Report\ReportController@dailyBusinessReport')->name('report.daily-business');
+    Route::get('employee-hours', 'Report\ReportController@employeeWorkingTime')->name('report.employee-working-time');
+    
     
     
 

@@ -45,7 +45,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6">
-                                    <h3 class="card-title">Edit Job Card</h3>
+                                    <h3 class="card-title">Job Card</h3>
 
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                     </div>
                     <div class="row py-2">
                         <div class="col text-right">
-                            <a href="{{ route('job_cards.bill',$jobCard->id) }}" class="btn btn-lg btn-primary mx-3" id="saveBill">Make Bill</a>
+                            <a href="{{ route('job_cards.bill',$jobCard->id) }}" class="btn btn-lg btn-primary mx-3" id="saveBill">Show Bill</a>
                         </div>
                     </div>
                     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

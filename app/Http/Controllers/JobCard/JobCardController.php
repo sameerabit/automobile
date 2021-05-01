@@ -44,19 +44,18 @@ class JobCardController extends Controller
     public function index(Request $request)
     {
         $jobCardQuery = JobCard::with('vehicle');
-        // if($request->has('q') && $request->q){
-        //     $jobCardQuery->where('vehicle_no','like',"%$request->q%");
-        //     $jobCardQuery->orWhere('vehicle_no','like',"%$request->q%");
-        // }
+        $jobCardQuery->whereHas('vehicle',function($query) use ($request) {
+            if($request->has('q') && $request->q){
+                $query->where('reg_no','like',"%$request->q%");
+                $query->orWhere('owner_name','like',"%$request->q%");
+            }
+        });
+        
         $jobCards = $jobCardQuery->orderBy('id', 'DESC')->paginate();
-
-        // $jobCards = $jobCards->filter(function($jobCard){
-        //     return $jobCard->paymentStatus() == 0;
-        // });
-
 
         return view('job_card.index', [
             'jobCards' => $jobCards,
+            'term' => $request->q
         ]);
     }
 

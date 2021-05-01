@@ -13,7 +13,7 @@
                           <h3 class="card-title">Job Card</h3>
                       </div>
                       <div class="col-5">
-                          <input type="text" class="form-control" name="q" placeholder=" Search by Vehicle No,Name">
+                          <input type="text" class="form-control" value="{{ $term }}" name="q" placeholder=" Search by Vehicle No,Name">
                       </div>
                       <div class="col-1">
                         <input type="submit" class="btn btn-primary" value="Search">
@@ -43,7 +43,7 @@
                             <td>{{ $jobCard->vehicle->owner_name }}</td>
                             <td>{{ $jobCard->date }}</td>
                             <td class="d-flex">
-                                <a class="btn btn-warning btn-sm m-auto" href="{{ route('job_cards.edit',$jobCard->id) }}"><i class="fas fa-edit"></i>Edit</a>
+                                <a class="btn btn-warning btn-sm m-auto" href="{{ route('job_cards.edit',$jobCard->id) }}"><i class="fas fa-edit"></i>Process</a>
                                 <form action="{{ route('job_cards.destroy',$jobCard->id) }}"
                                     method="POST" class="form form-inline js-confirm">
                                   {{ method_field('delete') }}

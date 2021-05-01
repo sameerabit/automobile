@@ -15,7 +15,7 @@
         <div class="form-group">
            @csrf
           <label for="name">Name</label>
-          <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" placeholder="Enter Name">
+          <input type="text" value="{{ old('name') }}" class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" placeholder="Enter Name">
           {!! $errors->first('name', '<p class="error invalid-feedback">:message</p>') !!}
         </div>
        <div class="form-group">

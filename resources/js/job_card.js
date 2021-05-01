@@ -245,7 +245,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                     }
                                     updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                     return  $result.add($startButton)
-                                            .add($finishButton)
+                                            // .add($finishButton)
                                             .add($pauseButton);
 
                                 }
@@ -253,6 +253,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                             {
                                 name: 'time',
                                 width: 80,
+                                title: "Time (h)",
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
@@ -264,7 +265,10 @@ const { constrainPoint } = require("@fullcalendar/core");
                                         balance = value%(1000*60);
                                         seconds = Math.floor(balance/1000);
                                         time = Math.floor(days) +" "+ hours + ":" + minutes + ":" + seconds ;
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
+                                        var timerx = new easytimer.Timer();
+                                        timerx.start({precision: 'seconds', startValues: {days: days,hours: hours, minutes: minutes, seconds: minutes}});
+                                        timerx.pause();
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ timerx.getTimeValues().days+" "+timerx.getTimeValues().toString() +"</p>");
                                         return  $result.add($time);
                                     }
                                 }
@@ -511,7 +515,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                                     }
                                     updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                     return  $result.add($startButton)
-                                            .add($finishButton)
+                                            // .add($finishButton)
                                             .add($pauseButton);
 
                                 }
@@ -519,6 +523,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                             {
                                 name: 'time',
                                 width: 80,
+                                title: "Time (h)",
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                                     if(value) {
@@ -529,8 +534,10 @@ const { constrainPoint } = require("@fullcalendar/core");
                                         minutes = Math.floor(balance/(1000*60));
                                         balance = value%(1000*60);
                                         seconds = Math.floor(balance/1000);
-                                        time = Math.floor(days) +" "+ hours + ":" + minutes + ":" + seconds ;
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
+                                        var timerx = new easytimer.Timer();
+                                        timerx.start({precision: 'seconds', startValues: {days: days,hours: hours, minutes: minutes, seconds: minutes}});
+                                        timerx.pause();
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ timerx.getTimeValues().days+" "+timerx.getTimeValues().toString() +"</p>");
                                         return  $result.add($time);
                                     }
                                 }
@@ -776,13 +783,14 @@ const { constrainPoint } = require("@fullcalendar/core");
                                     }
                                     updateButtonState(item,$startButton,$pauseButton,$finishButton);
                                     return  $result.add($startButton)
-                                            .add($finishButton)
+                                            // .add($finishButton)
                                             .add($pauseButton);
 
                                 }
                             },
                             {
                                 name: 'time',
+                                title: "Time (h)",
                                 width: 80,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
@@ -794,8 +802,10 @@ const { constrainPoint } = require("@fullcalendar/core");
                                         minutes = Math.floor(balance/(1000*60));
                                         balance = value%(1000*60);
                                         seconds = Math.floor(balance/1000);
-                                        time = Math.floor(days) +" "+ hours + ":" + minutes + ":" + seconds ;
-                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ time +"</p>");
+                                        var timerx = new easytimer.Timer();
+                                        timerx.start({precision: 'seconds', startValues: {days: days,hours: hours, minutes: minutes, seconds: minutes}});
+                                        timerx.pause();
+                                        var $time = $("<p class='font-weight-bold' id='time_"+item.id+"'>"+ timerx.getTimeValues().days+" "+timerx.getTimeValues().toString() +"</p>");
                                         return  $result.add($time);
                                     }
                                 }

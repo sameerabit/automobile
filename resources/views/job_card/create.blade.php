@@ -71,7 +71,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="date">Date</label>
-                                <input type="date" class="form-control" id="jobDate" placeholder="Job Date"
+                                <input disabled type="date" class="form-control" id="jobDate" placeholder="Job Date"
                                     value="{{ date('Y-m-d') }}">
                                 <input type="hidden" id="job_card_id">
                             </div>

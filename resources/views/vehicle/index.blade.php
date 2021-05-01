@@ -18,7 +18,7 @@
 
                       </div>
                       <div class="col-5">
-                          <input type="text" class="form-control" name="q" placeholder="Search by Name or No">
+                          <input type="text" class="form-control" value="{{ $term }}" name="q" placeholder="Search by Name or No">
                       </div>
                       <div class="col-1">
                         <input type="submit" class="btn btn-primary" value="Search">

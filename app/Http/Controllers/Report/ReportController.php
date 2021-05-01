@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
+use App\JobCardDetail;
 use App\JobSale;
 use App\ProductBatch;
 use Illuminate\Http\Request;
@@ -70,6 +71,20 @@ class ReportController extends Controller
             'payments' => $payments,
             'date' => $request->date
         ]);
+    }
+
+    public function employeeWorkingTime(Request $request)
+    {
+        $jobCardDetails = DB::table('timesheets')->join('job_card_details','job_card_details.id','timesheets.job_card_detail_id')
+        ->join('employees','employees.id','job_card_details.employee_id')
+        ->select(DB::raw('SUM(timesheets.ended_at - timesheets.started_at) as time'),'employees.id','employees.name',DB::raw('SUM(job_card_details.actual_cost) as actual_cost'))
+        ->groupBy('employees.id')
+        ->get();
+        return view('reports.employee_time', [
+            'jobCardDetails' => $jobCardDetails,
+            'date' => $request->date
+        ]);
+
     }
 
 }

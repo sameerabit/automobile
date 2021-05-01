@@ -177,7 +177,10 @@
                     url: '/supplier-returns/'+$('#supplier_return_id').val(),
                     data: supplierReturn,
                     success: function(response){
-                        console.log(response);
+                        Toast.fire({
+                        icon: 'success',
+                        title: 'Return Updated to System Successfully.'
+                    });
                     },
                     dataType: 'json'
                 });

@@ -179,6 +179,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                             },
                             {
                                 name: 'time',
+                                title: "Time (h)",
                                 width: 80,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
@@ -356,6 +357,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                             },
                             {
                                 name: 'time',
+                                title: "Time (h)",
                                 width: 80,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
@@ -530,6 +532,7 @@ const { constrainPoint } = require("@fullcalendar/core");
                             },
                             {
                                 name: 'time',
+                                title: "Time (h)",
                                 width: 80,
                                 itemTemplate: function(value, item) {
                                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);

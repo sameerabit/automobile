@@ -21,11 +21,14 @@ class VehicleController extends Controller
         $query = Vehicle::query();
         if ($request->has('q') && $request->q) {
             $query->where('name', 'like', "%$request->q%");
+            $query->orWhere('reg_no', 'like', "%$request->q%");
+            $query->orWhere('owner_name', 'like', "%$request->q%");
         }
         $vehicles = $query->paginate(15);
 
         return view('vehicle.index', [
             'vehicles' => $vehicles,
+            'term' => $request->q
         ]);
     }
 

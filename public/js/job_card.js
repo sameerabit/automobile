@@ -11355,11 +11355,13 @@ $(function () {
           }
 
           updateButtonState(item, $startButton, $pauseButton, $finishButton);
-          return $result.add($startButton).add($finishButton).add($pauseButton);
+          return $result.add($startButton) // .add($finishButton)
+          .add($pauseButton);
         }
       }, {
         name: 'time',
         width: 80,
+        title: "Time (h)",
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
 
@@ -11372,7 +11374,18 @@ $(function () {
             balance = value % (1000 * 60);
             seconds = Math.floor(balance / 1000);
             time = Math.floor(days) + " " + hours + ":" + minutes + ":" + seconds;
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + time + "</p>");
+            var timerx = new easytimer.Timer();
+            timerx.start({
+              precision: 'seconds',
+              startValues: {
+                days: days,
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timerx.pause();
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + timerx.getTimeValues().days + " " + timerx.getTimeValues().toString() + "</p>");
             return $result.add($time);
           }
         }
@@ -11616,11 +11629,13 @@ $(function () {
           }
 
           updateButtonState(item, $startButton, $pauseButton, $finishButton);
-          return $result.add($startButton).add($finishButton).add($pauseButton);
+          return $result.add($startButton) // .add($finishButton)
+          .add($pauseButton);
         }
       }, {
         name: 'time',
         width: 80,
+        title: "Time (h)",
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
 
@@ -11632,8 +11647,18 @@ $(function () {
             minutes = Math.floor(balance / (1000 * 60));
             balance = value % (1000 * 60);
             seconds = Math.floor(balance / 1000);
-            time = Math.floor(days) + " " + hours + ":" + minutes + ":" + seconds;
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + time + "</p>");
+            var timerx = new easytimer.Timer();
+            timerx.start({
+              precision: 'seconds',
+              startValues: {
+                days: days,
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timerx.pause();
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + timerx.getTimeValues().days + " " + timerx.getTimeValues().toString() + "</p>");
             return $result.add($time);
           }
         }
@@ -11876,10 +11901,12 @@ $(function () {
           }
 
           updateButtonState(item, $startButton, $pauseButton, $finishButton);
-          return $result.add($startButton).add($finishButton).add($pauseButton);
+          return $result.add($startButton) // .add($finishButton)
+          .add($pauseButton);
         }
       }, {
         name: 'time',
+        title: "Time (h)",
         width: 80,
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
@@ -11892,8 +11919,18 @@ $(function () {
             minutes = Math.floor(balance / (1000 * 60));
             balance = value % (1000 * 60);
             seconds = Math.floor(balance / 1000);
-            time = Math.floor(days) + " " + hours + ":" + minutes + ":" + seconds;
-            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + time + "</p>");
+            var timerx = new easytimer.Timer();
+            timerx.start({
+              precision: 'seconds',
+              startValues: {
+                days: days,
+                hours: hours,
+                minutes: minutes,
+                seconds: minutes
+              }
+            });
+            timerx.pause();
+            var $time = $("<p class='font-weight-bold' id='time_" + item.id + "'>" + timerx.getTimeValues().days + " " + timerx.getTimeValues().toString() + "</p>");
             return $result.add($time);
           }
         }

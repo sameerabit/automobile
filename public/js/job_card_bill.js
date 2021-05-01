@@ -11278,6 +11278,7 @@ $(function () {
         width: 75
       }, {
         name: 'time',
+        title: "Time (h)",
         width: 80,
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
@@ -11441,6 +11442,7 @@ $(function () {
         width: 75
       }, {
         name: 'time',
+        title: "Time (h)",
         width: 80,
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
@@ -11603,6 +11605,7 @@ $(function () {
         width: 75
       }, {
         name: 'time',
+        title: "Time (h)",
         width: 80,
         itemTemplate: function itemTemplate(value, item) {
           var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);

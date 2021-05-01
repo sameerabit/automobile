@@ -9,7 +9,7 @@
             page-break-after: always;
         }
 
-        table th,td {
+        table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
@@ -57,9 +57,19 @@
                 <div class="card-body">
                     <div class="form-row">
                         <table>
-
+                            <tr>
+                                <td>Vehicle Name:</td>
+                                <td>{{ $jobCard->vehicle->name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Vehicle No:</td>
+                                <td>{{ $jobCard->vehicle->reg_no }}</td>
+                            </tr>
+                            <tr>
+                                <td>Owner No:</td>
+                                <td>{{ $jobCard->vehicle->owner_name }}</td>
+                            </tr>
                         </table>
-
                     </div>
 
                     <div id="details">

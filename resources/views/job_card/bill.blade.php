@@ -31,6 +31,10 @@
     .select2 {
         width: 100% !important;
     }
+
+    .jsgrid-insert-mode-button {
+        display: none;
+    }
 </style>
 @endpush
 @section('content')
@@ -136,7 +140,7 @@
                                 <div class="col-8">
                                     @csrf
                                     <input type="hidden" name="job_card_id" value="{{$jobCard->id}}">
-                                    <input type="number" required class="form-control" name="amount" id="amount" max="{{number_format($jobCard->totalSales()+ $jobCard->totalServicePrice() - $jobCard->paidAmount(),2) }}">
+                                    <input type="number" required class="form-control" name="amount" id="amount" max="{{round($jobCard->totalSales()+ $jobCard->totalServicePrice() - $jobCard->paidAmount(),2) }}">
                                 </div>
                                 <div class="col-4">
                                     <input type="submit" class="btn btn-primary">
@@ -147,15 +151,12 @@
                 </form>
             </div>
         </div>
-        <div class="row py-2">
-            <div class="col text-right">
-
+    </div>
+    <div class="row py-2">
+            <div class="col-12 text-right">
                 <a class="btn btn-primary" href="{{ route('job_cards.bill',$jobCard->id) }}?export=pdf">Export to PDF</a>
             </div>
         </div>
-
-
-    </div>
 </div>
 </div>
 
@@ -168,6 +169,7 @@
 <script src="{{ mix('/js/easytimer.min.js') }}"></script>
 <script src="{{ mix('/js/job_card_bill.js') }}"></script>
 <script src="{{ mix('/js/job_sales.js') }}"></script>
+
 
 
 @endpush

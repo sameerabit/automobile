@@ -190,8 +190,12 @@ class ProductController extends Controller
     public function searchByBillId(Request $request,$bill_id)
     {
         $query = DB::table('products')->join('supplier_bill_details','supplier_bill_details.product_id','=','products.id')
+        ->join('product_batches','supplier_bill_details.product_id','=','product_batches.id')
         ->where('supplier_bill_details.supplier_bill_id',$bill_id)
-        ->select('products.id', 'products.name','supplier_bill_details.quantity','supplier_bill_details.buying_price')->groupBy('supplier_bill_details.product_id');
+        ->where('product_batches.quantity','>',0)
+        ->join('brands','brands.id','=','products.brand_id')
+        ->select('product_batches.id',DB::raw("CONCAT(products.name,'   -   ',brands.name,'   -    Rs. ',supplier_bill_details.selling_price) as name"),
+        'supplier_bill_details.quantity','supplier_bill_details.buying_price')->groupBy('supplier_bill_details.product_id');
         if ($request->has('q') && $request->q) {
             $query->where('products.name', 'like', "%$request->q%");
         }
