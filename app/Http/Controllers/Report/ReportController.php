@@ -7,6 +7,7 @@ use App\JobSale;
 use App\ProductBatch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class ReportController extends Controller
 {
@@ -36,6 +37,32 @@ class ReportController extends Controller
         ->join('job_cards','job_cards.id','job_card_payments.job_card_id')
         ->join('vehicles','vehicles.id','job_cards.vehicle_id')
         ->whereDate('job_card_payments.created_at',$request->date)->get();
+
+        if ($request->has('export')) {
+            if ($request->get('export') == 'pdf') {
+                PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+                $opciones_ssl=array(
+                    "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                    ),
+                    );
+                    $img_path = public_path('uploads/logo.jpg');
+                    $extencion = pathinfo($img_path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($img_path, false, stream_context_create($opciones_ssl));
+                    $img_base_64 = base64_encode($data);
+                    $image_path = 'data:image/' . $extencion . ';base64,' . $img_base_64;
+                $pdf = PDF::loadView('reports.daily-biz', [
+                    'jobCardDetails' => $jobCardDetails,
+                    'jobSales' => $jobSales,
+                    'payments' => $payments,
+                    'date' => $request->date,
+                    'image_path' => $image_path
+
+                ]);
+                return $pdf->download(date('Y-m-d H:i:s').'daily_sales.pdf');
+            }
+        }
 
         return view('reports.daily_business', [
             'jobCardDetails' => $jobCardDetails,
