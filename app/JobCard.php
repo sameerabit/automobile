@@ -26,4 +26,25 @@ class JobCard extends Model
     {
         return $this->hasMany(JobSale::class);
     }
+
+    public function totalServicePrice(){
+        return $this->details()->sum('actual_cost');
+    }
+
+    public function totalSales(){
+        $total = 0;
+        foreach($this->sales as $sale) {
+            $total += ($sale->quantity - $sale->return_qty) * $sale->price;
+        }
+        return $total;
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class);
+    }
+
+    public function paymentStatus()
+    {
+        return $this->payments->sum('amount') < ($this->totalSales() + $this->totalServicePrice());
+    }
 }

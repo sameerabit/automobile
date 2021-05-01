@@ -11173,7 +11173,10 @@ $(function () {
       if (employees.length > 0) {
         loadGrid();
       } else {
-        alert('Please add at least one employee to the system.');
+        Toast.fire({
+          icon: 'warning',
+          title: 'Please add at least one employee to the system.'
+        });
       }
     },
     error: function error(response) {},

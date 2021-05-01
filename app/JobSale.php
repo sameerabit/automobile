@@ -18,4 +18,5 @@ class JobSale extends Model
     {
         return $this->belongsTo(ProductBatch::class);
     }
+
 }

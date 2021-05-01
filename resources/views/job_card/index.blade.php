@@ -32,6 +32,7 @@
                         <th>Vehicle No.</th>
                         <th>Owner</th>
                         <th>Date</th>
+                        <th>Payment Status</th>
                         <th style="width: 200px">Action</th>
                       </tr>
                     </thead>
@@ -42,6 +43,7 @@
                             <td>{{ $jobCard->vehicle->reg_no }}</td>
                             <td>{{ $jobCard->vehicle->owner_name }}</td>
                             <td>{{ $jobCard->date }}</td>
+                            <td>{{ $jobCard->paymentStatus() == 1 ? 'To Pay' : 'Paid' }}</td>
                             <td class="d-flex">
                                 <a class="btn btn-warning btn-sm m-auto" href="{{ route('job_cards.edit',$jobCard->id) }}"><i class="fas fa-edit"></i>Edit</a>
                                 <form action="{{ route('job_cards.destroy',$jobCard->id) }}"

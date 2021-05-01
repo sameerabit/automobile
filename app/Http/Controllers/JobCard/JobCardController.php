@@ -4,7 +4,9 @@ namespace App\Http\Controllers\JobCard;
 
 use App\Http\Controllers\Controller;
 use App\JobCard;
+use App\Payment;
 use App\Vehicle;
+use Exception;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -48,6 +50,11 @@ class JobCardController extends Controller
         // }
         $jobCards = $jobCardQuery->orderBy('id', 'DESC')->paginate();
 
+        // $jobCards = $jobCards->filter(function($jobCard){
+        //     return $jobCard->paymentStatus() == 0;
+        // });
+
+
         return view('job_card.index', [
             'jobCards' => $jobCards,
         ]);
@@ -64,6 +71,7 @@ class JobCardController extends Controller
 
     public function createBill(JobCard $jobCard, Request $request)
     {
+        $jobCard->totalServicePrice();
         $vehicles = Vehicle::all();
         foreach($jobCard->details()->get() as $detail){
             if ($detail->state == "start") {
@@ -73,11 +81,18 @@ class JobCardController extends Controller
                 );
             }
         }
-        foreach($jobCard->details as $detail){
-            $detail->est_cost = $detail->employee->rate[0]*$detail->estimation_time;
-            $detail->actual_cost = $detail->employee->rate[0]* ($detail->time == null ? 0 : $detail->time) /(1000*60*60);
-            $detail->save();
+        try{
+            foreach($jobCard->details as $detail){
+                $detail->est_cost = $detail->employee->rate[0]*$detail->estimation_time;
+                $detail->actual_cost = $detail->employee->rate[0]* ($detail->time == null ? 0 : $detail->time) /(1000*60*60);
+                $detail->save();
+            }
+        } catch(Exception $ex){
+            return back()->with([
+                'warning' => "Add Hour rates to the employee before making the bill."
+            ]);
         }
+        
 
         if ($request->has('export')) {
             if ($request->get('export') == 'pdf') {
@@ -104,6 +119,17 @@ class JobCardController extends Controller
         return view('job_card.bill', [
             'vehicles' => $vehicles,
             'jobCard'  => $jobCard,
+        ]);
+    }
+
+
+    public function pay(Request $request){
+        $payment = new Payment();
+        $payment->job_card_id = $request->job_card_id;
+        $payment->amount = $request->amount;
+        $payment->save();
+        return back()->with([
+            'Payment done.'
         ]);
     }
 }

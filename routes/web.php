@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('job-cards/{job_card}/edit', 'JobCard\JobCardController@edit')->name('job_cards.edit');
     Route::get('job-cards', 'JobCard\JobCardController@index')->name('job_cards.index');
     Route::get('job-cards/{job_card}/bill', 'JobCard\JobCardController@createBill')->name('job_cards.bill');
+    Route::post('job-card-payment', 'JobCard\JobCardController@pay')->name('job_cards.pay');
 
     Route::delete('job-cards/{job_card}', 'JobCard\JobCardController@destroy')->name('job_cards.destroy');
     Route::put('job-card-detail/{job_card_detail}/update-time', 'JobCard\JobCardDetailController@updateTime')->name('job_card_detail.update');
