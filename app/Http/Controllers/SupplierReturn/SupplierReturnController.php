@@ -29,10 +29,15 @@ class SupplierReturnController extends Controller
     public function createReturn($bill_id)
     {
         $supplierReturn = SupplierReturn::where('supplier_bill_id',$bill_id)->first();
-        return view('supplier_return.create', [
-            'bill_id' => $bill_id,
-            'supplierReturn' => $supplierReturn
-        ]);
+        if($supplierReturn == null){
+            $supplierReturn = new SupplierReturn();
+            $supplierReturn->supplier_bill_id = $bill_id;
+            $supplierReturn->reference = time() . rand(10 * 45, 100 * 98);
+            $supplierReturn->return_date = date('Y-m-d');
+            $supplierReturn->save();
+            $supplierReturn->fresh();
+        }
+        return redirect()->route('supplier-returns.edit',$supplierReturn->id);
     }
 
     public function store(Request $request)

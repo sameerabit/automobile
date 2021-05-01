@@ -16,7 +16,7 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">Update Supplier Bill</h3>
+                          <h3 class="card-title">Update Stock</h3>
                       </div>
                     </div>
                   <div>

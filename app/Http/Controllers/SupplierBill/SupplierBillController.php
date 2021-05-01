@@ -51,12 +51,16 @@ class SupplierBillController extends Controller
         return response()->json(new ResourcesSupplierBill($supplierBill));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $supplierBills = SupplierBill::paginate(15);
-
+        $supplierBills = SupplierBill::whereHas('supplier', function($query) use ($request) {
+            if ($request->has('q') && $request->q) {
+                $query->where('name','like',"%$request->q%");
+            }
+        })->paginate();
         return view('supplier_bill.index', [
             'supplierBills' => $supplierBills,
+            'term' => $request->q
         ]);
     }
 

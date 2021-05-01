@@ -13,7 +13,7 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">Supplier Returns</h3>
+                          <h3 class="card-title">Stock Returns</h3>
 
                       </div>
                       <div class="col-5">

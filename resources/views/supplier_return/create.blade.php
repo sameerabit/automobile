@@ -42,6 +42,8 @@
                                 <label for="supplier">Supplier</label>
                                 <select id="supplier_id" class="form-control">
                                 </select>
+                                <input type="hidden" value="{{ $supplierReturn->supplierBill->supplier_id }}" class="form-control" id="selected_supplier_id">
+
                             </div>
                             <div class="form-group col-md-6">
                                     <label for="date">Return Date</label>

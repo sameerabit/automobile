@@ -7,6 +7,9 @@
             <div class="card card-secondary">
     <div class="card-header">
       <h3 class="card-title">Show Category</h3>
+      <div class="col-md-3 offset-md-9">
+            <a class="btn btn-block btn-primary btn-sm" href="{{ route('categories.create') }}">Add Category</a>
+        </div>
     </div>
     <!-- /.card-header -->
     <!-- form start -->

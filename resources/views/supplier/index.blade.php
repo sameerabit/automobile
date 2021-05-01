@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 offset-md-9">
-            <a class="btn btn-block btn-primary btn-lg" href="{{ route('suppliers.create') }}">Add Supplier</a>
+            <a class="btn btn-block btn-primary btn-sm" href="{{ route('suppliers.create') }}">Add Supplier</a>
         </div>
     </div>
     <div class="row py-2">
@@ -18,7 +18,7 @@
 
                       </div>
                       <div class="col-5">
-                          <input type="text" class="form-control" name="q" placeholder=" Search by Name & Phone">
+                          <input type="text" class="form-control" name="q" value="{{ $term }}" placeholder=" Search by Name & Phone">
                       </div>
                       <div class="col-1">
                         <input type="submit" class="btn btn-primary" value="Search">

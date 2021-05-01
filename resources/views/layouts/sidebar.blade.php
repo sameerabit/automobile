@@ -1,10 +1,10 @@
 
          <aside class="main-sidebar sidebar-dark-primary elevation-4">
                       <!-- Brand Logo -->
-                      <a href="index3.html" class="brand-link">
+                      <a href="/" class="brand-link">
                         <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                              style="opacity: .8">
-                        <span class="brand-text font-weight-light">Amith Automobile</span>
+                        <span class="brand-text font-weight-normal">AMITH AUTOMOBILES</span>
                       </a>
 
                       <!-- Sidebar -->
@@ -69,13 +69,13 @@
                                   <li class="nav-item">
                                     <a href="{{ route('supplier-bill.create') }}" class="nav-link">
                                     <i class="fas fa-file-invoice  nav-icon"></i>
-                                      <p>Supplier Bill</p>
+                                      <p>Add Stock</p>
                                     </a>
                                   </li>
                                   <li class="nav-item">
                                     <a href="{{ route('supplier-bill.index') }}" class="nav-link">
                                       <i class="fas fa-clipboard-list nav-icon"></i>
-                                      <p>Supplier Bills List</p>
+                                      <p>Stock List</p>
                                     </a>
                                   </li>
                                   <!-- <li class="nav-item">
@@ -87,7 +87,7 @@
                                   <li class="nav-item">
                                     <a href="{{ route('supplier-returns.index') }}" class="nav-link">
                                       <i class="fas fa-undo nav-icon"></i>
-                                      <p>Supplier Return Details</p>
+                                      <p>Stock Return Details</p>
                                     </a>
                                   </li>
                               </ul>
@@ -143,7 +143,7 @@
                                 
                                 <li class="nav-item">
                                   <a href="{{ route('hourly-rates.create') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <i class="fas fa-user-clock  nav-icon"></i>
                                     <p>Hourly Rate</p>
                                   </a>
                                 </li>
@@ -254,16 +254,12 @@
                                 </p>
                               </a>
                               <ul class="nav nav-treeview">
-                                
                                 <li class="nav-item">
                                   <a href="{{ route('report.products') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
+                                    <i class="far fa-sticky-note nav-icon"></i>
                                     <p>Products Report</p>
                                   </a>
-                                  <a href="{{ route('insurance_claim.create') }}" class="nav-link">
-                                    <i class="fas fa-truck-pickup nav-icon"></i>
-                                    <p>Create New</p>
-                                  </a>
+                                 
                                 </li>
 
                               </ul>

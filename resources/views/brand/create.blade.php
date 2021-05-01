@@ -22,7 +22,7 @@
         <div class="form-group row {{ $errors->has('phone') ? 'has-error' : ''}}">
             <div class="col-md-4">
                 <label for="phone">Description</label>
-                <textarea class="form-control text-left {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Description">
+                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Description">
                     {{ $brand->description }}
                 </textarea>
                 {!! $errors->first('description', '<p class="error invalid-feedback">:message</p>') !!}

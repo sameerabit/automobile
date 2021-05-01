@@ -25,7 +25,7 @@
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="description">Description</label>
-                <textarea class="form-control text-left {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Description">
+                <textarea style="align-content:center;" class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Description">
                     {{ $brand->description }}
                 </textarea>
                 {!! $errors->first('description', '<p class="error invalid-feedback">:message</p>') !!}

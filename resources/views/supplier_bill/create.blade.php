@@ -16,10 +16,8 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6">
-                                <h3 class="card-title">New Supplier Bill</h3>
-
+                                <h3 class="card-title">Add New Stock</h3>
                             </div>
-                           
                         </div>
                         <div>
                         </div>

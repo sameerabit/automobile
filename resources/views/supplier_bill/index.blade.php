@@ -13,11 +13,11 @@
                 <div class="card-header">
                     <div class="row">
                       <div class="col-6">
-                          <h3 class="card-title">Supplier Bills</h3>
+                          <h3 class="card-title">Stock List</h3>
 
                       </div>
                       <div class="col-5">
-                          <input type="text" class="form-control" name="q" placeholder=" Search by Name">
+                          <input type="text" class="form-control" name="q" value="{{ $term }}" placeholder=" Search by Name">
                       </div>
                       <div class="col-1">
                         <input type="submit" class="btn btn-primary" value="Search">

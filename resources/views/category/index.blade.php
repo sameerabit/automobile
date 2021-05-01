@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 offset-md-9">
-            <a class="btn btn-block btn-primary btn-lg" href="{{ route('categories.create') }}">Add Category</a>
+            <a class="btn btn-block btn-primary btn-sm" href="{{ route('categories.create') }}">Add Category</a>
         </div>
     </div>
     <div class="row py-2">

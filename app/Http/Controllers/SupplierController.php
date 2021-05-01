@@ -25,6 +25,7 @@ class SupplierController extends Controller
 
         return view('supplier.index', [
             'suppliers' => $suppliers,
+            'term' => $request->q
         ]);
     }
 
