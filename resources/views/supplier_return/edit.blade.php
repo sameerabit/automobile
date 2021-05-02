@@ -181,6 +181,7 @@
                         icon: 'success',
                         title: 'Return Updated to System Successfully.'
                     });
+                    $('#addItemToTableForm')[0].reset();
                     },
                     dataType: 'json'
                 });

@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Events\StockAdjust;
+use App\ProductBatch;
 use App\SupplierReturn;
 use App\SupplierReturnDetails;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,7 +36,6 @@ class SupplierReturnRepository
 
             return $supplierReturn;
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollback();
         }
     }
@@ -49,10 +50,13 @@ class SupplierReturnRepository
             $supplierReturn->fresh();
             $supplierReturn->supplierReturnDetails()->delete();
             $supplierReturnDetails = new Collection();
-            foreach ($data['supllierReturnDetails']  as $supplierReturnDetail) {
-                $supplierReturnDetails->add(new SupplierReturnDetails($supplierReturnDetail));
+            if (array_key_exists("supllierReturnDetails",$data)) {
+                foreach ($data['supllierReturnDetails']  as $supplierReturnDetail) {
+                    $supplierReturnDetails->add(new SupplierReturnDetails($supplierReturnDetail));
+                }
+                $supplierReturn->supplierReturnDetails()->saveMany($supplierReturnDetails);
             }
-            $supplierReturn->supplierReturnDetails()->saveMany($supplierReturnDetails);
+            
             DB::commit();
 
             return $supplierReturn;

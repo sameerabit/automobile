@@ -51,12 +51,19 @@ class SupplierReturnController extends Controller
         return response()->json(new ResourcesSupplierReturn($supplierReturn));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $supplierReturns = SupplierReturn::paginate(15);
+        $supplierReturns = SupplierReturn::whereHas('supplierBill',function($query) use ($request) {
+            if($request->has('q') && $request->q){
+                $query->whereHas('supplier',function($query) use ($request) {
+                    $query->where('name','like',"%$request->q%");
+                });
+            }
+        })->paginate(15);
 
         return view('supplier_return.index', [
             'supplierReturns' => $supplierReturns,
+            'term' => $request->q
         ]);
     }
 

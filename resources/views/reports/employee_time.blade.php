@@ -12,7 +12,7 @@
         <form action="{{ route('report.employee-working-time') }}">
           <div class="card-header">
             <div class="row">
-              <div class="col-6">
+              <div class="col-5">
                 <h3 class="card-title">Employee Hours</h3>
               </div>
               <div class="col-4">
@@ -21,8 +21,8 @@
               <div class="col-1">
                 <input type="submit" class="btn btn-primary" value="Search">
               </div>
-              <div class="col-1">
-                <input id="pdf" type="button" class="btn btn-primary" value="PDF">
+              <div class="col-2">
+                <a class="btn btn-primary" href="{{ route('report.employee-working-time') }}?export=pdf&date={{ $date }}">Export to PDF</a>
               </div>
             </div>
             <div>
