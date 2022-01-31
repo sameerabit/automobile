@@ -36,6 +36,7 @@
                         <th style="width: 10px">#</th>
                         <th>Name</th>
                         <th>Phone</th>
+                        <th>District</th>
                         <th style="width: 200px">Action</th>
                       </tr>
                     </thead>
@@ -45,6 +46,7 @@
                             <td>{{ $supplier->id }}</td>
                             <td>{{ $supplier->name }}</td>
                             <td>{{ $supplier->phone }}</td>
+                            <td>{{ $supplier->district }}</td>
                             <td class="d-flex">
                                 <a class="btn btn-warning btn-sm m-auto" href="{{ route('suppliers.edit',$supplier->id) }}"><i class="fas fa-edit"></i>Edit</a>
                                 <form action="{{ route('suppliers.destroy',$supplier->id) }}"

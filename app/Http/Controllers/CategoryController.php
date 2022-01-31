@@ -20,7 +20,7 @@ class CategoryController extends Controller
         if ($request->has('q') && $request->q) {
             $query->where('name', 'like', "%$request->q%");
         }
-        $categories = $query->paginate(15);
+        $categories = $query->paginate(10);
 
         return view('category.index', [
             'categories' => $categories,

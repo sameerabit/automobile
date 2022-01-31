@@ -10,5 +10,6 @@ class Supplier extends Model
         'name',
         'address',
         'phone',
+        'district' //newl added to record suppliers
     ];
 }

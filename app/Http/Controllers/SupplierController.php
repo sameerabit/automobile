@@ -20,6 +20,7 @@ class SupplierController extends Controller
         if ($request->has('q') && $request->q) {
             $query->where('name', 'like', "%$request->q%");
             $query->orWhere('phone', 'like', "%$request->q%");
+            $query->orWhere('district', 'like', "%$request->q%");
         }
         $suppliers = $query->paginate(15);
 
@@ -55,6 +56,7 @@ class SupplierController extends Controller
         $this->validate($request, [
             'name'  => 'required',
             'phone' => 'numeric',
+            'district' => 'required'
         ]);
         $supplier = new Supplier();
         $supplier->fill($request->all());
@@ -107,6 +109,7 @@ class SupplierController extends Controller
         $this->validate($request, [
             'name'  => 'required',
             'phone' => 'numeric',
+            'district' => 'required'
         ]);
         $supplier->fill($request->all());
         $supplier->save();

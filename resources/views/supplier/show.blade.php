@@ -35,6 +35,12 @@
                 <input type="text" disabled class="form-control" value="{{ $supplier->phone }}" id="phone" name="phone" placeholder="Phone Number">
               </div>
             </div>
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label for="phone">District</label>
+                <input type="text" disabled class="form-control" value="{{ $supplier->district }}" id="district" name="district">
+              </div>
+            </div>
           </div>
           <!-- /.card-body -->
 

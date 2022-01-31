@@ -30,7 +30,14 @@
                 {!! $errors->first('phone', '<p class="error invalid-feedback">:message</p>') !!}
               </div>
         </div>
-       
+        <div class="form-group row {{ $errors->has('district') ? 'has-error' : ''}}">
+            <div class="col-md-4">
+                <label for="district">District</label>
+                <input type="text" class="form-control {{ $errors->has('district') ? 'is-invalid' : ''}}" id="district" name="district" placeholder="Type District Here">
+                {!! $errors->first('district', '<p class="error invalid-feedback">:message</p>') !!}
+              </div>
+            </div>
+        </div>
        
       </div>
       <!-- /.card-body -->
